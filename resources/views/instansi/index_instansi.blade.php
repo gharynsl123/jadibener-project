@@ -26,19 +26,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                @foreach($instansi->reverse() as $instansi)
+                @foreach($instansi->reverse() as $instansis)
                     <!-- Add '->reverse()' after '$instansi' to reverse the order -->
                     <tr>
-                        <td>{{$instansi->instasi}}</td>
-                        <td>{{$instansi->alamat}}</td>
-                        <td>{{$instansi->users->name}}</td>
-                        <td>{{$instansi->users->email}}</td>
+                        <td>{{$instansis->instasi}}</td>
+                        <td>{{$instansis->alamat}}</td>
+                        <td></td>
+                        <td></td>
                         <td>
                             098712638
                         </td>
                         <td>
                             <!-- membuat form delet -->
-                            <form action="{{ route('instansi.destroy', $instansi->id) }}" method="POST">
+                            <form action="{{ route('instansi.destroy', $instansis->id) }}" method="POST">
                                 @csrf
                                 {{method_field('DELETE')}}
                                 <a href="#" class="btn btn-primary">

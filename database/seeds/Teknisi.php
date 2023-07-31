@@ -12,10 +12,12 @@ class Teknisi extends Seeder
     public function run()
     {
         $user = new \App\User;
-        $user->name = "TEKNISI";
-        $user->email = "admteknisiin@gmail.com";
+        $user->name = "warato suradi";
+        $user->email = "warunasi123.ds@gmail.com";
         $user->level = "teknisi";
-        $user->password = \Hash::make('asdasdasd');
+        $user->no_telp = "081299106344";
+        $user->alamat = "Jl. Kh hurati, Kecamatan Gambir, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10150";
+        $user->password = \Hash::make('warunasi123');
         $user->save();
     }
 }

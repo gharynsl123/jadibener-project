@@ -54,17 +54,12 @@
                         </td>
                         @if (Auth::user()->level == 'admin')
                         <td>
-                            <form action="#" method="post">
-                                <!-- @csrf -->
-                                <!-- {{method_field('DELETE')}} -->
-                                <a href="#" class="btn btn-primary">
-                                    <i class="fa fa-pen-to-square text-white "></i>
-                                </a>
-                                <button type="submit" class="btn btn-danger mt-2" onclick="#">
-                                    <i class="fa fa-trash"></i>
-                                </button>
+                            <a href="{{ route('peralatan.edit', $peralatans->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                            <form action="{{ route('peralatan.destroy', $peralatans->id) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Delete</button>
                             </form>
-                        </td>
                         @endif
                     </tr>
                     @endforeach

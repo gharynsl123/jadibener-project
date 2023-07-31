@@ -17,11 +17,11 @@ class CreateInstansiTable extends Migration
             $table->increments('id');
             $table->string('instasi');
             $table->string('alamat');
-            $table->integer('id_user')->unsigned();
+
             $table->bigInteger('jumlah_kasur');
             $table->enum('status', ['pemerintah', 'suasta']);
             $table->string('kelas');
-            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
+
             $table->string('photo')->nullable();
             $table->timestamps();
         });

@@ -12,10 +12,12 @@ class Surveyor extends Seeder
     public function run()
     {
         $user = new \App\User;
-        $user->name = "SURVEYOR";
-        $user->email = "surveyor@gmail.com";
+        $user->name = "rahmat hidayat";
+        $user->email = "hidayatalina@gmail.com";
         $user->level = "surveyor";
-        $user->password = \Hash::make('asdasdasd');
+        $user->no_telp = "081299106344";
+        $user->alamat = "Jl. Saturnus Timur No. 20 Margahayu Raya. Desa/Kelurahan, : MANJAHLEGA. Kecamatan/Kota (LN), : KEC. RANCASARI.";
+        $user->password = \Hash::make('rahmat987');
         $user->save();
     }
 }

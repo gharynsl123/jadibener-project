@@ -29,16 +29,14 @@ class PeralatanController extends Controller
     $kategori = Kategori::all();
     $peralatan = null;
 
-    // Jika user adalah pic_rs, ambil data peralatan berdasarkan rumah sakit yang dipegang
+    // Jika user adalah pic_rs, ambil data peralatan berdasarkan rumah sakit yang dipegang. dan jika user adalah admin, ambil semua data peralatan
     if (Auth::user()->level == 'pic_rs') {
-        $userInstansiId = Auth::user()->id_instansi;
-        $peralatan = Peralatan::where('id_instansi', auth()->user()->id)->get()->all();
+        $peralatan = Peralatan::where('id_instansi', Auth::user()->id_instansi)->get();
     } else {
-        // Jika user adalah admin, ambil semua data peralatan
         $peralatan = Peralatan::all();
     }
 
-    return view('peralatan.index_peralatan', compact('merek', 'kategori', 'peralatan', 'product'));
+    return view('peralatan.index_peralatan', compact('merek', 'product', 'kategori', 'peralatan'));
 }
 
 
@@ -93,7 +91,15 @@ class PeralatanController extends Controller
      */
     public function edit($id)
     {
-        //
+        // Mengambil data peralatan berdasarkan ID
+        $peralatan = Peralatan::find($id);
+        $merek = Merek::all();
+        $kategori = Kategori::all();
+        $instansi = Instansi::all();
+        $product = Produk::all();
+
+        // Mengirim data peralatan ke view
+        return view('peralatan.edit_peralatan', compact('peralatan', 'merek', 'kategori', 'instansi', 'product'));
     }
 
     /**
@@ -116,6 +122,8 @@ class PeralatanController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $peralatan = Peralatan::find($id);
+        $peralatan->delete();
+        return redirect('/peralatan')->with('success', 'Data Peralatan Berhasil Dihapus');
     }
 }

@@ -12,7 +12,6 @@ class Peralatan extends Model
     function instansi(){
         return $this->belongsTo('App\Instansi', 'id_instansi');
     }
-    
     function merek(){
         return $this->belongsTo('App\Merek', 'id_merek');
     }

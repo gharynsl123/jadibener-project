@@ -40,10 +40,12 @@ Route::delete('/delete-instansi/{id}', 'InstansiController@destroy')->name('inst
 Route::get('/users', 'UserController@index')->name('users.index');
 Route::get('/make/users', 'UserController@create')->name('users.create');
 Route::post('/add-users', 'UserController@store')->name('users.store');
-Route::delete('/delete-user/{id}', 'UserController@destroy')->name('users.destroy');
+Route::get('/edit-users/{id}', 'UserController@edit')->name('user.edit');
+Route::put('/update-users/{id}', 'UserController@update')->name('users.update');
+Route::delete('/delete-users/{id}', 'UserController@destroy')->name('users.destroy');
 
 
-// Peralatan Route
+// sukujadang Route
 Route::get('/part/{part}', 'SukuCadangController@show')->name('part.show');
 
 // Urgently Route
@@ -73,4 +75,4 @@ Route::resource('peralatan', 'PeralatanController');
 
 Route::resource('profile', 'ProfileController');
 Route::resource('kategori', 'KategoriController');
-Route::resource('part', 'SukuCadangController');
+// Route::resource('part', 'SukuCadangController');

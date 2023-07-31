@@ -18,6 +18,10 @@ class User extends Authenticatable
     protected $table = 'users';
     protected $guarded = [];
 
+    function instansi() {
+        return $this->belongsTo('App\Instansi', 'id_instansi');
+    }
+
     /**
      * The attributes that should be hidden for arrays.
      *

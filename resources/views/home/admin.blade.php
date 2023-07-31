@@ -1,7 +1,7 @@
 @extends('layouts.main-view')
 
 @if (Auth::user()->level == 'pic_rs')
-@include('profile.rumah_sakit')
+@include('home.pic_rs')
 @elseif (Auth::user()->level == 'surveyor')
 @include('home.surveyor')
 @elseif(Auth::user()->level == 'teknisi')

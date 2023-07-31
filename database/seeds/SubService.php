@@ -12,10 +12,12 @@ class SubService extends Seeder
     public function run()
     {
         $user = new \App\User;
-        $user->name = "SUB SERVICE";
-        $user->email = "subservive@gmail.com";
+        $user->name = "tardi suradi";
+        $user->email = "paktardi@gmail.com";
         $user->level = "sub_service";
-        $user->password = \Hash::make('asdasdasd');
+        $user->no_telp = "081299106344";
+        $user->alamat = "Jl. Kh Hasyim Ashari No.32, RW.8, Cideng, Kecamatan Gambir, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10150";
+        $user->password = \Hash::make('suradi321');
         $user->save();
     }
 }

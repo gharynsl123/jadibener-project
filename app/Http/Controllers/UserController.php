@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Instansi;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -15,7 +16,45 @@ class UserController extends Controller
 
     public function create()
     {
-        return view('user.create_user');
+        $instansi = Instansi::all();
+        return view('user.create_user', compact('instansi'));
+    }
+
+    public function edit($id)
+    {
+        $user = User::find($id);
+        $instansi = Instansi::all();
+        return view('user.edit_user', compact('user', 'instansi'));
+    }
+
+    public function update(Request $request, $id){
+        $user = User::find($id);
+        $instansi = Instansi::all();
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
+            // Add validation rules for other fields if needed
+        ]);
+
+         // Cek apakah password kosong
+         if ($request->password == null) {
+            // Jika kosong, maka password tetap
+            $user->password = $user->password;
+        } else {
+            $user->password = bcrypt($request->password);
+        }
+
+        $user->name = $request->name;
+        $user->no_telp = $request->no_telp;
+        $user->jenis_kelamin = $request->jenins_kelammin;
+        $user->id_instansi = $request->id_instansi;
+        $user->alamat = $request->alamat;
+        $user->level = $request->level;
+        $user->role = $request->role;
+        $user->save();
+
+        return redirect('/users')->with('success', 'User has been updated successfully.');
     }
 
     public function store(Request $request)
@@ -31,9 +70,12 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'no_telp' => $request->no_telp,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'id_instansi' => $request->id_instansi,
+            'alamat' => $request->alamat,
             'password' => Hash::make($request->password),
             'level' => $request->level,
-            'role' => $request->role,
+            'role' => $request->role
             // Add other fields here if needed
         ]);
 

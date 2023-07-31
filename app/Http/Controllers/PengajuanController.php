@@ -29,20 +29,15 @@ class PengajuanController extends Controller
         $kategori = Kategori::all();
         $peralatan = null;
 
-        // Jika user adalah pic_rs, ambil data peralatan berdasarkan rumah sakit yang dipegang
-        if (Auth::user()->level == 'pic_rs') {
-            $userInstansiId = Auth::user()->id_instansi;
-            $peralatan = Peralatan::whereHas('instansi', function ($query) use ($userInstansiId) {
-                $query->where('id', $userInstansiId);
-            })->get();
-        } else {
-            // Jika user adalah admin, ambil semua data peralatan
-            $peralatan = Peralatan::all();
-        }
-
-
-            return view('pengajuan.index_pengajuan', compact('merek', 'kategori', 'peralatan', 'product'));
+        // Jika user adalah pic_rs, ambil data peralatan berdasarkan rumah sakit yang dipegang. dan jika user adalah admin, ambil semua data peralatan
+    if (Auth::user()->level == 'pic_rs') {
+        $peralatan = Peralatan::where('id_instansi', Auth::user()->id_instansi)->get();
+    } else {
+        $peralatan = Peralatan::all();
     }
+
+    return view('peralatan.index_peralatan', compact('merek', 'product', 'kategori', 'peralatan'));
+}
 
     /**
      * Show the form for creating a new resource.

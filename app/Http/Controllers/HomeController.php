@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Instansi;
+use App\User;
 
 class HomeController extends Controller
 {
@@ -25,9 +26,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // mengambil data yang ada di table instasi dengan user yang sedang login
-        $instansi = Instansi::where('id_user', Auth::user()->id)->get()->all();
+        $user = Auth::user();
+        $instansi = Auth::user()->instansi;
     
-        return view('home.admin', compact('instansi'));
+        return view('home.admin', compact('instansi', 'user'));
     }
 }

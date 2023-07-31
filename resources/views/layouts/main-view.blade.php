@@ -66,6 +66,24 @@
             </li>
             @endif
 
+            <!-- Nav Item - List Peralatan -->
+            <li class="nav-item">
+                <a class="nav-link"
+                    href="@if (Auth::user()->level == 'pic_rs'){{route('peralatan.index')}}@else{{route('peralatan.index')}}@endif">
+                    <i class="fas fa-fw fa-server"></i>
+                    <span>List Peralatan @if(Auth::user()->level == 'pic_rs')RS @endif</span></a>
+            </li>
+
+
+            @if(Auth::user()->level == 'admin')
+            <!-- Nav Item - List Peralatan -->
+            <li class="nav-item">
+                <a class="nav-link" href="{{route('instansi.index')}}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Data Instansi</span></a>
+            </li>
+            @endif
+
             <!-- Nav Item Profile-->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#usercollaps"
@@ -112,31 +130,9 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="{{url('users')}}">user config</a>
                         <a class="collapse-item" href="{{url('urgently')}}">urgently setting</a>
-
-                        <!-- Tidak di gunakan lagi -->
-                        <!-- karena tidak membuatuh kan di setting lagi  -->
-                        <a class="collapse-item" href="{{url('')}}">Surveyor Setting</a>
-                        <a class="collapse-item" href="#">Technician Setting</a>
                     </div>
                 </div>
             </li>
-            <!-- Nav Item - List Peralatan -->
-            <li class="nav-item">
-                <a class="nav-link"
-                    href="@if (Auth::user()->level == 'pic_rs'){{route('peralatan.index')}}@else{{route('peralatan.index')}}@endif">
-                    <i class="fas fa-fw fa-server"></i>
-                    <span>List Peralatan @if(Auth::user()->level == 'pic_rs')RS @endif</span></a>
-            </li>
-
-
-            @if(Auth::user()->level == 'admin')
-            <!-- Nav Item - List Peralatan -->
-            <li class="nav-item">
-                <a class="nav-link" href="{{route('instansi.index')}}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Data Instansi</span></a>
-            </li>
-            @endif
 
             @if(Auth::user()->level == 'pic_rs')
             @if(Auth::user()->role == 'gizi' || Auth::user()->role == 'manager')
@@ -181,7 +177,13 @@
                     <i class="fas fa-fw fa-cog"></i>
                     <span>Merk</span></a>
             </li>
-
+            <!-- Nav Item informasi -->
+            <li class="nav-item">
+                <a class="nav-link" href="{{url('kategori')}}">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Kategori</span></a>
+            </li>
+            
             <!-- Nav Item informasi -->
             <li class="nav-item">
                 <a class="nav-link" href="{{url('part')}}">
@@ -196,12 +198,6 @@
                     <span>Product</span></a>
             </li>
 
-            <!-- Nav Item informasi -->
-            <li class="nav-item">
-                <a class="nav-link" href="{{url('kategori')}}">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Kategori</span></a>
-            </li>
 
             @endif
 

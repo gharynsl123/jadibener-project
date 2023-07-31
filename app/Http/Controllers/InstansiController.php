@@ -39,7 +39,7 @@ class InstansiController extends Controller
     {
         $request->validate([
             'instansi' => 'required|string|max:255',
-            'id_user' => 'required|exists:users,id',
+
             'jumlah_kasur' => 'required|integer|min:0',
             'kelas' => 'required|string|max:255',
             'status' => 'required|string|max:255',
@@ -52,7 +52,7 @@ class InstansiController extends Controller
         Instansi::create([
             'instasi' => $request->instansi,
             'alamat' => $request->alamat,
-            'id_user' => $request->id_user,
+
             'jumlah_kasur' => $request->jumlah_kasur,
             'kelas' => $request->kelas,
             'status' => $request->status,

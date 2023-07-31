@@ -19,7 +19,7 @@
                     <tr>
                         <th>Nama Product</th>
                         <td>:</td>
-                        <td>null</td>
+                        <td>{{$peralatan->produk->nama_produk}}</td>
                     </tr>
                     <tr>
                         <th>Kategori</th>
