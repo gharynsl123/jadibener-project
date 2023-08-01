@@ -104,12 +104,12 @@
         <div class="d-flex justify-content-between">
             @if(Auth::user()->level == 'admin')
             <button type="button" class="btn btn-primary">Input / Edit Status Peralatan</button>
-            <button type="button" class="btn btn-success">Ajukan Survey / Perbaikan</button>
+            <a href="{{route('pengajuan.create', $peralatan->id)}}" class="btn btn-success">Ajukan Survey / Perbaikan</a>
             <button type="button" class="btn btn-info">Input Estimasi Biaya</button>
             <button type="button" class="btn btn-warning">Atur Jadwal Teknisi</button>
             <button type="button" class="btn btn-danger">Input Hasil Kunjungan Teknisi</button>
             @elseif(Auth::user()->level == 'pic_rs')
-            <button type="button" class="btn btn-success">Ajukan Survey / Perbaikan</button>
+            <a href="{{route('pengajuan.create', $peralatan->id)}}" type="button" class="btn btn-success">Ajukan Survey / Perbaikan</a>
             @endif
         </div>
     </div>

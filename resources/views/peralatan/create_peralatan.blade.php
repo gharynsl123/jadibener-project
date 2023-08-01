@@ -46,9 +46,25 @@
                 </select>
             </div>
             <div class="form-group">
+                <label for="merk">Keterangan Product</label>
+                <select class="form-control" name="keterangan">
+                    
+                    <option value="baik">baik</option>
+                    <option value="hilang">hilang</option>
+                    <option value="rusak">rusak</option>
+
+                   Tambahkan opsi merk lainnya sesuai kebutuhan
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="serial-number">Kondisi Product</label>
+                <input type="number" class="form-control" name="kondisi_product" id="serial-number" placeholder="untuk di tampilan menjadi persent">
+            </div>
+            <div class="form-group">
                 <label for="serial-number">Serial Number</label>
                 <input type="text" class="form-control" name="serial_number" id="serial-number" placeholder="Serial Number">
             </div>
+            
             <div class="form-group">
                 <label for="tahun-pemasangan">Tahun Pemasangan</label>
                 <input type="text" class="form-control" name="tahun_pemasangan" id="tahun-pemasangan" placeholder="Tahun Pemasangan">

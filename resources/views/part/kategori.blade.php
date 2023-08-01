@@ -48,7 +48,7 @@
                         <td>
                             {{ $index + 1 }}
                         </td>
-                        <td>
+                        <td class="text-uppercase">
                             {{ $items->nama_kategori }}
                         </td>
                         <td>

@@ -62,7 +62,6 @@
         </div>
     </div>
     @endforeach
-    @endif
     @foreach ($instansi as $items)
     <div class="col-md-6">
         <div class="card shadow">
@@ -79,19 +78,20 @@
                     <tr>
                         <th>No telepon</th>
                         <td>:</td>
-                        <td>{{$items->users->no_telp}}</td>
+                        <td>{{$items->no_telp}}</td>
                     </tr>
                     <tr>
                         <th>Level</th>
                         <td>:</td>
-                        <td>{{$items->users->level}}</td>
+                        <td>{{$items->level}}</td>
                     </tr>
                 </table>
             </div>
         </div>
     </div>
-
+    
     @endforeach
+    @endif
 </div>
 
 @endsection

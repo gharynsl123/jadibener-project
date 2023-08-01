@@ -58,13 +58,13 @@
                         <td>
                             {{ $index + 1 }}
                         </td>
-                        <td>
+                        <td class="text-uppercase">
                             {{ $items->kode_sukucadang }}
                         </td>
-                        <td>
+                        <td class="text-uppercase">
                             {{ $items->kategori->nama_kategori }}
                         </td>
-                        <td>
+                        <td class="text-uppercase">
                             {{ $items->nama_sukucadang }}
                         </td>
                         <td>

@@ -1,6 +1,4 @@
-@extends('layouts.main-view')
 
-@section('content')
 @if ($instansi)
 <!-- Code to display the hospital profile -->
 <h1 class="h3 mb-0 text-gray-800 d-sm-inline-block mb-4">Profile Rumah Sakit</h1>
@@ -62,4 +60,3 @@
 @else
 <h1 class="h3 mb-0 text-gray-800 d-sm-inline-block d-flex mb-4">Kamu Belum Menangani Rumah Sakit</h1>
 @endif
-@endsection

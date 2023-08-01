@@ -10662,8 +10662,8 @@ table.dataTable thead .th-start {
 }
 /* CSS untuk membuat thead dengan lengkungan di bagian atas pada DataTables */
 table.dataTable thead .th-end {
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
 }
 
   

@@ -22,7 +22,7 @@ class ProfileController extends Controller
         $user = User::where('id', Auth::user()->id)->get()->all();
 
         // mengambil data yang ada di table instasi dengan user yang sedang login
-        $instansi = Instansi::where('id_user', Auth::user()->id)->get()->all();
+        $instansi = Instansi::all();
     
         // memunculkan data ke view
         return view('profile.account', compact('instansi', 'user'));

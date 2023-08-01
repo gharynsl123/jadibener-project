@@ -33,6 +33,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 // Instansi Route
 Route::get('/instansi', 'InstansiController@index')->name('instansi.index');
 Route::get('/make/instansi', 'InstansiController@create')->name('instansi.create');
+Route::get('/edit-instansi/{id}', 'InstansiController@edit')->name('instansi.edit');
+Route::put('/update-instansi/{id}', 'InstansiController@update')->name('instansi.update');
+Route::get('/detail-instansi/{id}', 'InstansiController@show')->name('instansi.show');
 Route::post('/add-instansi', 'InstansiController@store')->name('instansi.store');
 Route::delete('/delete-instansi/{id}', 'InstansiController@destroy')->name('instansi.destroy');
 
@@ -44,6 +47,9 @@ Route::get('/edit-users/{id}', 'UserController@edit')->name('user.edit');
 Route::put('/update-users/{id}', 'UserController@update')->name('users.update');
 Route::delete('/delete-users/{id}', 'UserController@destroy')->name('users.destroy');
 
+// informasi Route
+Route::get('/informasi', 'InformasiController@index')->name('informasi.index');
+Route::post('/add-informasi', 'InformasiController@store')->name('informasi.store');
 
 // sukujadang Route
 Route::get('/part/{part}', 'SukuCadangController@show')->name('part.show');
@@ -66,6 +72,8 @@ Route::post('/create-data-produk', 'ProdukController@store')->name('produk.store
 
 // Pengajuan Route
 Route::get('/pengajuan', 'PengajuanController@index')->name('pengajuan.index');
+Route::get('/make/pengajuan/{id}', 'PengajuanController@create')->name('pengajuan.create');
+Route::post('/add-pengajuan', 'PengajuanController@store')->name('pengajuan.store');
 
 // Progress Route
 Route::get('/progress', 'ProgressController@index')->name('progres.index');
@@ -75,4 +83,4 @@ Route::resource('peralatan', 'PeralatanController');
 
 Route::resource('profile', 'ProfileController');
 Route::resource('kategori', 'KategoriController');
-// Route::resource('part', 'SukuCadangController');
+Route::resource('part', 'SukuCadangController');

@@ -19,7 +19,7 @@ class CreatePeralatanTable extends Migration
             $table->integer('id_merek')->unsigned();
             $table->integer('id_kategori')->unsigned();
             $table->integer('id_product')->unsigned();
-            $table->enum('kondisi', ['baik', 'rusak', 'hilang'])->default('baik');
+            $table->enum('keterangan', ['baik', 'rusak', 'hilang'])->default('baik');
             $table->string('serial_number');
             $table->string('tahun_pemasangan');
             $table->string('kondisi_product');

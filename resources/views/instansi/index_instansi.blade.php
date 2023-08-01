@@ -19,9 +19,9 @@
                     <tr>
                         <th class="th-start">Instansi</th>
                         <th>Alamat</th>
-                        <th>PIC</th>
-                        <th>Email</th>
-                        <th>No Telp</th>
+                        <th>status</th>
+                        <th>kelas</th>
+                        <th>photo</th>
                         <th class="th-end">action</th>
                     </tr>
                 </thead>
@@ -31,16 +31,20 @@
                     <tr>
                         <td>{{$instansis->instasi}}</td>
                         <td>{{$instansis->alamat}}</td>
-                        <td></td>
-                        <td></td>
+                        <td>{{$instansis->status}}</td>
+                        <td>{{$instansis->kelas}}</td>
                         <td>
-                            098712638
+                            <img src="" alt="photo rs">
                         </td>
                         <td>
+                            <!-- detail -->
                             <!-- membuat form delet -->
                             <form action="{{ route('instansi.destroy', $instansis->id) }}" method="POST">
                                 @csrf
                                 {{method_field('DELETE')}}
+                                <a href="{{ route('instansi.show', $instansis->id) }}" class="btn btn-info">
+                                    <i class="fa fa-eye text-white"></i>
+                                </a>
                                 <a href="#" class="btn btn-primary">
                                     <i class="fa fa-pen-to-square text-white"></i>
                                 </a>

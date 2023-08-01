@@ -21,7 +21,7 @@
                     @csrf
                     <input type="text" name="nama_kondisi" class="mb-4 form-control" autocomplete="off"
                         placeholder="Nama Kondisi">
-                    <input type="text" name="waktu" class="mb-4 form-control" autocomplete="off"
+                    <input type="number" name="waktu" class="mb-4 form-control" autocomplete="off"
                         placeholder="Berikan Waktu">
                     <button class="btn btn-primary" type="submit">Input</button>
                     <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>

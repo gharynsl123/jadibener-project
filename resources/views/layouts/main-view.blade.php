@@ -211,7 +211,7 @@
 
             <!-- Nav Item informasi -->
             <li class="nav-item">
-                <a class="nav-link" href="{{url('create-user')}}">
+                <a class="nav-link" href="{{url('informasi')}}">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>Informasi</span></a>
             </li>

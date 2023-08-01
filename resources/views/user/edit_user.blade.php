@@ -46,7 +46,9 @@
                     </select>
                 </div>
 
-
+                
+                <!-- jika user yang sedang di edit levelnya bukan pic maka jangan tampilan pilihan instansi-->
+                @if($user->level == 'pic_rs')
                 <div class="form-group col-md-6 " id="roleField">
                     <label for="role">{{ __('Role') }}</label>
                     <select id="role" class="form-control @error('role') is-invalid @enderror" name="role">
@@ -73,6 +75,7 @@
                         @endif
                     </select>
                 </div>
+                @endif
 
                 <div class="form-group col-md-6">
                     <label for="password">{{ __('Password') }}</label>

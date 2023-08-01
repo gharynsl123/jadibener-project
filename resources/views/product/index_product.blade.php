@@ -18,7 +18,7 @@
         </thead>
         <tbody>
             @foreach($produk as $item)
-            <tr>
+            <tr class="text-uppercase">
                 <td>{{ $item->merek->nama_merek }}</td>
                 <td>{{ $item->kategori->nama_kategori }}</td>
                 <td>{{ $item->kode_produk }}</td>

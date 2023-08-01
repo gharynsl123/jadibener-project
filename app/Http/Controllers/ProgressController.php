@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Progress;
+use App\pengajuan;
 use Illuminate\Http\Request;
 
 class ProgressController extends Controller
@@ -20,7 +21,8 @@ class ProgressController extends Controller
      
     public function index()
     {
-        return view('service.progress');
+        $pengajuan = Pengajuan::all();
+        return view('service.progress', compact('pengajuan'));
     }
 
     /**

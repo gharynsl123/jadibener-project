@@ -70,9 +70,13 @@ class InstansiController extends Controller
      * @param  \App\Instansi  $instansi
      * @return \Illuminate\Http\Response
      */
-    public function show(Instansi $instansi)
+    public function show($id)
     {
-        //
+        
+        $instansi = Instansi::find($id);
+        // mengambil data yang ada di table instasi dengan user yang sedang login
+        $user = User::where('id', $instansi->id_user)->get()->all();
+        return view('instansi.detail_instansi', compact('user'));
     }
 
     /**

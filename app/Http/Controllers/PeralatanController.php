@@ -111,7 +111,10 @@ class PeralatanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+                // Mengambil data peralatan berdasarkan ID
+                $peralatan = Peralatan::find($id);
+                $peralatan->update($request->all());
+                return redirect('/peralatan')->with('success', 'Data Peralatan Berhasil Diupdate');
     }
 
     /**

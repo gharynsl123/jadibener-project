@@ -2,27 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Pengajuan;
-use App\Urgent;
-use App\Peralatan;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
+use App\Informasi;
 use Illuminate\Http\Request;
 
-class PengajuanController extends Controller
+class InformasiController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+    // auth 
     public function __construct()
     {
         $this->middleware('auth');
     }
     public function index()
     {
-    //     
+        $informasi = Informasi::all();
+        return view('informasi.index_informasi', compact('informasi'));
     }
 
     /**
@@ -30,13 +28,9 @@ class PengajuanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id)
+    public function create()
     {
-        $peralatan = Peralatan::find($id);
-        $urgensi = Urgent::all();
-        $user = Auth::user();
-
-        return view('pengajuan.create_pengajuan', compact('peralatan', 'user', 'urgensi'));
+        //
     }
 
     /**
@@ -47,20 +41,24 @@ class PengajuanController extends Controller
      */
     public function store(Request $request)
     {
-        // membuat data masuk ke database pengajuan dengan singkat
-        Pengajuan::create($request->all());
-        // mengambil data dari database pengajuan
-        return redirect('/progress')->with('success', 'Pengajuan has been added');
+        // membuat validasi untuk title dan content wajib diisi
+        $request->validate([
+            'judul' => 'required',
+            'isi_informasi' => 'required',
+        ]);
+        // input all data form to database
+        Informasi::create($request->all());
+        // redirect halaman ke halaman
+        return redirect('/informasi')->with('success', 'Informasi has been added');
     }
-    
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Pengajuan  $pengajuan
+     * @param  \App\Informasi  $informasi
      * @return \Illuminate\Http\Response
      */
-    public function show(Pengajuan $pengajuan)
+    public function show(Informasi $informasi)
     {
         //
     }
@@ -68,10 +66,10 @@ class PengajuanController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Pengajuan  $pengajuan
+     * @param  \App\Informasi  $informasi
      * @return \Illuminate\Http\Response
      */
-    public function edit(Pengajuan $pengajuan)
+    public function edit(Informasi $informasi)
     {
         //
     }
@@ -80,10 +78,10 @@ class PengajuanController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Pengajuan  $pengajuan
+     * @param  \App\Informasi  $informasi
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Pengajuan $pengajuan)
+    public function update(Request $request, Informasi $informasi)
     {
         //
     }
@@ -91,10 +89,10 @@ class PengajuanController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Pengajuan  $pengajuan
+     * @param  \App\Informasi  $informasi
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Pengajuan $pengajuan)
+    public function destroy(Informasi $informasi)
     {
         //
     }
