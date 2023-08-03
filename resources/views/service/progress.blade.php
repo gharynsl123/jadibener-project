@@ -45,7 +45,7 @@
                         <td>{{$items->peralatan->serial_number}}</td>
                         <td>{{$items->peralatan->kategori->nama_kategori}}</td>
                         <td>{{$items->peralatan->produk->nama_produk}}</td>
-                        <td>belum ada</td>
+                        <td>{{$items->status}}</td>
                         <td>
                             <div class="progress">
                                 <div class="progress-bar" style="width: 75%;">75%</div>

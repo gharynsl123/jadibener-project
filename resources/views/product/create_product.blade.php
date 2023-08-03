@@ -34,7 +34,7 @@
             </div>
             <div class="form-group col-md-12">
                 <label for="image_product">Image Product (Link Image)</label>
-                <input type="file" class="form-control form-control-file p-0" id="image_product" name="image_product">
+                <input type="file" class="form-control form-control-file p-0" id="photo" name="photo">
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>

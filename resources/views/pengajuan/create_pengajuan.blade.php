@@ -9,12 +9,12 @@
             <div class="card shadow">
                 <div class="card-body">
                     <h5 class="card-title">Informasi Peralatan</h5>
-                    <div class="form-group">
+                    <div class="form-group d-none">
                         <label for="instansi">user id</label>
                         <input type="text" class="form-control" id="instansi" name="id_user" value="{{$user->id}}"
                             readonly>
                     </div>
-                    <div class="form-group ">
+                    <div class="form-group d-none">
                         <label for="instansi">id barang</label>
                         <input type="text" class="form-control" id="instansi" name="id_peralatan" value="{{$peralatan->id}}"
                             readonly>

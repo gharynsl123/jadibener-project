@@ -58,9 +58,12 @@ class InformasiController extends Controller
      * @param  \App\Informasi  $informasi
      * @return \Illuminate\Http\Response
      */
-    public function show(Informasi $informasi)
+    public function show($id)
     {
-        //
+        // mengambil data yang di klik
+        $informasi = Informasi::find($id);
+        // menampilkan halaman show dan passing data
+        return view('informasi.detail_informasi', compact('informasi'));
     }
 
     /**

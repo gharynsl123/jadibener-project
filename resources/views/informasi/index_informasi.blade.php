@@ -37,8 +37,9 @@
                         @csrf
                         <input type="text" name="judul" class="mb-4 form-control" autocomplete="off"
                             placeholder="Judulnya">
-                            <!-- text are untuk isi dari informasi -->
-                        <textarea id="" cols="30" rows="10" name="isi_informasi" class="form-control mb-4">input your text here</textarea>
+                        <!-- text are untuk isi dari informasi -->
+                        <textarea id="" cols="30" rows="10" name="isi_informasi"
+                            class="form-control mb-4">input your text here</textarea>
                         <button class="btn btn-primary" type="submit">Input</button>
                         <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     </form>
@@ -51,18 +52,20 @@
 <div class="row gap-2">
     @foreach($informasi as $items)
     <div class="col-md-6">
-        <div class="card shadow p-2">
-            <p class="text-capitalize font-weight-bold">{{$items->judul}}</p>
-            <p class="isi max-line-5">{{$items->isi_informasi}}</p>
-            <div class="d-flex justify-content-end mt-3">
-                <a href="#" class="btn m-1 btn-primary" data-bs-toggle="tooltip" data-bs-placement="top"
-                    title="Edit informasi">
-                    <i class="fa fa-pen-to-square"></i>
-                </a>
-                <a href="" class="btn m-1 btn-danger" class="btn m-1 btn-primary" data-bs-toggle="tooltip"
-                    data-bs-placement="top" title="Hapus Info"><i class="fa fa-trash"></i></a>
+        <a href="{{route('informasi.show', $items->id)}}" class="text-decoration-none">
+            <div class="card shadow p-2 mb-4">
+                <p class="text-dark text-capitalize font-weight-bold">{{$items->judul}}</p>
+                <p class="text-dark isi max-line-5">{{$items->isi_informasi}}</p>
+                <div class="d-flex justify-content-end mt-3">
+                    <a href="#" class="btn m-1 btn-primary" data-bs-toggle="tooltip" data-bs-placement="top"
+                        title="Edit informasi">
+                        <i class="fa fa-pen-to-square"></i>
+                    </a>
+                    <a href="" class="btn m-1 btn-danger" class="btn m-1 btn-primary" data-bs-toggle="tooltip"
+                        data-bs-placement="top" title="Hapus Info"><i class="fa fa-trash"></i></a>
+                </div>
             </div>
-        </div>
+        </a>
     </div>
     @endforeach
 </div>

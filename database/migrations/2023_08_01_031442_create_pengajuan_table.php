@@ -21,6 +21,7 @@ class CreatePengajuanTable extends Migration
 
             $table->string('subject_masalah');
             $table->string('keterangan_masalah');
+            $table->enum('status' , ['pending', 'approve', 'rejected'])->default('pending');
 
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('id_peralatan')->references('id')->on('peralatan')->onDelete('cascade');

@@ -26,22 +26,12 @@ class ProdukController extends Controller
     {
         $mereks = Merek::all();
         $kategoris = Kategori::all();
-
-        
     
         return view('product.create_product', compact('mereks', 'kategoris'));
     }
     
     public function store(Request $request)
     {
-        $request->validate([
-            'id_merek' => 'required',
-            'id_kategori' => 'required',
-            'kode_produk' => 'required',
-            'nama_produk' => 'required',
-            'image_product' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-    
         // Simpan data produk ke database
         $product = new Produk();
         $product->id_merek = $request->input('id_merek');
@@ -49,10 +39,12 @@ class ProdukController extends Controller
         $product->kode_produk = $request->input('kode_produk');
         $product->nama_produk = $request->input('nama_produk');
     
-        // Proses upload gambar dan simpan pathnya ke database
-        if ($request->hasFile('image_product')) {
-            $imagePath = $request->file('image_product')->store('images', 'public');
-            $product->photo = $imagePath; // Perbaikan field name menjadi 'photo'
+        if ($request->hasFile('photo')) {
+            $image = $request->file('photo');
+            $image_name = $image->getClientOriginalName();
+            $destination_path = 'public/images';
+            $path = $request->file('photo')->storeAs($destination_path, $image_name);
+            $product->photo = $image_name;
         }
     
         $product->save();
@@ -60,6 +52,7 @@ class ProdukController extends Controller
         // Redirect ke halaman lain atau tampilkan pesan sukses
         return redirect()->route('produk.index')->with('success', 'Produk berhasil ditambahkan.');
     }
+    
 
 
     /**
@@ -79,9 +72,13 @@ class ProdukController extends Controller
      * @param  \App\Produk  $produk
      * @return \Illuminate\Http\Response
      */
-    public function edit(Produk $produk)
+    public function edit($id)
     {
-        //
+
+        $produk = Produk::find($id);
+        $mereks = Merek::all();
+        $kategoris = Kategori::all();
+        return view('product.edit_product', compact('produk', 'mereks', 'kategoris'));
     }
 
     /**
@@ -91,9 +88,27 @@ class ProdukController extends Controller
      * @param  \App\Produk  $produk
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Produk $produk)
+    public function update(Request $request, $id)
     {
-        //
+        // update data yang telah di isi
+        $product = Produk::find($id);
+        $product->id_merek = $request->input('id_merek');
+        $product->id_kategori = $request->input('id_kategori');
+        $product->kode_produk = $request->input('kode_produk');
+        $product->nama_produk = $request->input('nama_produk');
+
+        if ($request->hasFile('photo')) {
+            $image = $request->file('photo');
+            $image_name = $image->getClientOriginalName();
+            $destination_path = 'public/images';
+            $path = $request->file('photo')->storeAs($destination_path, $image_name);
+            $product->photo = $image_name;
+        }
+
+        $product->save();
+
+        // Redirect ke halaman lain atau tampilkan pesan sukses
+        return redirect()->route('produk.index')->with('success', 'Produk berhasil diupdate.');
     }
 
     /**

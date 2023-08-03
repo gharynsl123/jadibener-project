@@ -57,7 +57,7 @@
                         <th>Kategori</th>
                         <th>Product Name</th>
                         <th>Status</th>
-                        <th>Progress</th>
+                        <th>kondisi</th>
                         <th class="th-end">approve</th>
                     </tr>
                 </thead>
@@ -76,21 +76,27 @@
                         <td>{{$items->peralatan->serial_number}}</td>
                         <td>{{$items->peralatan->kategori->nama_kategori}}</td>
                         <td>{{$items->peralatan->produk->nama_produk}}</td>
-                        <td>belum ada</td>
-                        <td>
-                            <div class="progress">
-                                <div class="progress-bar" style="width: 75%;">75%</div>
-                            </div>
-                        </td>
+                        <td>{{$items->urgent->nama_kondisi}}</td>
+                        <td>{{$items->status}}</td>
                         <td>
                             <!-- untuk feedback good or bad -->
                             <div class="d-flex justify-content-between">
-                                <a href="#" class="btn btn-success">
-                                    <i class="fa fa-thumbs-up text-white"></i>
-                                </a>
-                                <a href="#" class="btn btn-danger">
-                                    <i class="fa fa-thumbs-down text-white"></i>
-                                </a>
+                                <form action="{{route('pengajuan.update', $items->id)}}" method="post">
+                                    @csrf
+                                    {{method_field('POST')}}
+                                    <input type="text" name="status" value="approve" hidden>
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fa fa-thumbs-up text-white"></i>
+                                    </button>
+                                </form>
+                                <form action="{{route('pengajuan.update', $items->id)}}" method="post">
+                                    @csrf
+                                    {{method_field('POST')}}
+                                    <input type="text" name="status" value="rejected" hidden>
+                                    <button type="submit"  class="btn btn-danger">
+                                        <i class="fa fa-thumbs-down text-white"></i>
+                                    </button>
+                                </form>
                             </div>
                         </td>
                     </tr>

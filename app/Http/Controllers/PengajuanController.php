@@ -83,9 +83,14 @@ class PengajuanController extends Controller
      * @param  \App\Pengajuan  $pengajuan
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Pengajuan $pengajuan)
+    public function update(Request $request, $id)
     {
-        //
+        // update status
+        $pengajuan = Pengajuan::find($id);
+        $pengajuan->status = $request->status;
+        $pengajuan->save();
+        // ke hlmn home
+        return redirect('/home')->with('success', 'Status has been updated');
     }
 
     /**

@@ -49,6 +49,7 @@ Route::delete('/delete-users/{id}', 'UserController@destroy')->name('users.destr
 
 // informasi Route
 Route::get('/informasi', 'InformasiController@index')->name('informasi.index');
+Route::get('/detail-informasi/{id}', 'InformasiController@show')->name('informasi.show');
 Route::post('/add-informasi', 'InformasiController@store')->name('informasi.store');
 
 // sukujadang Route
@@ -67,11 +68,16 @@ Route::get('/edit/{nama_merek}', 'MerekController@edit')->name('merek.edit');
 
 // produk Route
 Route::get('/produk', 'ProdukController@index')->name('produk.index');
+Route::get('/detail-produk/{id}', 'ProdukController@show')->name('produk.show');
 Route::get('/make/produk', 'ProdukController@create')->name('produk.create');
+Route::get('/edit-produk/{id}', 'ProdukController@edit')->name('produk.edit');
+Route::put('/update-produk/{id}', 'ProdukController@update')->name('produk.update');
 Route::post('/create-data-produk', 'ProdukController@store')->name('produk.store');
+Route::delete('/delete-data-produk/{id}', 'ProdukController@destroy')->name('produk.destroy');
 
 // Pengajuan Route
-Route::get('/pengajuan', 'PengajuanController@index')->name('pengajuan.index');
+// Route::get('/pengajuan', 'PengajuanController@index')->name('pengajuan.index');
+Route::post('/update-pengajuan/{id}', 'PengajuanController@update')->name('pengajuan.update');
 Route::get('/make/pengajuan/{id}', 'PengajuanController@create')->name('pengajuan.create');
 Route::post('/add-pengajuan', 'PengajuanController@store')->name('pengajuan.store');
 

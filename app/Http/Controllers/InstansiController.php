@@ -39,7 +39,6 @@ class InstansiController extends Controller
     {
         $request->validate([
             'instansi' => 'required|string|max:255',
-
             'jumlah_kasur' => 'required|integer|min:0',
             'kelas' => 'required|string|max:255',
             'status' => 'required|string|max:255',

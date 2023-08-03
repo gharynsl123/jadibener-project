@@ -58,7 +58,13 @@
             </div>
             <div class="form-group">
                 <label for="serial-number">Kondisi Product</label>
-                <input type="number" class="form-control" name="kondisi_product" id="serial-number" placeholder="untuk di tampilan menjadi persent">
+                <input type="number" class="form-control" name="kondisi_product" id="kondisi-product" placeholder="untuk di tampilan menjadi persent">
+                <small class="text-muted">batas pengisian 100</small>
+            </div>
+            <div class="form-group">
+                <label for="serial-number">Nilai Tahunan</label>
+                <input type="number" class="form-control" name="nilai_tahun" id="pertahun-product" placeholder="patokan nnilai ini akan berkurang sasuia tahun nya">
+                <small class="text-muted">Hanya bisa 5 sampai 10 tahun</small>
             </div>
             <div class="form-group">
                 <label for="serial-number">Serial Number</label>
@@ -74,4 +80,37 @@
         </form>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const kondisiProductInput = document.getElementById('kondisi-product');
+        const pertahunProductInput = document.getElementById('pertahun-product');
+
+        pertahunProductInput.addEventListener('input', function() {
+            // Get the entered value and convert it to a number
+            let value = parseFloat(pertahunProductInput.value);
+
+            // Check if the entered value is greater than 100
+            if ( value > 10) {
+                // If it's greater, set the input value to 100
+                pertahunProductInput.value = 10;
+            }else if(value < 5){
+                // if it's small than 5, set the input value to 5
+                pertahunProductInput.value = 5;
+            }
+        });
+
+        // Add an event listener to the input field
+        kondisiProductInput.addEventListener('input', function() {
+            // Get the entered value and convert it to a number
+            let value = parseFloat(kondisiProductInput.value);
+
+            // Check if the entered value is greater than 100
+            if (value > 100) {
+                // If it's greater, set the input value to 100
+                kondisiProductInput.value = 100;
+            }
+        });
+    });
+</script>
 @endsection
