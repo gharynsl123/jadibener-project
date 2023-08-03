@@ -19,7 +19,7 @@ class CheckRole
             }
         }
 
-        // Jika peran pengguna tidak termasuk dalam peran yang diizinkan, maka kembalikan ke halaman sebelumnya atau halaman login
-        return redirect()->back()->with('error', 'Anda tidak memiliki izin untuk mengakses halaman ini.');
+        // Jika peran pengguna tidak termasuk dalam peran yang diizinkan, maka munculkan halaman 505
+        abort(403, 'Unauthorized.');
     }
 }

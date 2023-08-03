@@ -2,30 +2,35 @@
 
 @section('content')
 <style>
-    .square {
-    width: 270px;
+.square {
+    width: 350px;
     height: 300px;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
 }
 </style>
+<!-- Tombol-tombol di atas card -->
+<a href="{{ route('peralatan.index') }}" class="btn mb-4 btn-primary">Kembali</a>
+
 <div class="row">
+
+    <!-- Gambar Produk -->
     <div class="col-md-3">
         <!-- photo produk yang di klik sesuai dengan tada yang di ambil dari table produk -->
-        <div class="text-center d-flex justify-content-center">
-            <div class="img-thumbnail card square" id="imagePreview"
-                    style="background-image: url('{{ asset('storage/images/' . $peralatan->produk->photo) }}');"></div>
+        <div class="text-center d-flex justify-content-center flex-column">
+            <div class="img-thumbnail card square" id="imagePreview" style="background-image: url('{{ asset('storage/images/' . $peralatan->produk->photo) }}');"></div>
+            <a href="{{route('pengajuan.create', $peralatan->id)}}" type="button" class="my-3 btn btn-success">Ajukan Survey / Perbaikan</a>
         </div>
     </div>
 
+    <!-- Keterangan Produk -->
     <div class="col-md-9">
         <div class="card shadow mb-3">
             <div class="card-header bg-info">
                 <p class="m-0 text-white font-weight-bolder">KETERANGAN ALAT</p>
             </div>
             <div class="card-body">
-
                 <table class="table table-responsive table-borderless">
                     <tr>
                         <th>Instansi</th>
@@ -50,7 +55,7 @@
                         <td>{{ $peralatan->merek->nama_merek }}</td>
                         <th>Instalasi</th>
                         <td>:</td>
-                        <td>{{ $peralatan->tahun_pemasangan }}</td> 
+                        <td>{{ $peralatan->tahun_pemasangan }}</td>
                     </tr>
                     <tr>
                         <th>Durasi Pemakaian</th>
@@ -126,14 +131,9 @@
         <div class="d-flex justify-content-between">
             @if(Auth::user()->level == 'admin')
             <button type="button" class="btn btn-primary">Input / Edit Status Peralatan</button>
-            <a href="{{route('pengajuan.create', $peralatan->id)}}" class="btn btn-success">Ajukan Survey /
-                Perbaikan</a>
             <button type="button" class="btn btn-info">Input Estimasi Biaya</button>
             <button type="button" class="btn btn-warning">Atur Jadwal Teknisi</button>
             <button type="button" class="btn btn-danger">Input Hasil Kunjungan Teknisi</button>
-            @elseif(Auth::user()->level == 'pic_rs')
-            <a href="{{route('pengajuan.create', $peralatan->id)}}" type="button" class="btn btn-success">Ajukan Survey
-                / Perbaikan</a>
             @endif
         </div>
     </div>
@@ -141,33 +141,11 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const showChecklistButton = document.getElementById('showChecklistButton');
-    const checklistItems = document.getElementById('checklistItems');
-    const submitButton = document.getElementById('submitButton');
+    // Panggil fungsi perbaruiSelisihTahun saat halaman dimuat
+    perbaruiSelisihTahun();
 
-    // Menampilkan atau menyembunyikan div checklistItems saat tombol showChecklistButton diklik
-    showChecklistButton.addEventListener('click', function(event) {
-        event.preventDefault(); // Mencegah perilaku default tombol
-        checklistItems.classList.toggle('d-none');
-        document.body.classList.toggle('checklist-shown');
-    });
-
-    // Menambahkan event listener untuk tombol submitButton
-    submitButton.addEventListener('click', function(event) {
-        event.preventDefault(); // Mencegah perilaku default tombol
-        const checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
-        const selectedItems = Array.from(checkboxes).map(checkbox => checkbox.value);
-
-        // Lakukan sesuatu dengan selectedItems, seperti mengirim ke server atau mengolah datanya
-        console.log(selectedItems);
-    });
-
-    // Panggil fungsi perbaruiSelisihTahunUntukSemuaPeralatan saat halaman dimuat
-    perbaruiSelisihTahunUntukSemuaPeralatan();
-
-    // Panggil fungsi perbaruiSelisihTahunUntukSemuaPeralatan setiap tahun (menggunakan setInterval)
-    setInterval(perbaruiSelisihTahunUntukSemuaPeralatan, 1000 * 60 * 60 * 24 *
-        365); // Setiap 1 tahun (dalam milidetik)
+    // Panggil fungsi perbaruiSelisihTahun setiap tahun (menggunakan setInterval)
+    setInterval(perbaruiSelisihTahun, 1000 * 60 * 60 * 24 * 365); // Setiap 1 tahun (dalam milidetik)
 });
 
 function hitungSelisihTahun(tahunPemasangan) {
@@ -175,24 +153,13 @@ function hitungSelisihTahun(tahunPemasangan) {
     return tahunSekarang - tahunPemasangan;
 }
 
-function perbaruiSelisihTahun(idPeralatan, tahunPemasangan) {
+function perbaruiSelisihTahun() {
+    const idPeralatan = {{ $peralatan->id }};
+    const tahunPemasangan = {{ $peralatan->tahun_pemasangan }};
     const selisihTahun = hitungSelisihTahun(tahunPemasangan);
     const elemenSelisihTahun = document.getElementById(`selisih-tahun-${idPeralatan}`);
     elemenSelisihTahun.innerText = `${selisihTahun} tahun`;
 }
 
-function perbaruiSelisihTahunUntukSemuaPeralatan() {
-    @foreach($peralatan as $peralatans)
-    perbaruiSelisihTahun({
-        {
-            $peralatans - > id
-        }
-    }, {
-        {
-            $peralatans - > tahun_pemasangan
-        }
-    });
-    @endforeach
-}
 </script>
 @endsection

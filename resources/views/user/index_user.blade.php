@@ -12,10 +12,10 @@
         }
 </style>
 
-
+@if(Auth::user()->level != 'pic_rs')
 <a href="{{route('users.create')}}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">
         <i class="fas fa-plus fa-sm text-white-50"></i> Tambahkan Data User</a>
-
+@endif
 <!-- Progress DataTales -->
 <div class="card shadow my-4">
     <div class="p-3">

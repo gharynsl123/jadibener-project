@@ -119,6 +119,7 @@
                 </div>
             </li>
 
+            @if(Auth::user()->level == 'admin')
             <!-- Nav Item configuration Service-->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#configurationCollapse"
@@ -133,7 +134,8 @@
                     </div>
                 </div>
             </li>
-
+            @endif
+            
             @if(Auth::user()->level == 'pic_rs')
             @if(Auth::user()->role == 'gizi' || Auth::user()->role == 'manager')
             <!-- Nav Item informasi -->

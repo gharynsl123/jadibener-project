@@ -61,11 +61,11 @@
                 <input type="number" class="form-control" name="kondisi_product" id="kondisi-product" placeholder="untuk di tampilan menjadi persent">
                 <small class="text-muted">batas pengisian 100</small>
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label for="serial-number">Nilai Tahunan</label>
                 <input type="number" class="form-control" name="nilai_tahun" id="pertahun-product" placeholder="patokan nnilai ini akan berkurang sasuia tahun nya">
                 <small class="text-muted">Hanya bisa 5 sampai 10 tahun</small>
-            </div>
+            </div> -->
             <div class="form-group">
                 <label for="serial-number">Serial Number</label>
                 <input type="text" class="form-control" name="serial_number" id="serial-number" placeholder="Serial Number">

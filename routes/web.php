@@ -24,7 +24,18 @@ Route::group(['middleware' => ['auth', 'role:admin,teknisi']], function () {
 });
 
 Route::group(['middleware' => ['auth', 'role:admin']], function () {
-    // Definisikan rute yang hanya bisa diakses oleh pengguna dengan peran "admin" di sini
+    // User Route
+    Route::get('/users', 'UserController@index')->name('users.index');
+    Route::get('/make/users', 'UserController@create')->name('users.create');
+    Route::post('/add-users', 'UserController@store')->name('users.store');
+    Route::get('/edit-users/{id}', 'UserController@edit')->name('user.edit');
+    Route::put('/update-users/{id}', 'UserController@update')->name('users.update');
+    Route::delete('/delete-users/{id}', 'UserController@destroy')->name('users.destroy');
+
+    // Urgently Route
+    Route::get('/urgently', 'UrgentController@index')->name('urgently.index');
+    Route::post('/add-urgently', 'UrgentController@store')->name('urgent.store');
+    Route::delete('/delete-user/{id}', 'UrgentController@destroy')->name('urgent.destroy');
 });
 
 // Home Route
@@ -39,14 +50,6 @@ Route::get('/detail-instansi/{id}', 'InstansiController@show')->name('instansi.s
 Route::post('/add-instansi', 'InstansiController@store')->name('instansi.store');
 Route::delete('/delete-instansi/{id}', 'InstansiController@destroy')->name('instansi.destroy');
 
-// User Route
-Route::get('/users', 'UserController@index')->name('users.index');
-Route::get('/make/users', 'UserController@create')->name('users.create');
-Route::post('/add-users', 'UserController@store')->name('users.store');
-Route::get('/edit-users/{id}', 'UserController@edit')->name('user.edit');
-Route::put('/update-users/{id}', 'UserController@update')->name('users.update');
-Route::delete('/delete-users/{id}', 'UserController@destroy')->name('users.destroy');
-
 // informasi Route
 Route::get('/informasi', 'InformasiController@index')->name('informasi.index');
 Route::get('/detail-informasi/{id}', 'InformasiController@show')->name('informasi.show');
@@ -55,10 +58,6 @@ Route::post('/add-informasi', 'InformasiController@store')->name('informasi.stor
 // sukujadang Route
 Route::get('/part/{part}', 'SukuCadangController@show')->name('part.show');
 
-// Urgently Route
-Route::get('/urgently', 'UrgentController@index')->name('urgently.index');
-Route::post('/add-urgently', 'UrgentController@store')->name('urgent.store');
-Route::delete('/delete-user/{id}', 'UrgentController@destroy')->name('urgent.destroy');
 
 // Merek Route
 Route::get('merek', 'MerekController@index')->name('merek.index');
