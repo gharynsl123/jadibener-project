@@ -8,6 +8,7 @@ class Produk extends Model
 {
     protected $table = 'produk';
     protected $guarded = [];
+    
     function merek()
     {
         return $this->belongsTo('App\Merek', 'id_merek');

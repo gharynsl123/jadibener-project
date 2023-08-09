@@ -2,37 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
-use App\Instansi;
-use App\User;
-use App\Profile;
+use App\Status;
 use Illuminate\Http\Request;
 
-class ProfileController extends Controller
+class StatusController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    // aut
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
     public function index()
     {
-
-        // mengambil data user yang sedang login
-        $user = User::where('id', Auth::user()->id)->get()->all();
-
-        // mengambil data yang ada di table instasi dengan user yang sedang login
-        $instansi = Instansi::where('id', Auth::user()->id_instansi)->get()->all();
-            
-        // memunculkan data ke view
-        return view('profile.account', compact('instansi', 'user'));
+        return view('service.status');
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -58,10 +41,10 @@ class ProfileController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Profile  $profile
+     * @param  \App\Status  $status
      * @return \Illuminate\Http\Response
      */
-    public function show(Profile $profile)
+    public function show(Status $status)
     {
         //
     }
@@ -69,10 +52,10 @@ class ProfileController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Profile  $profile
+     * @param  \App\Status  $status
      * @return \Illuminate\Http\Response
      */
-    public function edit(Profile $profile)
+    public function edit(Status $status)
     {
         //
     }
@@ -81,10 +64,10 @@ class ProfileController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Profile  $profile
+     * @param  \App\Status  $status
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Profile $profile)
+    public function update(Request $request, Status $status)
     {
         //
     }
@@ -92,10 +75,10 @@ class ProfileController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Profile  $profile
+     * @param  \App\Status  $status
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Profile $profile)
+    public function destroy(Status $status)
     {
         //
     }

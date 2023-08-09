@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Instansi;
+use App\Progress;
 use App\User;
 use App\Pengajuan;
 
@@ -30,7 +31,16 @@ class HomeController extends Controller
         $user = Auth::user();
         $instansi = Auth::user()->instansi;
         $pengajuan = Pengajuan::all();
+        
+        $progress = null;
     
-        return view('home.admin', compact('instansi', 'user', 'pengajuan'));
+        // Jika user adalah pic_rs, ambil data peralatan berdasarkan rumah sakit yang dipegang. dan jika user adalah admin, ambil semua data peralatan
+        if (Auth::user()->level == 'pic_rs') {
+            $progress = Progress::where('id_user', Auth::user()->id_pengajuan)->get();
+        } else {
+            $progress = Progress::all();
+        }
+    
+        return view('home.admin', compact('instansi', 'user', 'progress', 'pengajuan'));
     }
 }

@@ -4,7 +4,7 @@
 @section('content')
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800 d-sm-inline-block"> Progress Perbaikan
+    <h1 class="h3 mb-0 text-gray-800 d-sm-inline-block"> @if (Auth::user()->level == 'admin') All Tiket @else my tiket @endif
     </h1>
     <div class="d-none d-sm-inline-block">
         <a href="{{url('peralatan')}}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">
@@ -27,7 +27,6 @@
                         <th>Kategori</th>
                         <th>Product Name</th>
                         <th>Status</th>
-                        <th>Progress</th>
                         <th class="th-end">feedback</th>
                     </tr>
                 </thead>
@@ -35,9 +34,9 @@
                     @foreach($pengajuan->reverse() as $items)
                     <tr>
                         <td>
-                            <!-- for go to detail -->
-                            <a href="#" class="btn btn-info">
-                                <i class="fa fa-eye text-white"></i>
+                            <!-- for go to detail use resouce route-->
+                            <a href="/pengajuan/{{$items->slug}}" class="btn btn-primary">
+                                <i class="fa fa-eye"></i>
                             </a>
                         </td>
                         <td>{{$items->created_at}}</td>
@@ -46,11 +45,6 @@
                         <td>{{$items->peralatan->kategori->nama_kategori}}</td>
                         <td>{{$items->peralatan->produk->nama_produk}}</td>
                         <td>{{$items->status}}</td>
-                        <td>
-                            <div class="progress">
-                                <div class="progress-bar" style="width: 75%;">75%</div>
-                            </div>
-                        </td>
                         <td>
                             <!-- untuk feedback good or bad -->
                             <div class="d-flex justify-content-between">

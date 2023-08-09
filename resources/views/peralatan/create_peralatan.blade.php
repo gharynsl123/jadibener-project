@@ -84,21 +84,6 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const kondisiProductInput = document.getElementById('kondisi-product');
-        const pertahunProductInput = document.getElementById('pertahun-product');
-
-        pertahunProductInput.addEventListener('input', function() {
-            // Get the entered value and convert it to a number
-            let value = parseFloat(pertahunProductInput.value);
-
-            // Check if the entered value is greater than 100
-            if ( value > 10) {
-                // If it's greater, set the input value to 100
-                pertahunProductInput.value = 10;
-            }else if(value < 5){
-                // if it's small than 5, set the input value to 5
-                pertahunProductInput.value = 5;
-            }
-        });
 
         // Add an event listener to the input field
         kondisiProductInput.addEventListener('input', function() {

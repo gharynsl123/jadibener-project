@@ -66,6 +66,8 @@
                         <textarea class="form-control" name="keterangan_masalah" id="keterangan" rows="4"
                             placeholder="Masukkan keterangan tambahan"></textarea>
                     </div>
+                        <input type="text" class="form-control" id="namaProduk"
+                            value="{{$peralatan->produk->nama_produk}}" hidden readonly>
                     <div class="form-group text-center">
                         <button type="submit" class="btn btn-primary">Ajukan Item</button>
                         <a href="{{route('peralatan.show', $peralatan->id)}}" class="btn btn-secondary">Batalkan</a>

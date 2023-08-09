@@ -4,18 +4,17 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Progress extends Model
+class History extends Model
 {
-    protected $table = 'progress';
+    protected $table = 'histories';
     protected $guarded = [];
 
     public function users()
     {
         return $this->belongsTo('App\User', 'id_user');
     }
-
-    public function pengajuan()
+    public function progress()
     {
-        return $this->belongsTo('App\Pengajuan', 'id_pengajuan');
+        return $this->belongsTo('App\Progress', 'id_progress');
     }
 }

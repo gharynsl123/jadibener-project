@@ -62,7 +62,8 @@
         </div>
     </div>
     @endforeach
-    @foreach ($instansi as $items)
+    @else
+    @foreach ($user as $items)
     <div class="col-md-6">
         <div class="card shadow">
             <div class="card-header bg-info">
@@ -73,7 +74,7 @@
                     <tr>
                         <th>Instansi</th>
                         <td>:</td>
-                        <td>{{ $items->instasi }}</td>
+                        <td>{{ $items->instansi->instasi }}</td>
                     </tr>
                     <tr>
                         <th>No telepon</th>
@@ -89,7 +90,6 @@
             </div>
         </div>
     </div>
-    
     @endforeach
     @endif
 </div>

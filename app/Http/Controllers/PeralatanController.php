@@ -23,21 +23,21 @@ class PeralatanController extends Controller
     }
 
     public function index()
-{
-    $merek = Merek::all();
-    $product = Produk::all();
-    $kategori = Kategori::all();
-    $peralatan = null;
-
-    // Jika user adalah pic_rs, ambil data peralatan berdasarkan rumah sakit yang dipegang. dan jika user adalah admin, ambil semua data peralatan
-    if (Auth::user()->level == 'pic_rs') {
-        $peralatan = Peralatan::where('id_instansi', Auth::user()->id_instansi)->get();
-    } else {
-        $peralatan = Peralatan::all();
+    {
+        $merek = Merek::all();
+        $product = Produk::all();
+        $kategori = Kategori::all();
+        $peralatan = null;
+    
+        // Jika user adalah pic_rs, ambil data peralatan berdasarkan rumah sakit yang dipegang. dan jika user adalah admin, ambil semua data peralatan
+        if (Auth::user()->level == 'pic_rs') {
+            $peralatan = Peralatan::where('id_instansi', Auth::user()->id_instansi)->get();
+        } else {
+            $peralatan = Peralatan::all();
+        }
+    
+        return view('peralatan.index_peralatan', compact('merek', 'product', 'kategori', 'peralatan'));
     }
-
-    return view('peralatan.index_peralatan', compact('merek', 'product', 'kategori', 'peralatan'));
-}
 
 
 

@@ -41,6 +41,9 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
 // Home Route
 Route::get('/home', 'HomeController@index')->name('home');
 
+// status Route
+Route::resource('status', 'StatusController');
+
 // Instansi Route
 Route::get('/instansi', 'InstansiController@index')->name('instansi.index');
 Route::get('/make/instansi', 'InstansiController@create')->name('instansi.create');
@@ -67,9 +70,9 @@ Route::get('/edit/{nama_merek}', 'MerekController@edit')->name('merek.edit');
 
 // produk Route
 Route::get('/produk', 'ProdukController@index')->name('produk.index');
-Route::get('/detail-produk/{id}', 'ProdukController@show')->name('produk.show');
+Route::get('/detail-produk/{slug}', 'ProdukController@show')->name('produk.show');
 Route::get('/make/produk', 'ProdukController@create')->name('produk.create');
-Route::get('/edit-produk/{id}', 'ProdukController@edit')->name('produk.edit');
+Route::get('/edit-produk/{slug}', 'ProdukController@edit')->name('produk.edit');
 Route::put('/update-produk/{id}', 'ProdukController@update')->name('produk.update');
 Route::post('/create-data-produk', 'ProdukController@store')->name('produk.store');
 Route::delete('/delete-data-produk/{id}', 'ProdukController@destroy')->name('produk.destroy');
@@ -77,11 +80,16 @@ Route::delete('/delete-data-produk/{id}', 'ProdukController@destroy')->name('pro
 // Pengajuan Route
 // Route::get('/pengajuan', 'PengajuanController@index')->name('pengajuan.index');
 Route::post('/update-pengajuan/{id}', 'PengajuanController@update')->name('pengajuan.update');
-Route::get('/make/pengajuan/{id}', 'PengajuanController@create')->name('pengajuan.create');
+Route::get('/make/pengajuan/{slug}', 'PengajuanController@create')->name('pengajuan.create');
 Route::post('/add-pengajuan', 'PengajuanController@store')->name('pengajuan.store');
+Route::delete('/delete-pengajuan/{id}', 'PengajuanController@destroy')->name('pengajuan');
+Route::get('/pengajuan/{slug}', 'PengajuanController@show')->name('pengajuan.show');
 
 // Progress Route
 Route::get('/progress', 'ProgressController@index')->name('progres.index');
+Route::post('/add-progress', 'ProgressController@store')->name('progress.store');
+Route::get('/detail-progress/{slug}', 'ProgressController@show')->name('progress.show');
+Route::put('/progress/{id}', 'ProgressController@updateProgress')->name('progress.update');
 
 Route::resource('peralatan', 'PeralatanController');
 

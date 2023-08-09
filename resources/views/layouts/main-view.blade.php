@@ -110,10 +110,10 @@
                 </a>
                 <div id="layananCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{{url('/')}}">Status</a>
+                        <a class="collapse-item" href="{{url('/status')}}">Status</a>
                         <a class="collapse-item" href="{{url('/')}}">Jadwal</a>
                         <a class="collapse-item" href="{{url('/')}}">Laporan</a>
-                        <a class="collapse-item" href="{{route('progres.index')}}">Progress Perbaikan</a>
+                        <a class="collapse-item" href="{{route('progres.index')}}">Ticket & Progress</a>
                         <a class="collapse-item" href="{{url('/')}}">Estimasi Biaya</a>
                     </div>
                 </div>

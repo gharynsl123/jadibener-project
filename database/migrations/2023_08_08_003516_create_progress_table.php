@@ -14,7 +14,18 @@ class CreateProgressTable extends Migration
     public function up()
     {
         Schema::create('progress', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
+            $table->integer('id_user')->unsigned();
+            $table->integer('id_pengajuan')->unsigned();
+
+            $table->string('slug');
+            $table->string('progress')->nullable();
+            $table->string('keterangan')->nullable();
+            $table->string('jadwal')->nullable();
+            
+            $table->foreign('id_pengajuan')->references('id')->on('pengajuan')->onDelete('cascade');
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

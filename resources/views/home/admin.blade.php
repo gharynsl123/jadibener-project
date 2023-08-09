@@ -40,7 +40,14 @@
         </div>
     </div>
 </div>
-<h1 class="h3 mb-0 text-gray-800 d-sm-inline-block  my-4"> Request Approval</h1>
+
+<div class="d-sm-flex align-items-center justify-content-between my-4">
+    <h1 class="h3 mb-0 text-gray-800 d-sm-inline-block"> Request Approval </h1>
+    <div class="d-none d-sm-inline-block">
+        <a href="{{url('peralatan')}}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+            <i class="fas fa-ticket fa-sm text-white-50"></i> all list Tikect</a>
+    </div>
+</div>
 
 <!-- table untuk mengabil data pengajuan -->
 <div class="card shadow mb-4">
@@ -63,6 +70,8 @@
                 </thead>
                 <tbody>
                     @foreach($pengajuan->reverse() as $items)
+                    <!-- menampilnkan data yang bersatstus pending saja -->
+                    @if($items->status == 'pending')
                     <tr>
                         <td>
                             <!-- for go to detail -->
@@ -84,7 +93,7 @@
                                 <form action="{{route('pengajuan.update', $items->id)}}" method="post">
                                     @csrf
                                     {{method_field('POST')}}
-                                    <input type="text" name="status" value="approve" hidden>
+                                    <input type="text" name="status" value="approved" hidden>
                                     <button type="submit" class="btn btn-success">
                                         <i class="fa fa-thumbs-up text-white"></i>
                                     </button>
@@ -100,12 +109,33 @@
                             </div>
                         </td>
                     </tr>
+                    @endif
                     @endforeach
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+<script>
+
+    var pengajuanData = @json($pengajuan); // Mengambil data pengajuan dari controller
+    // Mengambil semua elemen baris pada tabel
+    var rows = document.querySelectorAll("#dataTable tbody tr");
+
+    // Iterasi melalui setiap baris
+    rows.forEach(function(row, index) {
+        // Mengambil elemen sel yang berisi status
+        var statusCell = row.querySelector("td:nth-child(8)");
+
+        // Mengambil teks status dari sel
+        var status = statusCell.textContent.trim();
+        
+        // Membandingkan status dengan data dari pengajuan
+        if (status != pengajuanData[index]->status) {
+            dd
+        }
+    });
+</script>
 
 
 @endsection
