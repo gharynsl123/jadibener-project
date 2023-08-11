@@ -53,7 +53,7 @@
             </div>
             <div class="form-group">
                 <label for="serial-number">Nilai Tahunan</label>
-                <input type="number" class="form-control" id="pertahun-product" placeholder="patokan nnilai ini akan berkurang sasuia tahun nya">
+                <input type="number" class="form-control" id="pertahun-product" name="nilai_tahun" placeholder="patokan nnilai ini akan berkurang sasuia tahun nya">
                 <small class="text-muted">Hanya bisa 5 sampai 10 tahun</small>
             </div>
             <div class="form-group">

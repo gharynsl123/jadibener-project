@@ -4,8 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Urgent extends Model
+class Kondisi extends Model
 {
-    protected $table = 'urgent';
+    protected $table = 'kondisi';
     protected $guarded = [];
 }

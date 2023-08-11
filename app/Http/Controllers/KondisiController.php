@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Urgent;
+use App\Kondisi;
 use Illuminate\Http\Request;
 
-class UrgentController extends Controller
+class KondisiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class UrgentController extends Controller
      */
     public function index()
     {
-        $urgent = Urgent::all();
+        $urgent = Kondisi::all();
         return view('urgent.index_urgent', compact('urgent'));
     }
 
@@ -37,7 +37,7 @@ class UrgentController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
-        Urgent::create($input);
+        Kondisi::create($input);
         return redirect('/urgently')->with('success', 'Urgent has been created successfully.');
     }
 
@@ -83,7 +83,7 @@ class UrgentController extends Controller
      */
     public function destroy($id)
     {
-        $urgent = Urgent::find($id);
+        $urgent = Kondisi::find($id);
         $urgent->delete();
         return redirect('/urgently')->with('success', 'Urgent has been deleted successfully.');
     }

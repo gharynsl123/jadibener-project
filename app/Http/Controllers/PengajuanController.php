@@ -61,6 +61,11 @@ class PengajuanController extends Controller
         $pengajuan['idTikect'] = "P" . $formattedSV;
         $pengajuan['slug'] = Str::slug($pengajuan['idTikect']).'-'.$formatedDate;
 
+        // membuat history
+        $history = new History;
+        $history->status = $pengajuan['status'];
+        $history->save();
+
 
         Pengajuan::create($pengajuan);
         // mengambil data dari database pengajuan
@@ -110,6 +115,14 @@ class PengajuanController extends Controller
         $pengajuan = Pengajuan::find($id);
         $pengajuan->status = $request->status;
         $pengajuan->save();
+
+        // tambah history
+        $history = new History;
+        $history->id_progress = $pengajuan->id;
+        $history->id_user = $pengajuan->user->id;
+        $history->tanggal = Carbon::now();
+        $history->status = 'proses';
+        $history->save();
 
         // ke hlmn home
         return redirect('/home')->with('success', 'Status has been updated');

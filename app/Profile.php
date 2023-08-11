@@ -8,7 +8,7 @@ class Profile extends Model
 {
     protected $table = 'profile';
     protected $guarded = [];
-    function user()
+    function users()
     {
         return $this->belongsTo('App\User', 'id_user');
     }

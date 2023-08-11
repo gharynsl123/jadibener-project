@@ -17,17 +17,17 @@ class CreatePengajuanTable extends Migration
             $table->increments('id');
             $table->integer('id_user')->unsigned();
             $table->integer('id_peralatan')->unsigned();
-            $table->integer('id_urgensi')->unsigned();
+            $table->integer('id_kondisi')->unsigned();
 
-            $table->string('subject_masalah');
-            $table->string('idTikect')->nullable();
+            $table->string('judul_masalah');
+            $table->string('deskripsi_masalah');
+            $table->string('id_pengenal')->nullable();
+            $table->enum('status_pengajuan', ['pending', 'approved', 'rejected'])->default('pending');
             $table->string('slug');
-            $table->string('keterangan_masalah');
-            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
 
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('id_peralatan')->references('id')->on('peralatan')->onDelete('cascade');
-            $table->foreign('id_urgensi')->references('id')->on('urgent')->onDelete('cascade');
+            $table->foreign('id_kondisi')->references('id')->on('kondisi')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -18,10 +18,10 @@ class CreateProgressTable extends Migration
             $table->integer('id_user')->unsigned();
             $table->integer('id_pengajuan')->unsigned();
 
-            $table->string('slug');
-            $table->string('progress')->nullable();
+            $table->string('nilai_pengerjaan')->nullable();
             $table->string('keterangan')->nullable();
             $table->string('jadwal')->nullable();
+            $table->string('slug');
             
             $table->foreign('id_pengajuan')->references('id')->on('pengajuan')->onDelete('cascade');
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');

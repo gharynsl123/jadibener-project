@@ -15,14 +15,13 @@ class CreateInstansiTable extends Migration
     {
         Schema::create('instansi', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('instasi');
-            $table->string('alamat');
+            $table->string('nama_instansi');
+            $table->string('alamat_instansi');
 
             $table->bigInteger('jumlah_kasur');
-            $table->enum('status', ['pemerintah', 'suasta']);
-            $table->string('kelas');
+            $table->enum('jenis_instansi', ['pemerintah', 'swasta']);
 
-            $table->string('photo')->nullable();
+            $table->string('photo_instansi')->nullable();
             $table->timestamps();
         });
     }

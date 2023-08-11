@@ -108,35 +108,41 @@
     </div>
 </div>
 
+@if(Auth::user()->level != 'teknisi')
 <!-- history table untuk item itu sendiri dengan relasi dari id_progress -->
-<div class="card shadow mt-5 border-left-primary">
-    <div class="card-header ">
-        <p class="m-0">History</p>
-    </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-hover table-borderless" id="dataTable" width="100%" cellspacing="0">
-                <thead class="bg-dark text-white">
-                    <tr>
-                        <th class="th-start">Tanggal</th>
-                        <th>Status</th>
-                        <th>Deskripsi</th>
-                        <th class="th-end">by</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($history as $items)
-                    <tr>
-                        <td>{{$items->progress->id}}</td>
-                        <td>{{$items->created_at}}</td>
-                        <td>{{$items->status}}</td>
-                        <td>{{$items->progress->keterangan}}</td>
-                        <td>{{$items->deskripsi}}</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+
+<h3 class="mt-4">traking progress</h3>
+<div class="card shadow">
+    <div class="card-header p-3 m-0">
+        <div class="d-flex justify-content-between">
+            <p class="m-0 ml-4">trait_exists</p>
+            <p class="m-0">trait_exists</p>
+            <p class="m-0">trait_exists</p>
         </div>
     </div>
+    <div class="card-body p-3">
+        <div class=" d-flex justify-content-start">
+            <div class="line">
+                @foreach($history as $items)
+                <div class="circle"></div>
+                @endforeach
+
+            </div>
+            <div class="items-container mx-3 p-0">
+                <div class="d-flex table-responsive flex-column justify-content-between">
+                    @foreach($history as $items)
+                    <div class="d-flex my-2 justify-content-between border-bottom">
+                        <p class="m-0">{{$items->created_at}}</p>
+                        <p class="m-0">trait_exists</p>
+                        <p class="m-0">trait_exists</p>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>
+
+@endif
 @endsection

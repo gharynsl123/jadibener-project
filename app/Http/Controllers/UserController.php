@@ -56,6 +56,7 @@ class UserController extends Controller
         $user->id_instansi = $request->id_instansi;
         $user->alamat = $request->alamat;
         $user->level = $request->level;
+        $user->jenis_kelamin = $request->jenis_kelamin;
         $user->role = $request->role;
         $user->save();
 

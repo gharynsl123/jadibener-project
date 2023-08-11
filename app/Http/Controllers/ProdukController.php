@@ -61,9 +61,13 @@ class ProdukController extends Controller
      * @param  \App\Produk  $produk
      * @return \Illuminate\Http\Response
      */
-    public function show(Produk $produk)
+    public function show($id)
     {
-        //
+            
+            $produk = Produk::find($id);
+            $mereks = Merek::all();
+            $kategoris = Kategori::all();
+            return view('product.detail_product', compact('produk', 'mereks', 'kategoris'));
     }
 
     /**

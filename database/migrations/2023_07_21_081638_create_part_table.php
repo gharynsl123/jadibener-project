@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUrgentTable extends Migration
+class CreatePartTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,14 @@ class CreateUrgentTable extends Migration
      */
     public function up()
     {
-        Schema::create('urgent', function (Blueprint $table) {
+        Schema::create('part', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nama_kondisi');
-            $table->string('waktu');
+            $table->integer('id_kategori')->unsigned();
+
+            $table->string('nama_part');
+            $table->string('kode_part');
+
+            $table->foreign('id_kategori')->references('id')->on('kategori')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -28,6 +32,6 @@ class CreateUrgentTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('urgent');
+        Schema::dropIfExists('part');
     }
 }

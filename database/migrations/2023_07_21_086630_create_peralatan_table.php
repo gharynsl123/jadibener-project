@@ -19,10 +19,13 @@ class CreatePeralatanTable extends Migration
             $table->integer('id_merek')->unsigned();
             $table->integer('id_kategori')->unsigned();
             $table->integer('id_product')->unsigned();
+
             $table->enum('keterangan', ['baik', 'rusak', 'hilang'])->default('baik');
             $table->string('serial_number');
             $table->string('tahun_pemasangan');
+            $table->string('nilai_tahun');
             $table->string('kondisi_product');
+            
             $table->foreign('id_instansi')->references('id')->on('instansi')->onDelete('cascade');
             $table->foreign('id_merek')->references('id')->on('merek')->onDelete('cascade');
             $table->foreign('id_kategori')->references('id')->on('kategori')->onDelete('cascade');

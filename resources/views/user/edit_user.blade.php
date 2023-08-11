@@ -94,7 +94,7 @@
                     <input id="password-confirm" type="password"  class="form-control" name="password_confirmation"
                     >
                 </div>
-
+                
                 <div class="input-group form-group col-md-6 mb-auto">
                     <div class="input-group-text form-control" id="gender">
                         <input class="form-check mr-3" type="radio" name="jenis_kelamin" value="laki-laki">
@@ -106,9 +106,7 @@
                         Perempuan
                     </div>
 
-
                 </div>
-
 
                 <div class="form-group col-md-12">
                     <label for="alamat">Alamat</label>

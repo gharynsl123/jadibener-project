@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSukucadangTable extends Migration
+class CreateKondisiTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateSukucadangTable extends Migration
      */
     public function up()
     {
-        Schema::create('sukucadang', function (Blueprint $table) {
+        Schema::create('kondisi', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nama_sukucadang');
-            $table->string('kode_sukucadang');
-            $table->integer('id_kategori')->unsigned();
-            $table->foreign('id_kategori')->references('id')->on('kategori')->onDelete('cascade');
+            $table->string('nama_kondisi');
+            $table->string('waktu_kondisi');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ class CreateSukucadangTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sukucadang');
+        Schema::dropIfExists('kondisi');
     }
 }

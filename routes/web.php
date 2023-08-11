@@ -33,9 +33,9 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::delete('/delete-users/{id}', 'UserController@destroy')->name('users.destroy');
 
     // Urgently Route
-    Route::get('/urgently', 'UrgentController@index')->name('urgently.index');
-    Route::post('/add-urgently', 'UrgentController@store')->name('urgent.store');
-    Route::delete('/delete-user/{id}', 'UrgentController@destroy')->name('urgent.destroy');
+    Route::get('/kondisi', 'KondisiController@index')->name('urgently.index');
+    Route::post('/add-kondisi', 'KondisiController@store')->name('urgent.store');
+    Route::delete('/delete-kondisi/{id}', 'KondisiController@destroy')->name('urgent.destroy');
 });
 
 // Home Route
@@ -70,7 +70,7 @@ Route::get('/edit/{nama_merek}', 'MerekController@edit')->name('merek.edit');
 
 // produk Route
 Route::get('/produk', 'ProdukController@index')->name('produk.index');
-Route::get('/detail-produk/{slug}', 'ProdukController@show')->name('produk.show');
+Route::get('/detail-produk/{id}', 'ProdukController@show')->name('produk.show');
 Route::get('/make/produk', 'ProdukController@create')->name('produk.create');
 Route::get('/edit-produk/{slug}', 'ProdukController@edit')->name('produk.edit');
 Route::put('/update-produk/{id}', 'ProdukController@update')->name('produk.update');
@@ -96,4 +96,4 @@ Route::resource('peralatan', 'PeralatanController');
 
 Route::resource('profile', 'ProfileController');
 Route::resource('kategori', 'KategoriController');
-Route::resource('part', 'SukuCadangController');
+Route::resource('part', 'PartController');

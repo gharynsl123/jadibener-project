@@ -17,9 +17,11 @@ class CreateProdukTable extends Migration
             $table->increments('id');
             $table->integer('id_merek')->unsigned();
             $table->integer('id_kategori')->unsigned();
+
             $table->string('kode_produk');
             $table->string('nama_produk');
-            $table->string('photo');
+            $table->string('photo_produk');
+            
             $table->foreign('id_merek')->references('id')->on('merek')->onDelete('cascade');
             $table->foreign('id_kategori')->references('id')->on('kategori')->onDelete('cascade');
             $table->timestamps();

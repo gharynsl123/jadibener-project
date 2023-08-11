@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SukuCadang extends Model
+class Part extends Model
 {
-    protected $table = 'sukucadang';
+    protected $table = 'part';
     protected $guarded = [];
     
     function kategori(){

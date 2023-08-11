@@ -12,12 +12,12 @@ class PicRs extends Seeder
     public function run()
     {
         $user = new \App\User;
-        $user->name = "ibu hakim";
+        $user->nama_user = "ibu hakim";
+        $user->alamat_user = "Jl. Kh Hasyim Ashari No.32, RW.8, Cideng, Kecamatan Gambir, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10150";
         $user->email = "hakimasuta@gmail.com";
-        $user->level = "pic_rs";
-        $user->no_telp = "081299106344";
+        $user->level = "pic";
+        $user->nomor_telepon = "081299106344";
         $user->role = "manager";
-        $user->alamat = "Jl. Kh Hasyim Ashari No.32, RW.8, Cideng, Kecamatan Gambir, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10150";
         $user->password = \Hash::make('sasani123');
         $user->save();
     }

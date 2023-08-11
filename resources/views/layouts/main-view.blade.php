@@ -113,7 +113,9 @@
                         <a class="collapse-item" href="{{url('/status')}}">Status</a>
                         <a class="collapse-item" href="{{url('/')}}">Jadwal</a>
                         <a class="collapse-item" href="{{url('/')}}">Laporan</a>
+                        @if(Auth::user()->level != 'teknisi')
                         <a class="collapse-item" href="{{route('progres.index')}}">Ticket & Progress</a>
+                        @endif
                         <a class="collapse-item" href="{{url('/')}}">Estimasi Biaya</a>
                     </div>
                 </div>
@@ -130,7 +132,7 @@
                 <div id="configurationCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="{{url('users')}}">user config</a>
-                        <a class="collapse-item" href="{{url('urgently')}}">urgently setting</a>
+                        <a class="collapse-item" href="{{url('kondisi')}}">urgently setting</a>
                     </div>
                 </div>
             </li>

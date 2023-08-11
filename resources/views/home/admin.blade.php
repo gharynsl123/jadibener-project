@@ -44,7 +44,7 @@
 <div class="d-sm-flex align-items-center justify-content-between my-4">
     <h1 class="h3 mb-0 text-gray-800 d-sm-inline-block"> Request Approval </h1>
     <div class="d-none d-sm-inline-block">
-        <a href="{{url('peralatan')}}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        <a href="{{url('/progress')}}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">
             <i class="fas fa-ticket fa-sm text-white-50"></i> all list Tikect</a>
     </div>
 </div>

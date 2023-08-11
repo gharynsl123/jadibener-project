@@ -94,14 +94,13 @@
                         <td>{{$peralatan->nilai_tahun}}</td>
                     </tr>
                     <tr>
-                        <th>kondisi pengurangan perdasankan tahun</th>
+                        <th>Penurunan nilai barang</th>
                         <td>:</td>
                         <td>
                             <div class="progress">
-                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-                                    aria-valuenow="{{$peralatan->kondisi_product}}" aria-valuemin="0"
-                                    aria-valuemax="100" style="width: {{$peralatan->kondisi_product}}%">
-                                    {{$peralatan->kondisi_product}}</div>
+                            <div  id="progress-bar-{{$peralatan->id}}" class="progress-bar progress-bar-striped progress-bar-animated"
+                                    role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: {{$peralatan->kondisi_product}}%">
+                                </div>
                             </div>
                         </td>
                     </tr>
@@ -156,10 +155,22 @@ function hitungSelisihTahun(tahunPemasangan) {
 function perbaruiSelisihTahun() {
     const idPeralatan = {{ $peralatan->id }};
     const tahunPemasangan = {{ $peralatan->tahun_pemasangan }};
+    const nilaiTahun = {{ $peralatan->nilai_tahun }};
+
+    // Hitung selisih tahun dan kondisi berdasarkan nilai tahun dan durasi
     const selisihTahun = hitungSelisihTahun(tahunPemasangan);
+    const kondisiPengurangan = Math.max(0, 100 - (selisihTahun * (100 / nilaiTahun)));
+
+    // Perbarui progress bar dan teks kondisi
+    const progressBar = document.getElementById(`progress-bar-${idPeralatan}`);
+    progressBar.style.width = `${kondisiPengurangan}%`;
+    progressBar.setAttribute('aria-valuenow', kondisiPengurangan);
+    progressBar.innerText = `${kondisiPengurangan.toFixed(2)}%`;
+
+    // Perbarui selisih tahun pada tampilan
     const elemenSelisihTahun = document.getElementById(`selisih-tahun-${idPeralatan}`);
     elemenSelisihTahun.innerText = `${selisihTahun} tahun`;
 }
-
 </script>
+
 @endsection

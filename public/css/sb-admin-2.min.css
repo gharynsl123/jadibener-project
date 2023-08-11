@@ -9802,6 +9802,28 @@ a.text-danger:focus, a.text-danger:hover {
     color: #f8f9fc !important
 }
 
+
+.line {
+    width: 5px;
+    display: flex;
+    flex-direction: column;
+    background : black;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 20px;
+}
+
+.line .circle {
+    width: 13px;
+    height: 13px;
+    background-color : black;
+    border-radius: 100%;
+}
+
+.items-container {
+    width: 100%;
+}
+
 a.text-light:focus, a.text-light:hover {
     color: #c2cbe5 !important
 }

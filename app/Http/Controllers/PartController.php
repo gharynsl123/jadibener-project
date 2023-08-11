@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\SukuCadang;
+use App\Part;
 use App\Kategori;
 use Illuminate\Http\Request;
 
-class SukuCadangController extends Controller
+class PartController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class SukuCadangController extends Controller
     public function index()
     {
         $kategori = Kategori::all();
-        $part= SukuCadang::all();
+        $part= Part::all();
         return view('part.suku_cadang', compact('part', 'kategori'));
     }
 
@@ -39,7 +39,7 @@ class SukuCadangController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
-        $part = SukuCadang::create($input);
+        $part = Part::create($input);
         return redirect('/part' ); // Redirect to the newly created suku cadang's details page
     }
 

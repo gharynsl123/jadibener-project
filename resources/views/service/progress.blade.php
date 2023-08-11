@@ -26,6 +26,7 @@
                         <th>Serial number</th>
                         <th>Kategori</th>
                         <th>Product Name</th>
+                        <th>report by</th>
                         <th>Status</th>
                         <th class="th-end">feedback</th>
                     </tr>
@@ -44,6 +45,7 @@
                         <td>{{$items->peralatan->serial_number}}</td>
                         <td>{{$items->peralatan->kategori->nama_kategori}}</td>
                         <td>{{$items->peralatan->produk->nama_produk}}</td>
+                        <td>{{$items->user->name}}</td>
                         <td>{{$items->status}}</td>
                         <td>
                             <!-- untuk feedback good or bad -->

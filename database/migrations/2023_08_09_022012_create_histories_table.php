@@ -18,7 +18,7 @@ class CreateHistoriesTable extends Migration
             $table->integer('id_user')->unsigned();
             $table->integer('id_progress')->unsigned();
             $table->string('tanggal');
-            $table->enum('status', ['pending', 'proses', 'selesai'])->default('pending');
+            $table->string('status_history');
             $table->string('deskripsi')->nullable();
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('id_progress')->references('id')->on('progress')->onDelete('cascade');
