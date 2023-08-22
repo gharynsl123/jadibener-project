@@ -22,9 +22,10 @@
 
                     <div class="form-group">
                         <label for="instansi">Instansi</label>
-                        <input type="text" class="form-control" id="instansi" value="{{$peralatan->instansi->instasi}}"
+                        <input type="text" class="form-control" id="instansi" value="{{$peralatan->instansi->nama_instansi}}"
                             readonly>
                     </div>
+                    
                     <div class="form-group">
                         <label for="serialNumber">Serial Number</label>
                         <input type="text" class="form-control" id="serialNumber" value="{{$peralatan->serial_number}}"
@@ -49,25 +50,23 @@
                     <h5 class="card-title">Pengajuan Item</h5>
                     <div class="form-group">
                         <label for="ugently">Ugently / Kondisi</label>
-                        <select class="form-control" name="id_urgensi" id="ugently">
+                        <select class="form-control" name="id_kondisi" id="ugently">
                             <option selected disabled>-- PILIH --</option>
-                            @foreach($urgensi as $urgensis)
+                            @foreach($kondisi as $urgensis)
                             <option value="{{ $urgensis->id }}">{{ $urgensis->nama_kondisi }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="subjectMasalah">Subject Masalah</label>
-                        <input type="text" class="form-control" name="subject_masalah"id="subjectMasalah"
+                        <input type="text" class="form-control" name="judul_masalah"id="subjectMasalah"
                             placeholder="Masukkan subject masalah">
                     </div>
                     <div class="form-group">
                         <label for="keterangan">Keterangan Tambahan</label>
-                        <textarea class="form-control" name="keterangan_masalah" id="keterangan" rows="4"
+                        <textarea class="form-control" name="deskripsi_masalah" id="keterangan" rows="4"
                             placeholder="Masukkan keterangan tambahan"></textarea>
                     </div>
-                        <input type="text" class="form-control" id="namaProduk"
-                            value="{{$peralatan->produk->nama_produk}}" hidden readonly>
                     <div class="form-group text-center">
                         <button type="submit" class="btn btn-primary">Ajukan Item</button>
                         <a href="{{route('peralatan.show', $peralatan->id)}}" class="btn btn-secondary">Batalkan</a>

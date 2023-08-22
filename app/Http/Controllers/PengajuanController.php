@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Pengajuan;
-use App\Urgent;
+use App\Kondisi;
 use App\Progress;
 use App\User;
 use App\History;
@@ -38,10 +38,10 @@ class PengajuanController extends Controller
     public function create($id)
     {
         $peralatan = Peralatan::find($id);
-        $urgensi = Urgent::all();
+        $kondisi = Kondisi::all();
         $user = Auth::user();
 
-        return view('pengajuan.create_pengajuan', compact('peralatan', 'user', 'urgensi'));
+        return view('pengajuan.create_pengajuan', compact('peralatan', 'user', 'kondisi'));
     }
 
     /**
@@ -58,18 +58,24 @@ class PengajuanController extends Controller
         $today = Carbon::now();
         $formatedDate = $today->format('y-m-d');
         $formattedSV = $today->format('sv');
-        $pengajuan['idTikect'] = "P" . $formattedSV;
-        $pengajuan['slug'] = Str::slug($pengajuan['idTikect']).'-'.$formatedDate;
+        $pengajuan['id_pengenal'] = "P" . $formattedSV;
+        $pengajuan['slug'] = Str::slug($pengajuan['id_pengenal']).'-'.$formatedDate;
 
-        // membuat history
-        $history = new History;
-        $history->status = $pengajuan['status'];
-        $history->save();
+        $dataPengajuan = Pengajuan::create($pengajuan);
+        // membuat data history untuk di tampilkan di detail pengajuan
+        $history = [
+            'id_user' => Auth::user()->id,
+            'tanggal' => $formatedDate,
+            'status_history' => 'pengajuan baru' ,
+            'deskripsi' => 'pengajuan di buat oleh ' . Auth::user()->nama_user,
+        ];
+        $history['id_peralatan'] = $request->id_peralatan;
 
-
-        Pengajuan::create($pengajuan);
+        $history['id_pengajuan'] = $dataPengajuan->id;
+        
+        History::create($history);
         // mengambil data dari database pengajuan
-        return redirect('/progress')->with('success', 'Pengajuan has been added');
+        return redirect('/peralatan')->with('success', 'Pengajuan has been added');
     }
     
 
@@ -82,14 +88,22 @@ class PengajuanController extends Controller
     public function show($slug)
     {
         $pengajuan = Pengajuan::where('slug', $slug)->first();
-        // mengambil data history sesuai dengan id progress
-        $history = History::where('id_progress', $pengajuan->id)->get();
-        // mengambil data progress berdasarkan id pengajuan yang sudah di setting
+    
+        // Mengambil data history pengajuan sesuai dengan id pengajuan
+        $historyPengajuan = History::where('id_pengajuan', $pengajuan->id)->get();
+    
+        // Mengambil data progress berdasarkan id pengajuan yang sudah di setting
         $progress = Progress::where('id_pengajuan', $pengajuan->id)->first();
+    
         $teknisiList = User::where('level', 'teknisi')->get();
-        
-        return view('pengajuan.detail_pengajuan', compact('teknisiList', 'history','pengajuan', 'progress'));
+            
+        return view('pengajuan.detail_pengajuan', compact('teknisiList', 'historyPengajuan', 'pengajuan', 'progress'));
     }
+
+
+
+
+
 
     /**
      * Show the form for editing the specified resource.
@@ -112,17 +126,32 @@ class PengajuanController extends Controller
     public function update(Request $request, $id)
     {
         // update status
+
+        $today = Carbon::now();
+        $formatedDate = $today->format('y-m-d');
+
         $pengajuan = Pengajuan::find($id);
-        $pengajuan->status = $request->status;
-        $pengajuan->save();
+        $pengajuan->status_pengajuan = $request->status_pengajuan;
+        $update = $pengajuan->save();
+
+        $history = [
+            'id_user' => Auth::user()->id,
+            'tanggal' => $formatedDate,
+            'status_history' => 'masuk ke tahap teknisi',
+            'deskripsi' => 'tiket di' . $request->status_pengajuan . ' oleh ' . Auth::user()->nama_user,
+        ];
+        
+        $history['id_pengajuan'] = $pengajuan->id;
+
+        History::create($history);
 
         // tambah history
-        $history = new History;
-        $history->id_progress = $pengajuan->id;
-        $history->id_user = $pengajuan->user->id;
-        $history->tanggal = Carbon::now();
-        $history->status = 'proses';
-        $history->save();
+        // $history = new History;
+        // $history->id_progress = $pengajuan->id;
+        // $history->id_user = $pengajuan->user->id;
+        // $history->tanggal = Carbon::now();
+        // $history->status_history = 'proses';
+        // $history->save();
 
         // ke hlmn home
         return redirect('/home')->with('success', 'Status has been updated');

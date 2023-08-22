@@ -24,8 +24,8 @@ class CreateUsersTable extends Migration
             $table->string('password');
 
             $table->enum('jenis_kelamin', ['laki-laki', 'perempuan'])->nullable()->default(null);
-            $table->enum('level', ['admin', 'pic', 'sub_service', 'surveyor', 'teknisi'])->default('admin');
-            $table->enum('role', ['qizi', 'alkes', 'manager', 'cssd'])->nullable()->default(null);
+            $table->enum('level', ['admin', 'pic', 'sub_service', 'teknisi'])->default('admin');
+            $table->enum('role', ['qizi', 'alkes', 'manager', 'kap_teknisi', 'cssd'])->nullable()->default(null);
 
             $table->foreign('id_instansi')->references('id')->on('instansi')->onDelete('cascade');
 

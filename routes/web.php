@@ -19,8 +19,17 @@ Auth::routes(['register' => false]);
 Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 
 
-Route::group(['middleware' => ['auth', 'role:admin,teknisi']], function () {
+Route::group(['middleware' => ['auth', 'role:admin,teknisi,surveyor,sub_service']], function () {
     // Definisikan rute yang bisa diakses oleh pengguna dengan peran "admin" atau "teknisi" di sini
+
+    // Instansi Route
+    Route::get('/instansi', 'InstansiController@index')->name('instansi.index');
+    Route::get('/make/instansi', 'InstansiController@create')->name('instansi.create');
+    Route::get('/edit-instansi/{id}', 'InstansiController@edit')->name('instansi.edit');
+    Route::put('/update-instansi/{id}', 'InstansiController@update')->name('instansi.update');
+    Route::get('/detail-instansi/{id}', 'InstansiController@show')->name('instansi.show');
+    Route::post('/add-instansi', 'InstansiController@store')->name('instansi.store');
+    Route::delete('/delete-instansi/{id}', 'InstansiController@destroy')->name('instansi.destroy');
 });
 
 Route::group(['middleware' => ['auth', 'role:admin']], function () {
@@ -44,23 +53,11 @@ Route::get('/home', 'HomeController@index')->name('home');
 // status Route
 Route::resource('status', 'StatusController');
 
-// Instansi Route
-Route::get('/instansi', 'InstansiController@index')->name('instansi.index');
-Route::get('/make/instansi', 'InstansiController@create')->name('instansi.create');
-Route::get('/edit-instansi/{id}', 'InstansiController@edit')->name('instansi.edit');
-Route::put('/update-instansi/{id}', 'InstansiController@update')->name('instansi.update');
-Route::get('/detail-instansi/{id}', 'InstansiController@show')->name('instansi.show');
-Route::post('/add-instansi', 'InstansiController@store')->name('instansi.store');
-Route::delete('/delete-instansi/{id}', 'InstansiController@destroy')->name('instansi.destroy');
 
 // informasi Route
 Route::get('/informasi', 'InformasiController@index')->name('informasi.index');
 Route::get('/detail-informasi/{id}', 'InformasiController@show')->name('informasi.show');
 Route::post('/add-informasi', 'InformasiController@store')->name('informasi.store');
-
-// sukujadang Route
-Route::get('/part/{part}', 'SukuCadangController@show')->name('part.show');
-
 
 // Merek Route
 Route::get('merek', 'MerekController@index')->name('merek.index');
@@ -85,6 +82,22 @@ Route::post('/add-pengajuan', 'PengajuanController@store')->name('pengajuan.stor
 Route::delete('/delete-pengajuan/{id}', 'PengajuanController@destroy')->name('pengajuan');
 Route::get('/pengajuan/{slug}', 'PengajuanController@show')->name('pengajuan.show');
 
+// Part Route
+Route::get('/part', 'PartController@index')->name('part.index');
+Route::get('/pergantian-part/{id}', 'PartController@create')->name('part.create');
+Route::get('/edit-part/{id}', 'PartController@edit')->name('part.edit');
+Route::post('/add-part', 'PartController@store')->name('part.store');
+Route::delete('/delete-part/{id}', 'PartController@destroy')->name('part.destroy');
+
+// Estimate Route
+Route::post('/add-estimate-part', 'PartController@storePart')->name('estimate.store');
+Route::get('estimasi-biaya', 'PartController@estimasi')->name('estimate.index');
+
+// Survey Route
+Route::get('survey/peralatan/{id}', 'SurveyController@create')->name('survey.create');
+Route::get('laporan/survey', 'SurveyController@index')->name('survey.index');
+Route::post('/add-data-survey', 'SurveyController@store')->name('survey.store');
+
 // Progress Route
 Route::get('/progress', 'ProgressController@index')->name('progres.index');
 Route::post('/add-progress', 'ProgressController@store')->name('progress.store');
@@ -96,4 +109,3 @@ Route::resource('peralatan', 'PeralatanController');
 
 Route::resource('profile', 'ProfileController');
 Route::resource('kategori', 'KategoriController');
-Route::resource('part', 'PartController');

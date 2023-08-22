@@ -4,7 +4,7 @@
 @section('content')
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800 d-sm-inline-block"> @if (Auth::user()->level == 'admin') All Tiket @else my tiket @endif
+    <h1 class="h3 mb-0 text-gray-800 d-sm-inline-block"> @if (Auth::user()->level == 'admin') List pengajuan @else List Pengajuan Mu @endif
     </h1>
     <div class="d-none d-sm-inline-block">
         <a href="{{url('peralatan')}}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">
@@ -41,12 +41,12 @@
                             </a>
                         </td>
                         <td>{{$items->created_at}}</td>
-                        <td>{{$items->peralatan->instansi->instasi}}</td>
+                        <td>{{$items->peralatan->instansi->nama_instansi}}</td>
                         <td>{{$items->peralatan->serial_number}}</td>
                         <td>{{$items->peralatan->kategori->nama_kategori}}</td>
                         <td>{{$items->peralatan->produk->nama_produk}}</td>
-                        <td>{{$items->user->name}}</td>
-                        <td>{{$items->status}}</td>
+                        <td>{{$items->user->nama_user}}</td>
+                        <td>{{$items->status_pengajuan}}</td>
                         <td>
                             <!-- untuk feedback good or bad -->
                             <div class="d-flex justify-content-between">

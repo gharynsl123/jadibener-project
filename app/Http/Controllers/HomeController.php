@@ -30,15 +30,23 @@ class HomeController extends Controller
     {
         $user = Auth::user();
         $instansi = Auth::user()->instansi;
-        $pengajuan = Pengajuan::all();
-        
+        // Inisialisasi variabel untuk data pengajuan dan progress
+        $pengajuan = null;
         $progress = null;
-    
-        // Jika user adalah pic_rs, ambil data peralatan berdasarkan rumah sakit yang dipegang. dan jika user adalah admin, ambil semua data peralatan
-        if (Auth::user()->level == 'pic_rs') {
-            $progress = Progress::where('id_user', Auth::user()->id_pengajuan)->get();
+
+        // Cek level dan role user
+        if ($user->level == 'teknisi' && $user->role == 'kap_teknisi') {
+            // Jika user adalah teknisi dengan role kap_teknisi, ambil semua data pengajuan
+            $pengajuan = Pengajuan::all();
         } else {
-            $progress = Progress::all();
+            // Jika user adalah teknisi tanpa role kap_teknisi, ambil data progress sesuai dengan id_pengajuan yang terkait dengan user
+            $progress = Progress::where('id_user', $user->id)->get();
+        }
+        
+
+        // Ambil semua data pengajuan jika user bukan teknisi atau tidak ada data progress yang diambil di atas
+        if ($pengajuan === null) {
+            $pengajuan = Pengajuan::all();
         }
     
         return view('home.admin', compact('instansi', 'user', 'progress', 'pengajuan'));

@@ -28,7 +28,7 @@ class ProgressController extends Controller
     {
         $pengajuan = null;
         // Jika user adalah pic_rs, ambil data pengajuuan berdasarkan user buat. dan jika user adalah admin, ambil semua data peralatan
-        if (Auth::user()->level == 'pic_rs') {
+        if (Auth::user()->level == 'pic') {
             $pengajuan = pengajuan::where('id_user', Auth::user()->id)->get();
         } else {
             $pengajuan = pengajuan::all();
@@ -75,35 +75,55 @@ class ProgressController extends Controller
         // Cek jika id_user sudah terisi maka update kolom yang lain
         if (!is_null($progress->id_user)) {
             // Update kolom yang lain
-
-
-            $progress->progress = $request->progress;
+            $progress->nilai_pengerjaan = $request->nilai_pengerjaan;
             $progress->keterangan = $request->keterangan;
-            // cek jika salah satu dari column tersebut maka upudate kolom yang lain saja dan gunakan value seblumnya
+    
             if ($progress->jadwal == null) {
                 $progress->jadwal = $request->jadwal;
+                $progress->save();
+    
+                // Simpan data riwayat
+                $historyTime = [
+                    'id_user' => Auth::user()->id,
+                    'tanggal' => Carbon::now(),
+                    'status_history' => 'progress update',
+                    'deskripsi' => 'waktu di ajukan oleh ' . Auth::user()->nama_user . ' dengan waktu ' . $progress->jadwal,
+                    'id_progress' => $progress->id,
+                    'id_pengajuan' => $request->id_pengajuan,
+                ];
+    
+                History::create($historyTime);
             } else {
-                $progress->jadwal = $progress->jadwal;
+                // Jika jadwal sudah terisi sebelumnya, tidak perlu merubah jadwal
+                $progress->save();
+                // Simpan data riwayat
+                $history = [
+                    'id_user' => Auth::user()->id,
+                    'tanggal' => Carbon::now(),
+                    'status_history' => 'progress update',
+                    'deskripsi' => 'progress di update oleh ' . Auth::user()->nama_user . ' dengan nilai pengerjaan ' . $progress->nilai_pengerjaan . ' dan keterangan ' . $progress->keterangan,
+                    'id_progress' => $progress->id,
+                    'id_pengajuan' => $request->id_pengajuan,
+                ];
+                if ($progress->nilai_pengerjaan == 100) {
+                    $history['status_history'] = 'selesai';
+                }
+            
+                History::create($history);
             }
-
-            // Tambahkan update kolom lainnya sesuai kebutuhan
     
-            $progress->save();
-    
-            // Simpan data riwayat
-            $history = new History();
-            $history->id_user = Auth::user()->id;
-            $history->id_progress = $progress->id;
-            $history->tanggal = Carbon::now();
-            $history->status = "proses"; // Sesuaikan dengan status yang sesuai
-            $history->deskripsi = "Progress updated by " . Auth::user()->name;
-            $history->save();
-    
-            return redirect('/progress')->with('success', 'Progress has been updated');
+            if (Auth::user()->level == 'teknisi') {
+                return redirect('/home')->with('success', 'Progress has been updated');
+            }
         }
     
-        return redirect('/progress')->with('error', 'Progress update failed');
+        if (Auth::user()->level == 'teknisi') {
+            return redirect('/home')->with('success', 'Progress has been updated');
+        } else {
+            return redirect('/progress')->with('error', 'Progress update failed');
+        }
     }
+    
     
 
     /**

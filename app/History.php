@@ -9,12 +9,21 @@ class History extends Model
     protected $table = 'histories';
     protected $guarded = [];
 
-    public function users()
+    function users()
     {
         return $this->belongsTo('App\User', 'id_user');
     }
-    public function progress()
+
+    function peralatan()
     {
+        return $this->belongsTo('App\Peralatan', 'id_peralatan');
+    }
+
+    function pengajuan() {
+        return $this->belongsTo('App\Pengajuan', 'id_pengajuan');
+    }
+
+    function progress() {
         return $this->belongsTo('App\Progress', 'id_progress');
     }
 }

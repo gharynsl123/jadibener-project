@@ -38,7 +38,7 @@ class KondisiController extends Controller
     {
         $input = $request->all();
         Kondisi::create($input);
-        return redirect('/urgently')->with('success', 'Urgent has been created successfully.');
+        return redirect('/kondisi')->with('success', 'Urgent has been created successfully.');
     }
 
     /**

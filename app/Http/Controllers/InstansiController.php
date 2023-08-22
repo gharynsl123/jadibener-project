@@ -37,26 +37,19 @@ class InstansiController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'instansi' => 'required|string|max:255',
-            'jumlah_kasur' => 'required|integer|min:0',
-            'kelas' => 'required|string|max:255',
-            'status' => 'required|string|max:255',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'alamat' => 'required|string',
-        ]);
+        
+        $dataInstansi = $request->all();
+        // apploud image to data base and local
 
-        $imagePath = $request->file('image')->store('images', 'public');
+        if($request->hasFile('photo_instansi')){
+            $destination_path = 'public/rumahsakit'; //path tempat penyimpanan (storage/public/images/profile)
+            $image = $request -> file('photo_instansi'); //mengambil request column photo_instansi
+            $image_name = $image->getClientOriginalName(); //memberikan nama gambar yang akan disimpan di foto
+            $path = $request->file('photo_instansi')->storeAs($destination_path, $image_name); //mengirimkan foto ke folder store
+            $dataInstansi['photo_instansi'] = $image_name; //mengirimkan ke database
+        }
 
-        Instansi::create([
-            'instasi' => $request->instansi,
-            'alamat' => $request->alamat,
-
-            'jumlah_kasur' => $request->jumlah_kasur,
-            'kelas' => $request->kelas,
-            'status' => $request->status,
-            'photo' => $imagePath,
-        ]);
+        Instansi::create($dataInstansi);
 
         return redirect('/instansi')->with('success', 'Data rumah sakit berhasil ditambahkan.');
     }
@@ -71,11 +64,10 @@ class InstansiController extends Controller
      */
     public function show($id)
     {
-        
         $instansi = Instansi::find($id);
         // mengambil data yang ada di table instasi dengan user yang sedang login
-        $user = User::where('id', $instansi->id_user)->get()->all();
-        return view('instansi.detail_instansi', compact('user'));
+        $user = User::where('id_instansi', $instansi->id)->get()->all();
+        return view('instansi.detail_instansi', compact('user', 'instansi'));
     }
 
     /**
@@ -84,9 +76,13 @@ class InstansiController extends Controller
      * @param  \App\Instansi  $instansi
      * @return \Illuminate\Http\Response
      */
-    public function edit(Instansi $instansi)
+    public function edit($id)
     {
-        //
+        // edit intansi
+        $instansi = Instansi::find($id);
+
+        $user = User::where('level', 'pic')->get();
+        return view('instansi.edit_instansi', compact('instansi', 'user'));
     }
 
     /**
@@ -96,9 +92,25 @@ class InstansiController extends Controller
      * @param  \App\Instansi  $instansi
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Instansi $instansi)
+    public function update(Request $request, $id)
     {
-        //
+        $instansi = Instansi::find($id);
+        $dataInstansi = $request->all();
+        // apploud image to data base and local
+
+        if($request->hasFile('photo_instansi')){
+            $destination_path = 'public/rumahsakit'; //path tempat penyimpanan (storage/public/images/profile)
+            $image = $request -> file('photo_instansi'); //mengambil request column photo_instansi
+            $image_name = $image->getClientOriginalName(); //memberikan nama gambar yang akan disimpan di foto
+            $path = $request->file('photo_instansi')->storeAs($destination_path, $image_name); //mengirimkan foto ke folder store
+            $dataInstansi['photo_instansi'] = $image_name; //mengirimkan ke database
+        } else{
+            $dataInstansi['photo_instansi'] = $instansi->photo_instansi;
+        }
+
+        $instansi->update($dataInstansi);
+
+        return redirect('/instansi')->with('success', 'Data rumah sakit berhasil diubah.');
     }
 
     /**

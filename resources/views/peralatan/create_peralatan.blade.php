@@ -9,8 +9,8 @@
                 <label for="merk">Nama Instansi</label>
                 <select class="form-control" name="id_instansi">
                     <option>-- PILIH --</option>
-                    @foreach($instansi as $instansis)
-                    <option value="{{ $instansis->id }}">{{ $instansis->instasi }}</option>
+                    @foreach($instansi as $items)
+                    <option value="{{ $items->id }}">{{ $items->nama_instansi }}</option>
                     @endforeach
                     <!-- Tambahkan opsi merk lainnya sesuai kebutuhan -->
                 </select>
@@ -25,6 +25,10 @@
                     <!-- Tambahkan opsi merk lainnya sesuai kebutuhan -->
                 </select>
             </div>
+
+            <!-- pengisian id user dengan user yang sedang login-->
+            <input type="text" name="id_user" value="{{ Auth::user()->id }}" hidden readonly>
+
             <div class="form-group">
                 <label for="kategori">Nama Kategori</label>
                 <select class="form-control" name="id_kategori" id="kategori-select">
@@ -35,36 +39,17 @@
                 </select>
             </div>
 
-            <div class="form-group " id="product-group" style="display: none;">
+            <div class="form-group" id="produk-group" style="display: none;">
                 <label for="merk">Nama Product</label>
                 <select class="form-control" name="id_product" id="product-select">
                     <option>-- PILIH --</option>
-                    @foreach($product as $item)
-                    <option value="{{ $item->id }}">{{ $item->nama_produk }}</option>
-                    @endforeach
-                    <!-- Tambahkan opsi merk lainnya sesuai kebutuhan -->
+                    <!-- Opsi produk akan diisi melalui JavaScript -->
                 </select>
             </div>
-            <div class="form-group">
-                <label for="merk">Keterangan Product</label>
-                <select class="form-control" name="keterangan">
 
-                    <option value="baik">baik</option>
-                    <option value="hilang">hilang</option>
-                    <option value="rusak">rusak</option>
-
-                    Tambahkan opsi merk lainnya sesuai kebutuhan
-                </select>
-            </div>
             <div class="form-group">
-                <label for="serial-number">Kondisi Product</label>
-                <input type="number" class="form-control" name="kondisi_product" id="kondisi-product"
-                    placeholder="untuk di tampilan menjadi persent">
-                <small class="text-muted">batas pengisian 100</small>
-            </div>
-            <div class="form-group">
-                <label for="serial-number">Nilai Tahunan</label>
-                <input type="number" class="form-control" name="nilai_tahun" id="pertahun-product"
+                <label for="serial-number">Usia Barang</label>
+                <input type="number" class="form-control" name="usia_barang" id="pertahun-product"
                     placeholder="patokan nnilai ini akan berkurang sasuia tahun nya">
                 <small class="text-muted">Hanya bisa 5 sampai 10 tahun</small>
             </div>
@@ -87,8 +72,39 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const kondisiProductInput = document.getElementById('kondisi-product');
     const pertahunProductInput = document.getElementById('pertahun-product');
+
+    const kategoriSelect = document.getElementById('kategori-select');
+    const productSelect = document.getElementById('product-select');
+    const formGroupInput = document.getElementById('produk-group');
+    const products = @json($product); // Data produk dari controller
+
+    // Add an event listener to the kategori select
+    kategoriSelect.addEventListener('change', function() {
+        const selectedCategoryId = kategoriSelect.value;
+
+        // Clear existing options
+        productSelect.innerHTML = '<option>-- PILIH --</option>';
+
+        // jika kategori tidak dipilih mmaka hilangkan opsi produk. jika di pilih maka muncul kan opsi produk
+        if (selectedCategoryId === '-- PILIH --') {
+            formGroupInput.style.display = 'none';
+            return;
+        } else {
+            formGroupInput.style.display = 'block';
+        }
+
+        // Filter products based on selected category
+        const filteredProducts = products.filter(product => product.id_kategori == selectedCategoryId);
+
+        // Add filtered products as options
+        filteredProducts.forEach(product => {
+            const option = document.createElement('option');
+            option.value = product.id;
+            option.textContent = product.nama_produk;
+            productSelect.appendChild(option);
+        });
+    });
 
     pertahunProductInput.addEventListener('input', function() {
         // Get the entered value and convert it to a number
@@ -104,59 +120,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Add an event listener to the input field
-    kondisiProductInput.addEventListener('input', function() {
-        // Get the entered value and convert it to a number
-        let value = parseFloat(kondisiProductInput.value);
-
-        // Check if the entered value is greater than 100
-        if (value > 100) {
-            // If it's greater, set the input value to 100
-            kondisiProductInput.value = 100;
-        }
-    });
 });
 </script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const kategoriSelect = document.getElementById('kategori-select');
-    const productSelect = document.getElementById('product-select');
-    const groupProduct = document.getElementById('product-group');
-    const products = @json($product); // Data produk dari controller
-
-    // jika kategori di pilih maka product akan muncul jika tidak maka tidak muncul
-    kategoriSelect.addEventListener('change', function() {
-        if (kategoriSelect.value != "-- PILIH --") {
-            groupProduct.style.display = "block";
-        } else {
-            groupProduct.style.display = "none";
-        }
-    });
-
-    // Add an event listener to the kategori select
-    kategoriSelect.addEventListener('change', function() {
-        const selectedCategoryId = kategoriSelect.value;
-
-        // Clear existing options
-        productSelect.innerHTML = '<option>-- PILIH --</option>';
-
-        // Filter products based on selected category
-        const filteredProducts = products.filter(product => product.id_kategori == selectedCategoryId);
-
-        // Add filtered products as options
-        filteredProducts.forEach(product => {
-            const option = document.createElement('option');
-            option.value = product.id;
-            option.textContent = product.nama_produk;
-            productSelect.appendChild(option);
-        });
-    });
-
-    // Add an event listener to the input field
-    kondisiProductInput.addEventListener('input', function() {
-        // ... (existing code to limit input to 100)
-    });
-});
-</script>
-
 @endsection

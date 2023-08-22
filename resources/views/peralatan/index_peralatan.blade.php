@@ -33,8 +33,8 @@
     }
 </style>
 
-<div class="d-none d-flex @if(Auth::user()->level == 'pic_rs') justify-content-end @else justify-content-between @endif mb-3">
-    @if(Auth::user()->level == 'admin')
+<div class="d-none d-flex @if(Auth::user()->level == 'pic') justify-content-end @else justify-content-between @endif mb-3">
+    @if(Auth::user()->level != 'pic')
     <a href="{{route('peralatan.create')}}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">
         <i class="fas fa-plus fa-sm text-white-50"></i> Tambahkan Data</a>
     @endif
@@ -58,7 +58,7 @@
                         <th>Durasi Pemakaian</th>
                         <th>Keterangan</th>
                         <th>Kondisi Product</th>
-                        @if (Auth::user()->level != 'pic_rs')
+                        @if (Auth::user()->level != 'pic')
                         <th class="th-end hide-when-checklist-shown">Action</th>
                         @endif
                         <th class="th-end show-when-checklist-shown"></th>
@@ -68,7 +68,7 @@
                     <!-- Menampilkan data peralatan di reverse agar data yang baru di tambah muncul di atas -->
                     @foreach($peralatan->reverse() as $peralatans)
                     <tr>
-                        <td>{{ $peralatans->instansi->instasi }}</td>
+                        <td>{{ $peralatans->instansi->nama_instansi }}</td>
                         <td>{{ $peralatans->kategori->nama_kategori }}</td>
                         <td>{{ $peralatans->merek->nama_merek }}</td>
                         <td>{{ $peralatans->produk->nama_produk}}</td>
@@ -90,7 +90,7 @@
                                     {{$peralatans->kondisi_product}}</div>
                             </div>
                         </td>
-                        @if (Auth::user()->level == 'admin')
+                        @if (Auth::user()->level == 'admin' || Auth::user()->level == 'teknisi')
                         <td class="hide-when-checklist-shown">
                             <a href="{{ route('peralatan.edit', $peralatans->id) }}" class="btn btn-warning btn-sm"><i
                                     class="fa fa-pen-to-square text-white"></i></a>
@@ -103,6 +103,9 @@
                                         class="fa fa-trash text-white"></i></button>
                             </form>
                         </td>
+                        @endif
+                        @if (Auth::user()->level == 'pic')
+                        <td></td>
                         @endif
                         <td class="show-when-checklist-shown">
                             <div class="checklist-checkbox-label">

@@ -35,10 +35,10 @@
                 <div class="modal-body">
                     <form action="{{route('informasi.store')}}" method="post">
                         @csrf
-                        <input type="text" name="judul" class="mb-4 form-control" autocomplete="off"
+                        <input type="text" name="judul_informasi" require class="mb-4 form-control" autocomplete="off"
                             placeholder="Judulnya">
                         <!-- text are untuk isi dari informasi -->
-                        <textarea id="" cols="30" rows="10" name="isi_informasi"
+                        <textarea id="" require cols="30" rows="10" name="deskripsi_informasi"
                             class="form-control mb-4">input your text here</textarea>
                         <button class="btn btn-primary" type="submit">Input</button>
                         <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -54,8 +54,8 @@
     <div class="col-md-6">
         <a href="{{route('informasi.show', $items->id)}}" class="text-decoration-none">
             <div class="card shadow p-2 mb-4">
-                <p class="text-dark text-capitalize font-weight-bold">{{$items->judul}}</p>
-                <p class="text-dark isi max-line-5">{{$items->isi_informasi}}</p>
+                <p class="text-dark text-capitalize font-weight-bold">{{$items->judul_informasi}}</p>
+                <p class="text-dark isi max-line-5">{{$items->deskripsi_informasi}}</p>
                 <div class="d-flex justify-content-end mt-3">
                     <a href="#" class="btn m-1 btn-primary" data-bs-toggle="tooltip" data-bs-placement="top"
                         title="Edit informasi">

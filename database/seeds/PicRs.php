@@ -16,6 +16,7 @@ class PicRs extends Seeder
         $user->alamat_user = "Jl. Kh Hasyim Ashari No.32, RW.8, Cideng, Kecamatan Gambir, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10150";
         $user->email = "hakimasuta@gmail.com";
         $user->level = "pic";
+        // mengisi relasi dari user ke instansi dengan id
         $user->nomor_telepon = "081299106344";
         $user->role = "manager";
         $user->password = \Hash::make('sasani123');

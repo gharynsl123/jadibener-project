@@ -7,20 +7,22 @@
     <div class="card shadow border-0 ">
         <div class="row">
             <div class="col-md-3 d-flex justify-content-center">
-                <img src="{{asset('image/yarsi.jpg')}}" alt="Hospital Logo" class="img-fluid rounded"
+                <img src="{{ asset('storage/rumahsakit/'.$instansi->photo_instansi) }}" alt="Hospital Logo" class="img-fluid rounded"
                     style="width: 100%;">
             </div>
             <div class="col-md-9 my-4 px-4">
-                <h4 class="mb-3">{{$instansi->instasi}}</h4>
+                <h4 class="mb-3">{{$instansi->nama_instansi}}</h4>
                 <p>
                     <strong>Alamat:</strong>
-                    {{$instansi->alamat}}
+                    {{$instansi->alamat_instansi}}
                 </p>
                 <div class="text-capitalize">
-                    <strong>PIC:</strong> {{$user->name}}
+                    <strong>PIC:</strong> {{$user->nama_user}} <br>
+                    <!-- jika divisi belumm ada maka muncul kan text belum ada -->
+                    <strong>Divisi:</strong> {{$user->role ? $user->role : 'Belum ada'}}
                 </div>
                 <div class="contact-info">
-                    <strong>HP:</strong> {{$user->no_telp}}<br>
+                    <strong>HP:</strong> {{$user->nomor_telepon}}<br>
                     <strong>Email:</strong> {{$user->email}}
                 </div>
             </div>
@@ -38,19 +40,14 @@
                         <td>{{$instansi->jumlah_kasur}}</td>
                     </tr>
                     <tr>
-                        <td>KELAS</td>
+                        <td>Jenis Instansi</td>
                         <td>:</td>
-                        <td>{{$instansi->kelas}}</td>
-                    </tr>
-                    <tr>
-                        <td>STATUS</td>
-                        <td>:</td>
-                        <td>{{$instansi->status}}</td>
+                        <td>{{$instansi->jenis_instansi}}</td>
                     </tr>
                     <tr>
                         <td>NO. MEMBER</td>
                         <td>:</td>
-                        <td>JKU 0001 RSU</td>
+                        <td></td>
                     </tr>
                 </tbody>
             </table>

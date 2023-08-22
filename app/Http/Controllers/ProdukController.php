@@ -33,21 +33,17 @@ class ProdukController extends Controller
     public function store(Request $request)
     {
         // Simpan data produk ke database
-        $product = new Produk();
-        $product->id_merek = $request->input('id_merek');
-        $product->id_kategori = $request->input('id_kategori');
-        $product->kode_produk = $request->input('kode_produk');
-        $product->nama_produk = $request->input('nama_produk');
+        $addDataProduk = $request->all();
     
-        if ($request->hasFile('photo')) {
-            $image = $request->file('photo');
-            $image_name = $image->getClientOriginalName();
-            $destination_path = 'public/images';
-            $path = $request->file('photo')->storeAs($destination_path, $image_name);
-            $product->photo = $image_name;
+        if($request->hasFile('photo_produk')){
+            $destination_path = 'public/produk'; //path tempat penyimpanan (storage/public/images/profile)
+            $image = $request -> file('photo_produk'); //mengambil request column photo_instansi
+            $image_name = $image->getClientOriginalName(); //memberikan nama gambar yang akan disimpan di foto
+            $path = $request->file('photo_produk')->storeAs($destination_path, $image_name); //mengirimkan foto ke folder store
+            $addDataProduk['photo_produk'] = $image_name; //mengirimkan ke database
         }
     
-        $product->save();
+        Produk::create($addDataProduk);
     
         // Redirect ke halaman lain atau tampilkan pesan sukses
         return redirect()->route('produk.index')->with('success', 'Produk berhasil ditambahkan.');

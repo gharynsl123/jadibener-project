@@ -8,7 +8,7 @@
         <span>back</span>
     </a>
     
-    <p class="mx-4 my-0 h3">{{$informasi->judul}}</p>
+    <p class="mx-4 my-0 h3">{{$informasi->judul_informasi}}</p>
 </div>
-<p class="card p-3 mt-5 shadow">{{$informasi->isi_informasi}}</p>
+<p class="card p-3 mt-5 shadow">{{$informasi->deskripsi_informasi}}</p>
 @endsection

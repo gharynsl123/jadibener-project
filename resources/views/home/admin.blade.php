@@ -1,11 +1,9 @@
 @extends('layouts.main-view')
 
-@if (Auth::user()->level == 'pic_rs')
+@if (Auth::user()->level == 'pic')
 @section('content')
 @include('profile.rumah_sakit')
 @endsection
-@elseif (Auth::user()->level == 'surveyor')
-@include('home.surveyor')
 @elseif(Auth::user()->level == 'teknisi')
 @include('home.teknisi')
 @else
@@ -71,7 +69,7 @@
                 <tbody>
                     @foreach($pengajuan->reverse() as $items)
                     <!-- menampilnkan data yang bersatstus pending saja -->
-                    @if($items->status == 'pending')
+                    @if($items->status_pengajuan == 'pending')
                     <tr>
                         <td>
                             <!-- for go to detail -->
@@ -80,20 +78,20 @@
                             </a>
                         </td>
                         <td>{{$items->created_at}}</td>
-                        <td>{{$items->peralatan->instansi->instasi}}</td>
-                        <td>{{$items->user->name}}</td>
+                        <td>{{$items->peralatan->instansi->nama_instansi}}</td>
+                        <td>{{$items->user->nama_user}}</td>
                         <td>{{$items->peralatan->serial_number}}</td>
                         <td>{{$items->peralatan->kategori->nama_kategori}}</td>
                         <td>{{$items->peralatan->produk->nama_produk}}</td>
-                        <td>{{$items->urgent->nama_kondisi}}</td>
-                        <td>{{$items->status}}</td>
+                        <td>{{$items->kondisi->nama_kondisi}}</td>
+                        <td>{{$items->status_pengajuan}}</td>
                         <td>
                             <!-- untuk feedback good or bad -->
                             <div class="d-flex justify-content-between">
                                 <form action="{{route('pengajuan.update', $items->id)}}" method="post">
                                     @csrf
                                     {{method_field('POST')}}
-                                    <input type="text" name="status" value="approved" hidden>
+                                    <input type="text" name="status_pengajuan" value="approved" hidden>
                                     <button type="submit" class="btn btn-success">
                                         <i class="fa fa-thumbs-up text-white"></i>
                                     </button>
@@ -101,7 +99,7 @@
                                 <form action="{{route('pengajuan.update', $items->id)}}" method="post">
                                     @csrf
                                     {{method_field('POST')}}
-                                    <input type="text" name="status" value="rejected" hidden>
+                                    <input type="text" name="status_pengajuan" value="rejected" hidden>
                                     <button type="submit"  class="btn btn-danger">
                                         <i class="fa fa-thumbs-down text-white"></i>
                                     </button>
@@ -128,10 +126,10 @@
         var statusCell = row.querySelector("td:nth-child(8)");
 
         // Mengambil teks status dari sel
-        var status = statusCell.textContent.trim();
+        var status_pengajuan = statusCell.textContent.trim();
         
         // Membandingkan status dengan data dari pengajuan
-        if (status != pengajuanData[index]->status) {
+        if (status_pengajuan != pengajuanData[index]->status_pengajuan) {
             dd
         }
     });

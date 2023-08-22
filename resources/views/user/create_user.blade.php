@@ -11,17 +11,14 @@
                 
                 <div class="form-group col-md-6">
                     <label for="name" >{{ __('Name User') }}</label>
-                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name"
-                        value="{{ old('name') }}" required autocomplete="name" autofocus>
+                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="nama_user"
+                        value="{{ old('name') }}" required autocomplete="off" autofocus>
                 </div>
-
-
-
                 
                 <div class="form-group col-md-6">
                     <label for="email" class="">{{ __('Email') }}</label>
                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
-                        name="email" value="{{ old('email') }}" required autocomplete="email">
+                        name="email" value="{{ old('email') }}" required autocomplete="off">
 
                 </div>
 
@@ -29,7 +26,7 @@
                 <div class="form-group col-md-6">
                     <label for="email" class="">{{ __('Nomor Telepon') }}</label>
                     <input id="no_telp" type="number" class="form-control @error('no_telp') is-invalid @enderror"
-                        name="no_telp" required autocomplete="no_telp">
+                        name="nomor_telepon" required autocomplete="off">
 
                 </div>
 
@@ -38,7 +35,7 @@
                     <select id="level" class="form-control @error('level') is-invalid @enderror" name="level" required>
                         <option value="">-- Select Level --</option>
                         <option value="admin">Admin</option>
-                        <option value="pic_rs">PIC RS</option>
+                        <option value="pic">PIC RS</option>
                         <option value="sub_service">Sub Divisi</option>
                         <option value="surveyor">Surveyor</option>
                         <option value="teknisi">Teknisi</option>
@@ -52,9 +49,11 @@
                         <option value="">-- Select Role --</option>
                         <option value="qizi">Qizi</option>
                         <option value="alkes">Alkes</option>
-                        <option value="manager">Manager</option>
                         <option value="cssd">CSSD</option>
+                        <option value="manager">Manager</option>
+                        <option id="roleTeknisi" value="kap_teknisi">Kepala Teknisi</option>
                     </select>
+                    <small class="text-muted">jika user hanya teknisi biasa maka kosong kan role ini</small>
                 </div>
 
                 <div class=" form-group col-md-6 " id="instansiField" style="display: none;">
@@ -63,7 +62,7 @@
                         <option value="">select the level</option>
                         <!-- mengambil data dari instansi -->
                         @foreach($instansi as $instansis)
-                        <option value="{{$instansis->id}}">{{$instansis->instasi}}</option>
+                        <option value="{{$instansis->id}}">{{$instansis->nama_instansi}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -82,7 +81,7 @@
                 
                 <div class="form-group col-md-6">
                     <label for="password-confirm">{{ __('Confirm Password') }}</label>
-                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation"
+                    <input id="password-confirm" type="password" class="form-control"
                         required autocomplete="new-password">
                 </div>
 
@@ -99,10 +98,9 @@
 
                 </div>
 
-
                 <div class="form-group col-md-12">
                     <label for="alamat">Alamat</label>
-                    <textarea class="form-control" id="alamat" name="alamat" rows="3"
+                    <textarea class="form-control" id="alamat" name="alamat_user" rows="3"
                         placeholder="your alamat in here"></textarea>
                 </div>
             </div>
@@ -126,17 +124,30 @@
 document.addEventListener('DOMContentLoaded', function() {
     var levelSelect = document.getElementById('level');
     var roleField = document.getElementById('roleField');
+    var roleTeknisi = document.getElementById('roleTeknisi');
     var instansiField = document.getElementById('instansiField');
 
     levelSelect.addEventListener('change', function() {
-        if (this.value === 'pic_rs') {
-            roleField.style.display = 'block';
-            instansiField.style.display = 'block';
-        } else {
-            roleField.style.display = 'none';
-            instansiField.style.display = 'none';
-        }
+            var selectedLevel = levelSelect.value;
+
+            if (selectedLevel === 'teknisi') {
+                roleField.style.display = 'block';
+                instansiField.style.display = 'none';
+                roleTeknisi.style.display = 'block';
+
+            } else if (selectedLevel === 'pic') {
+                roleField.style.display = 'block';
+                instansiField.style.display = 'block';
+                roleTeknisi.style.display = 'none';
+
+            } else {
+                roleField.style.display = 'none';
+                instansiField.style.display = 'none';
+                roleTeknisi.style.display = 'none';
+            }
     });
+
+
 });
 </script>
 @endsection

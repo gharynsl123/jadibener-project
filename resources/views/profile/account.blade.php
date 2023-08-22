@@ -14,13 +14,13 @@
                     <tr>
                         <th>Nama</th>
                         <td>:</td>
-                        <td>{{$items->name}}</td>
+                        <td>{{$items->nama_user}}</td>
                     </tr>
                     <tr>
                         <th>Alamat</th>
                         <td>:</td>
                         <!-- if null buat percabangan dalam satu baris-->
-                        <td>{{ $items->alamat ? $items->alamat : 'Belum diisi' }}</td>
+                        <td>{{ $items->alamat_user ? $items->alamat_user : 'Belum diisi' }}</td>
                     </tr>
                     <tr>
                         <th>Jenis Kelamin</th>
@@ -33,7 +33,7 @@
         </div>
     </div>
     @endforeach
-    @if (Auth::user()->level != 'pic_rs')
+    @if (Auth::user()->level != 'pic')
     @foreach ($user as $items)
     <div class="col-md-6">
         <div class="card shadow">
@@ -74,12 +74,12 @@
                     <tr>
                         <th>Instansi</th>
                         <td>:</td>
-                        <td>{{ $items->instansi->instasi }}</td>
+                        <td>{{ $items->instansi->nama_instansi }}</td>
                     </tr>
                     <tr>
                         <th>No telepon</th>
                         <td>:</td>
-                        <td>{{$items->no_telp}}</td>
+                        <td>{{$items->nomor_telepon}}</td>
                     </tr>
                     <tr>
                         <th>Level</th>

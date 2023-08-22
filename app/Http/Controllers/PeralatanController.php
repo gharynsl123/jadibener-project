@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Merek;
+use Carbon\Carbon;
 use App\Kategori;
+use App\History;
+use App\Pengajuan;
 use App\Instansi;
 use App\Produk;
 use Illuminate\Support\Facades\Auth;
@@ -30,7 +33,7 @@ class PeralatanController extends Controller
         $peralatan = null;
     
         // Jika user adalah pic_rs, ambil data peralatan berdasarkan rumah sakit yang dipegang. dan jika user adalah admin, ambil semua data peralatan
-        if (Auth::user()->level == 'pic_rs') {
+        if (Auth::user()->level == 'pic') {
             $peralatan = Peralatan::where('id_instansi', Auth::user()->id_instansi)->get();
         } else {
             $peralatan = Peralatan::all();
@@ -64,7 +67,21 @@ class PeralatanController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
-        Peralatan::create($input);
+        $dataPeralatan = Peralatan::create($input);
+
+        $today = Carbon::now();
+        $formatedDate = $today->format('y-m-d');
+
+        $history = [
+            'status_history' => 'Pendataan Alat',
+            'deskripsi' => 'Disurvey pada oleh ' . Auth::user()->nama_user,
+            'tanggal' => $formatedDate,
+        ];
+        $history['id_peralatan'] = $dataPeralatan->id;
+        $history['id_user'] = $request->id_user;
+
+        History::create($history);
+
         return redirect('/peralatan')->with('success', 'Data Peralatan Berhasil Ditambahkan');
     }
 
@@ -77,10 +94,12 @@ class PeralatanController extends Controller
     public function show($id)
     {
           // Mengambil data peralatan berdasarkan ID
-    $peralatan = Peralatan::find($id);
-
-    // Mengirim data peralatan ke view
-    return view('peralatan.detail_peralatan', compact('peralatan'));
+        $peralatan = Peralatan::find($id);
+        
+        // mengambil data history sesuai id peraltan yang di tuju
+        $history = History::where('id_peralatan', $id)->get();
+        // Mengirim data peralatan ke view
+        return view('peralatan.detail_peralatan', compact('peralatan', 'history'));
     }
 
     /**
@@ -111,10 +130,24 @@ class PeralatanController extends Controller
      */
     public function update(Request $request, $id)
     {
-                // Mengambil data peralatan berdasarkan ID
-                $peralatan = Peralatan::find($id);
-                $peralatan->update($request->all());
-                return redirect('/peralatan')->with('success', 'Data Peralatan Berhasil Diupdate');
+        // Mengambil data peralatan berdasarkan ID
+        $peralatan = Peralatan::find($id);
+        $peralatan->update($request->all());
+
+        $today = Carbon::now();
+        $formatedDate = $today->format('y-m-d');
+
+        $history = [
+            'status_history' => 'Alat di survey',
+            'deskripsi' => 'Disurvey oleh ' . Auth::user()->nama_user,
+            'tanggal' => $formatedDate,
+        ];
+        $history['id_peralatan'] = $peralatan->id;
+        $history['id_user'] = $request->id_user;
+
+        History::create($history);
+
+        return redirect('/peralatan')->with('success', 'Data Peralatan Berhasil Diupdate');
     }
 
     /**

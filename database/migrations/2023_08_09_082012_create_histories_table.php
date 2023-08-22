@@ -15,13 +15,21 @@ class CreateHistoriesTable extends Migration
     {
         Schema::create('histories', function (Blueprint $table) {
             $table->increments('id');
+
             $table->integer('id_user')->unsigned();
-            $table->integer('id_progress')->unsigned();
+            $table->integer('id_peralatan')->unsigned()->nullable();
+            $table->integer('id_pengajuan')->unsigned()->nullable();
+            $table->integer('id_progress')->unsigned()->nullable();
+
             $table->string('tanggal');
             $table->string('status_history');
             $table->string('deskripsi')->nullable();
-            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
+
             $table->foreign('id_progress')->references('id')->on('progress')->onDelete('cascade');
+            $table->foreign('id_pengajuan')->references('id')->on('pengajuan')->onDelete('cascade');
+            $table->foreign('id_peralatan')->references('id')->on('peralatan')->onDelete('cascade');
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
+            
             $table->timestamps();
         });
     }

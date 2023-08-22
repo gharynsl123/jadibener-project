@@ -2,25 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Informasi;
 use Illuminate\Http\Request;
+use App\Peralatan;
+use App\Survey;
+use App\User;
 
-class InformasiController extends Controller
+class SurveyController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    // auth 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
     public function index()
     {
-        $informasi = Informasi::all();
-        return view('informasi.index_informasi', compact('informasi'));
+        $survey = Survey::all();
+        return view('service.laporan', compact('survey'));
     }
 
     /**
@@ -28,9 +25,12 @@ class InformasiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        //
+        $peralatan = Peralatan::find($id);
+        $user = User::where('level', 'teknisi')->get();
+        $survey = Survey::all();
+        return view('peralatan.create_survey', compact('peralatan', 'survey', 'user'));
     }
 
     /**
@@ -41,32 +41,28 @@ class InformasiController extends Controller
      */
     public function store(Request $request)
     {
-        
-        Informasi::create($request->all());
-        return redirect('/informasi')->with('success', 'Informasi has been added');
+        Survey::create($request->all());
+        return redirect('/peralatan/{id}')->with('status', 'Data Survey Berhasil Ditambahkan!');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Informasi  $informasi
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        // mengambil data yang di klik
-        $informasi = Informasi::find($id);
-        // menampilkan halaman show dan passing data
-        return view('informasi.detail_informasi', compact('informasi'));
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Informasi  $informasi
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Informasi $informasi)
+    public function edit($id)
     {
         //
     }
@@ -75,10 +71,10 @@ class InformasiController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Informasi  $informasi
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Informasi $informasi)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -86,10 +82,10 @@ class InformasiController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Informasi  $informasi
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Informasi $informasi)
+    public function destroy($id)
     {
         //
     }

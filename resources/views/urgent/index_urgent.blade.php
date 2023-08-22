@@ -21,7 +21,7 @@
                     @csrf
                     <input type="text" name="nama_kondisi" class="mb-4 form-control" autocomplete="off"
                         placeholder="Nama Kondisi">
-                    <input type="number" name="waktu" class="mb-4 form-control" autocomplete="off"
+                    <input type="number" name="waktu_kondisi" class="mb-4 form-control" autocomplete="off"
                         placeholder="Berikan Waktu">
                     <button class="btn btn-primary" type="submit">Input</button>
                     <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -54,7 +54,7 @@
                             {{ $items->nama_kondisi}} 
                         </td>
                         <td>
-                            {{ $items->waktu }} hari
+                            {{ $items->waktu_kondisi }} hari
                         </td>
                         <td>
                             <form action="{{ route('urgent.destroy', $items->id) }}" method="post">

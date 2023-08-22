@@ -20,7 +20,7 @@
             <div class="modal-body">
                 <form action="{{route('part.store')}}" method="post">
                     @csrf
-                    <input type="text" name="kode_sukucadang" class="mb-4 form-control" autocomplete="off"
+                    <input type="text" name="kode_part" class="mb-4 form-control" autocomplete="off"
                     placeholder="tuliskan kode partnya">
                     <!-- menginput dropdown utuk kategori yang sudah di relasikan -->
                     <select name="id_kategori" class="form-control mb-4">
@@ -28,7 +28,7 @@
                         @foreach($kategori as $items)
                         <option value="{{ $items->id }}">{{ $items->nama_kategori }}</option>
                         @endforeach
-                    <input type="text" name="nama_sukucadang" class="mb-4 form-control" autocomplete="off"
+                    <input type="text" name="nama_part" class="mb-4 form-control" autocomplete="off"
                         placeholder="Apa nama partnya">
                     <button class="btn btn-primary" type="submit">Input</button>
                     <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -59,19 +59,19 @@
                             {{ $index + 1 }}
                         </td>
                         <td class="text-uppercase">
-                            {{ $items->kode_sukucadang }}
+                            {{ $items->kode_part }}
                         </td>
                         <td class="text-uppercase">
                             {{ $items->kategori->nama_kategori }}
                         </td>
                         <td class="text-uppercase">
-                            {{ $items->nama_sukucadang }}
+                            {{ $items->nama_part }}
                         </td>
                         <td>
                             <form action="{{ route('part.destroy', $items->id) }}" method="post">
                                 @csrf
                                 {{ method_field('DELETE') }}
-                                <a href="{{ route('part.edit', $items->id) }}" class="btn btn-primary">
+                                <a href="#" class="btn btn-primary">
                                     <i class="fa fa-pen-to-square text-white"></i>
                                 </a>
                                 <button type="submit" class="btn btn-danger mt-2" onclick="#">

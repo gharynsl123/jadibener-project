@@ -15,6 +15,7 @@ class CreatePeralatanTable extends Migration
     {
         Schema::create('peralatan', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('id_user')->unsigned()->nullable();
             $table->integer('id_instansi')->unsigned();
             $table->integer('id_merek')->unsigned();
             $table->integer('id_kategori')->unsigned();
@@ -23,9 +24,11 @@ class CreatePeralatanTable extends Migration
             $table->enum('keterangan', ['baik', 'rusak', 'hilang'])->default('baik');
             $table->string('serial_number');
             $table->string('tahun_pemasangan');
-            $table->string('nilai_tahun');
-            $table->string('kondisi_product');
+            $table->string('usia_barang');
+            $table->string('saran_perbaikan');
+            $table->string('kondisi_product')->default('100');
             
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('id_instansi')->references('id')->on('instansi')->onDelete('cascade');
             $table->foreign('id_merek')->references('id')->on('merek')->onDelete('cascade');
             $table->foreign('id_kategori')->references('id')->on('kategori')->onDelete('cascade');

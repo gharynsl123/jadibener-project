@@ -1,5 +1,5 @@
 @extends('layouts.main-view')
-@section('title', 'Estimasi Biaya')
+@section('title', 'detail part')
 @section('content')
 
 @endsection

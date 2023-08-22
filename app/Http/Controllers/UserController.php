@@ -32,60 +32,44 @@ class UserController extends Controller
         return view('user.edit_user', compact('user', 'instansi'));
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $user = User::find($id);
-        $instansi = Instansi::all();
-
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
-            // Add validation rules for other fields if needed
+    
+        $userData = $request->all();
+    
+        $this->validate($request, [
+            'password' => 'nullable|min:6' // Password bisa tidak diubah
         ]);
-
-         // Cek apakah password kosong
-         if ($request->password == null) {
-            // Jika kosong, maka password tetap
-            $user->password = $user->password;
+    
+        if ($request->input('password')) {
+            $userData['password'] = bcrypt($request->input('password'));
         } else {
-            $user->password = bcrypt($request->password);
+            $userData['password'] = $user->password; // Jika password tidak diubah, maka password tetap menggunakan password lama
         }
-
-        $user->name = $request->name;
-        $user->no_telp = $request->no_telp;
-        $user->jenis_kelamin = $request->jenins_kelammin;
-        $user->id_instansi = $request->id_instansi;
-        $user->alamat = $request->alamat;
-        $user->level = $request->level;
-        $user->jenis_kelamin = $request->jenis_kelamin;
-        $user->role = $request->role;
-        $user->save();
-
+    
+        $user->fill($userData); // Mengisi data pada objek user dengan data baru
+        $user->save(); // Menyimpan perubahan pada database
+    
         return redirect('/users')->with('success', 'User has been updated successfully.');
     }
+    
+
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-            // Add validation rules for other fields if needed
+        $this->validate($request, [
+            'password' => 'required|min:6'
         ]);
+    
+        $userData = $request->all();
 
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'no_telp' => $request->no_telp,
-            'jenis_kelamin' => $request->jenis_kelamin,
-            'id_instansi' => $request->id_instansi,
-            'alamat' => $request->alamat,
-            'password' => Hash::make($request->password),
-            'level' => $request->level,
-            'role' => $request->role
-            // Add other fields here if needed
-        ]);
+        if ($request->input('password')) {
+            $userData['password'] = bcrypt($request->input('password'));
+        }
 
-        return redirect('/users')->with('success', 'User has been created successfully.');
+        User::create($userData);
+        return redirect('/users')->with('success', 'User has been updated successfully.');
     }
 
     function destroy($id) {

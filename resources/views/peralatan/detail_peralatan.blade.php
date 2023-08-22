@@ -10,17 +10,12 @@
     background-size: cover;
 }
 </style>
-<!-- Tombol-tombol di atas card -->
+
 <a href="{{ route('peralatan.index') }}" class="btn mb-4 btn-primary">Kembali</a>
-
 <div class="row">
-
-    <!-- Gambar Produk -->
     <div class="col-md-3">
-        <!-- photo produk yang di klik sesuai dengan tada yang di ambil dari table produk -->
         <div class="text-center d-flex justify-content-center flex-column">
-            <div class="img-thumbnail card square" id="imagePreview" style="background-image: url('{{ asset('storage/images/' . $peralatan->produk->photo) }}');"></div>
-            <a href="{{route('pengajuan.create', $peralatan->id)}}" type="button" class="my-3 btn btn-success">Ajukan Survey / Perbaikan</a>
+            <div class="img-thumbnail card square" id="imagePreview" style="background-image: url('{{ asset('storage/produk/' . $peralatan->produk->photo_produk) }}');"></div>
         </div>
     </div>
 
@@ -35,7 +30,7 @@
                     <tr>
                         <th>Instansi</th>
                         <td>:</td>
-                        <td>{{ $peralatan->instansi->instasi }}</td>
+                        <td>{{ $peralatan->instansi->nama_instansi }}</td>
                         <th>Nama Product</th>
                         <td>:</td>
                         <td>{{$peralatan->produk->nama_produk}}</td>
@@ -70,74 +65,119 @@
                 </table>
             </div>
         </div>
-        <div class="card shadow">
-            <div class="card-header bg-info">
-                <p class="m-0 text-white font-weight-bolder">KONDISI PRODUK</p>
-            </div>
-            <div class="card-body">
-                <table class="table table-responsive table-borderless">
-                    <tr>
-                        <th>KONDISI</th>
-                        <td>:</td>
-                        <td>
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-                                    aria-valuenow="{{$peralatan->kondisi_product}}" aria-valuemin="0"
-                                    aria-valuemax="100" style="width: {{$peralatan->kondisi_product}}%">
-                                    {{$peralatan->kondisi_product}}</div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Request tahun pergantian</th>
-                        <td>:</td>
-                        <td>{{$peralatan->nilai_tahun}}</td>
-                    </tr>
-                    <tr>
-                        <th>Penurunan nilai barang</th>
-                        <td>:</td>
-                        <td>
-                            <div class="progress">
-                            <div  id="progress-bar-{{$peralatan->id}}" class="progress-bar progress-bar-striped progress-bar-animated"
-                                    role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: {{$peralatan->kondisi_product}}%">
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>TAHUN PEMASANGAN</th>
-                        <td>:</td>
-                        <td>{{ $peralatan->tahun_pemasangan }}</td>
-                    </tr>
-                    <tr>
-                        <th>TANGGAL KUNJUNGAN</th>
-                        <td>:</td>
-                        <td>2023-03-06</td>
-                    </tr>
-                    <tr>
-                        <th>SURVEYOR</th>
-                        <td>:</td>
-                        <td>IRWAN</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
     </div>
-</div>
-<!-- Tombol-tombol di bawah card -->
-<div class="row mt-3">
+
     <div class="col-md-12">
-        <div class="d-flex justify-content-between">
-            @if(Auth::user()->level == 'admin')
-            <button type="button" class="btn btn-primary">Input / Edit Status Peralatan</button>
-            <button type="button" class="btn btn-info">Input Estimasi Biaya</button>
-            <button type="button" class="btn btn-warning">Atur Jadwal Teknisi</button>
-            <button type="button" class="btn btn-danger">Input Hasil Kunjungan Teknisi</button>
-            @endif
+        <a href="{{route('pengajuan.create', $peralatan->id)}}" type="button" class="my-1 btn btn-success">Ajukan Survey / Perbaikan</a>
+        @if(Auth::user()->level != 'pic')
+            <button type="button" class="btn my-2 btn-info">Input Estimasi Biaya</button>
+            <button type="button" class="btn my-2 btn-warning">Atur Jadwal Teknisi</button>
+            <a href="{{route('survey.create', $peralatan->id)}}" class="btn my-1 btn-danger">Input Hasil Kunjungan Teknisi</a>
+        @endif
+        <div class="card shado mt-2">
+                <div class="card-header bg-info">
+                    <p class="m-0 text-white font-weight-bolder">KONDISI PRODUK</p>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table  table-borderless">
+                            <tr>
+                                <th>KONDISI</th>
+                                <td>:</td>
+                                <td>
+                                    <div class="progress vw-90">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                                            aria-valuenow="{{$peralatan->kondisi_product}}" aria-valuemin="0"
+                                            aria-valuemax="100" style="width: {{$peralatan->kondisi_product}}%">
+                                            {{$peralatan->kondisi_product}}</div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Request tahun pergantian</th>
+                                <td>:</td>
+                                <td>{{$peralatan->usia_barang}} tahun</td>
+                            </tr>
+                            <tr>
+                                <th>Penurunan nilai barang</th>
+                                <td>:</td>
+                                <td>
+                                    <div class="progress">
+                                    <div  id="progress-bar-{{$peralatan->id}}" class="progress-bar progress-bar-striped progress-bar-animated"
+                                            role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: {{$peralatan->kondisi_product}}%">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>TANGGAL pendataan</th>
+                                <td>:</td>
+                                @if($peralatan->update_at != null)
+                                <td>{{ $peralatan->update_at->format('Y-m-d') }}</td>
+                                @else
+                                <td>{{ $peralatan->created_at->format('Y-m-d') }}</td>
+                                @endif
+                            </tr>
+                            <tr>
+                                <th>SURVEYOR</th>
+                                <td>:</td>
+                                <td>{{$peralatan->user->nama_user}}</td>
+                            </tr>
+                            <tr>
+                                <th>Saran Perbaikan</th>
+                                <td>:</td>
+                                <td>{{$peralatan->saran_perbaikan}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
         </div>
     </div>
+   
 </div>
 
+<!-- history table -->
+<div class="card shadow mt-3">
+    <div class="card-header bg-info">
+        <p class="m-0 text-white font-weight-bolder">HISTORY PERALATAN</p>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+
+            <table class="table  table-borderless">
+                <thead>
+                    <tr>
+                        <th>NO</th>
+                        <th>STATUS</th>
+                        <th>deskripsi</th>
+                        <th>tanggal</th>
+                        <th>id tiket</th>
+                        <th>keluhan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($history as $items)
+                    <tr>
+                        <td>{{$loop->iteration}}</td>
+                        <td>{{$items->status_history}}</td>
+                        <td>{{$items->deskripsi}}</td>
+                        <td>{{$items->tanggal}}</td>
+                        @if($items->pengajuan == null)
+                        <td>-</td>
+                        <td>-</td>
+                        @else
+                        <td>
+                            <a href="/pengajuan/{{$items->pengajuan->slug}}" class="btn btn-primary">{{$items->pengajuan->id_pengenal}}</a>
+                        </td>
+                        <td>{{$items->pengajuan->judul_masalah}}</td>
+                        @endif
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Panggil fungsi perbaruiSelisihTahun saat halaman dimuat
@@ -155,7 +195,7 @@ function hitungSelisihTahun(tahunPemasangan) {
 function perbaruiSelisihTahun() {
     const idPeralatan = {{ $peralatan->id }};
     const tahunPemasangan = {{ $peralatan->tahun_pemasangan }};
-    const nilaiTahun = {{ $peralatan->nilai_tahun }};
+    const nilaiTahun = {{ $peralatan->usia_barang }};
 
     // Hitung selisih tahun dan kondisi berdasarkan nilai tahun dan durasi
     const selisihTahun = hitungSelisihTahun(tahunPemasangan);

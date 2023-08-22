@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Part;
 use App\Kategori;
+use App\Pengajuan;
+use App\Peralatan;
 use Illuminate\Http\Request;
 
 class PartController extends Controller
@@ -16,7 +18,7 @@ class PartController extends Controller
     public function index()
     {
         $kategori = Kategori::all();
-        $part= Part::all();
+        $part = Part::all();
         return view('part.suku_cadang', compact('part', 'kategori'));
     }
 
@@ -25,9 +27,14 @@ class PartController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        //
+        $kategori = Kategori::all(); // Get all data from table kategori
+        $part = Part::all(); // Get all data from table suku cadang
+        // ambil data peralatan sesuai dengan pengajuan yang di pilih tadi sebelum ke pengajuan pergantian part
+        $peralatan = Peralatan::find($id);
+        
+        return view('pengajuan.estimasi_part', compact('part', 'kategori', 'peralatan')); // Redirect to the create suku cadang's page with the data from table kategori and suku cadang
     }
 
     /**
@@ -38,9 +45,16 @@ class PartController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->all();
-        $part = Part::create($input);
-        return redirect('/part' ); // Redirect to the newly created suku cadang's details page
+        Part::create($request->all());
+        return redirect('/part'); // Redirect to the newly created suku cadang's details page
+    }
+
+    public function storeParrt(Request $request) {
+        
+    }
+
+    public function estimasi() {
+        return view('service.estimasi');
     }
 
 
@@ -50,9 +64,10 @@ class PartController extends Controller
      * @param  \App\SukuCadang  $sukuCadang
      * @return \Illuminate\Http\Response
      */
-    public function show(SukuCadang $sukuCadang)
+    public function show($id)
     {
-        //
+        $part = Part::find($id);
+        return view('part.detail_part', compact('part'));
     }
 
     /**
@@ -61,7 +76,7 @@ class PartController extends Controller
      * @param  \App\SukuCadang  $sukuCadang
      * @return \Illuminate\Http\Response
      */
-    public function edit(SukuCadang $sukuCadang)
+    public function edit(Part $part)
     {
         //
     }
@@ -73,7 +88,7 @@ class PartController extends Controller
      * @param  \App\SukuCadang  $sukuCadang
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, SukuCadang $sukuCadang)
+    public function update(Request $request, Part $part)
     {
         //
     }
@@ -84,8 +99,9 @@ class PartController extends Controller
      * @param  \App\SukuCadang  $sukuCadang
      * @return \Illuminate\Http\Response
      */
-    public function destroy(SukuCadang $sukuCadang)
-    {
-        //
+    public function destroy($id){
+        $part = Part::find($id);
+        $part->delete();
+        return redirect('/part'); // Redirect to the suku cadang's list page
     }
 }

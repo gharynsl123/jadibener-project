@@ -112,11 +112,11 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="{{url('/status')}}">Status</a>
                         <a class="collapse-item" href="{{url('/')}}">Jadwal</a>
-                        <a class="collapse-item" href="{{url('/')}}">Laporan</a>
+                        <a class="collapse-item" href="{{route('survey.index')}}">Laporan</a>
                         @if(Auth::user()->level != 'teknisi')
-                        <a class="collapse-item" href="{{route('progres.index')}}">Ticket & Progress</a>
+                        <a class="collapse-item" href="{{route('progres.index')}}">Pengajuan & Progress</a>
                         @endif
-                        <a class="collapse-item" href="{{url('/')}}">Estimasi Biaya</a>
+                        <a class="collapse-item" href="{{route('estimate.index')}}">Estimasi Biaya</a>
                     </div>
                 </div>
             </li>
@@ -293,7 +293,7 @@
                         <li class="nav-item">
                             <a class="nav-link" id="userDropdown" role="button" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-4 d-lg-inline text-gray-600 small">{{ Auth::user()->name }}</span>
+                                <span class="mr-4 d-lg-inline text-gray-600 small">{{ Auth::user()->nama_user }}</span>
                             </a>
                         </li>
                         @endguest

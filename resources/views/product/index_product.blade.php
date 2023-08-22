@@ -34,10 +34,10 @@
                     <td>{{ $item->kode_produk }}</td>
                     <td>{{ $item->nama_produk }}</td>
                     <td>
-                        @if($item->photo)
-                        <a href="{{ asset('storage/images/' . $item->photo) }}" download>
+                        @if($item->photo_produk)
+                        <a href="{{ asset('storage/produk/' . $item->photo_produk) }}" download>
                             <div class="img-thumbnail card square"
-                                style="background-image: url('{{ asset('storage/images/' . $item->photo) }}');"></div>
+                                style="background-image: url('{{ asset('storage/produk/' . $item->photo_produk) }}');"></div>
                         </a>
                         @else
                         Not Available
@@ -48,10 +48,10 @@
                         <form action="{{ route('produk.destroy', $item->id) }}" method="POST">
                             @csrf
                             {{method_field('DELETE')}}
-                            <a href="{{ route('produk.show', $item->id) }}" class="btn btn-info">
+                            <a href="{{ route('produk.show', $item->id) }}" class="btn btn-primary">
                                 <i class="fa fa-eye text-white"></i>
                             </a>
-                            <a href="{{ route('produk.edit', $item->id) }}" class="btn btn-primary">
+                            <a href="{{ route('produk.edit', $item->id) }}" class="btn btn-warning">
                                 <i class="fa fa-pen-to-square text-white"></i>
                             </a>
                             <button type="submit" class="btn btn-danger">

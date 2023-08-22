@@ -8,7 +8,10 @@ class Peralatan extends Model
 {
     protected $table = 'peralatan';
     protected $guarded = [];
-    
+
+    function user(){
+        return $this->belongsTo('App\User', 'id_user');
+    }
     function instansi(){
         return $this->belongsTo('App\Instansi', 'id_instansi');
     }
