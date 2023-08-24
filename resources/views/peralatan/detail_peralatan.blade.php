@@ -18,7 +18,7 @@
 
 @if(Auth::user()->level != 'pic')
 <a href="{{route('part.create')}}" class="btn my-2 btn-info">Input Estimasi Biaya</a>
-<button type="button" class="btn my-2 btn-warning">Atur Jadwal Teknisi</button>
+<a href="{{route('jadwal.create')}}" class="btn my-2 btn-warning">Atur Jadwal Teknisi</a>
 <a href="{{route('survey.create', $peralatan->id)}}" class="btn my-1 btn-danger">Input Hasil Kunjungan Teknisi</a>
 @endif
 

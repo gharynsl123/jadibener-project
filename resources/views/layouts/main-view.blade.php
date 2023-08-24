@@ -109,7 +109,7 @@
                 <div id="layananCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="{{url('/status')}}">Status</a>
-                        <a class="collapse-item" href="{{url('/')}}">Jadwal</a>
+                        <a class="collapse-item" href="{{route('jadwal.index')}}">Jadwal</a>
                         <a class="collapse-item" href="{{route('survey.index')}}">Laporan</a>
                         @if(Auth::user()->level != 'teknisi')
                         <a class="collapse-item" href="{{route('progres.index')}}">Pengajuan & Progress</a>

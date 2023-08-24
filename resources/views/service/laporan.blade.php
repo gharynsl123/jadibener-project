@@ -1,7 +1,7 @@
 @extends('layouts.main-view')
 @section('title', 'laporan page')
 @section('content')
-<div class="card shadow p-3">
+<div class="card shadow p-3 border-left-primary">
     <div class="table-responsive p-3">
         <table class="table table-hover" id="dataTable">
             <thead>

@@ -67,6 +67,11 @@ Route::get('/edit/{nama_merek}', 'MerekController@edit')->name('merek.edit');
 
 Route::get('/get-data/merek', 'MerekController@dataMerek')->name('merek.data');
 
+// jadwal teknisi Route
+Route::get('/atur/jadwal-teknisi', 'JadwalController@create')->name('jadwal.create');
+Route::get('/jadwal-teknisi', 'JadwalController@index')->name('jadwal.index');
+
+
 // produk Route
 Route::get('/produk', 'ProdukController@index')->name('produk.index');
 Route::get('/detail-produk/{id}', 'ProdukController@show')->name('produk.show');
