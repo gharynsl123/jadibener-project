@@ -1,10 +1,9 @@
 @extends('layouts.main-view')
 @section('title', 'laporan page')
 @section('content')
-
 <div class="card shadow p-3">
     <div class="table-responsive p-3">
-        <table class="table table-hover">
+        <table class="table table-hover" id="dataTable">
             <thead>
                 <tr>
                     <td>Instansi</td>
@@ -25,16 +24,16 @@
                     @else
                     <td>{{ $s->peralatan->created_at->format('Y-m-d') }}</td>
                     @endif
-                    <td>{{$s->peralatan->serial_number}}</td>
+                    <td><a href="{{route('peralatan.show', $s->peralatan->slug)}}">{{$s->peralatan->serial_number}}</a></td>
                     <td>{{$s->user->nama_user}}</td>
                     <td>{{$s->hasil_kunjungan}}</td>
                     <td>{{$s->kesimpulan_kunjungan}}</td>
                     <td>
-                        <a href="#" class="btn btn-primary">edit</a>
+                        <a href="#" class="btn btn-primary"><i class="fa fa-file"></i></a>
                         <form action="#" method="post">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger">hapus</button>
+                            <button type="submit" class="btn btn-danger"><div class="fa fa-trash"></div></button>
                         </form>
                     </td>
                 </tr>

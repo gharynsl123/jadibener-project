@@ -11,10 +11,22 @@
 }
 </style>
 
-<a href="{{ route('peralatan.index') }}" class="btn mb-4 btn-primary">Kembali</a>
+<div class="mb-4">
+<a href="{{ route('peralatan.index') }}" class="btn  btn-primary">Kembali</a>
+
+<a href="{{route('pengajuan.create', $peralatan->id)}}" type="button" class="my-1 btn btn-success">Ajukan Survey / Perbaikan</a>
+
+@if(Auth::user()->level != 'pic')
+<a href="{{route('part.create')}}" class="btn my-2 btn-info">Input Estimasi Biaya</a>
+<button type="button" class="btn my-2 btn-warning">Atur Jadwal Teknisi</button>
+<a href="{{route('survey.create', $peralatan->id)}}" class="btn my-1 btn-danger">Input Hasil Kunjungan Teknisi</a>
+@endif
+
+</div>
+
 <div class="row">
-    <div class="col-md-3">
-        <div class="text-center d-flex justify-content-center flex-column">
+    <div class="col-md-3 ">
+        <div class="text-center mb-3 d-flex justify-content-centera">
             <div class="img-thumbnail card square" id="imagePreview" style="background-image: url('{{ asset('storage/produk/' . $peralatan->produk->photo_produk) }}');"></div>
         </div>
     </div>
@@ -68,12 +80,6 @@
     </div>
 
     <div class="col-md-12">
-        <a href="{{route('pengajuan.create', $peralatan->id)}}" type="button" class="my-1 btn btn-success">Ajukan Survey / Perbaikan</a>
-        @if(Auth::user()->level != 'pic')
-            <button type="button" class="btn my-2 btn-info">Input Estimasi Biaya</button>
-            <button type="button" class="btn my-2 btn-warning">Atur Jadwal Teknisi</button>
-            <a href="{{route('survey.create', $peralatan->id)}}" class="btn my-1 btn-danger">Input Hasil Kunjungan Teknisi</a>
-        @endif
         <div class="card shado mt-2">
                 <div class="card-header bg-info">
                     <p class="m-0 text-white font-weight-bolder">KONDISI PRODUK</p>

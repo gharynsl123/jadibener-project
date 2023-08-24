@@ -102,7 +102,7 @@
             </div>
 
             <div class="col-md-12 d-flex justify-content-end">
-                <button type="submit" class="btn col-md-2 mx-3 btn-secondary">cancel</button>
+                <a href="/peralatan/{{$peralatan->slug}}" class="btn col-md-2 mx-3 btn-secondary">cancel</a>
                 <button type="submit" class="btn col-md-3 btn-primary">simpan</button>
             </div>
         </div>

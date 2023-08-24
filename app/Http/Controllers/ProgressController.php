@@ -64,8 +64,26 @@ class ProgressController extends Controller
         $slugvalue = "P" . $formattedSV;
         $progress['slug'] = Str::slug($slugvalue).'-'.$formatedDate;
 
-        Progress::create($progress);
-        return redirect('/progress')->with('success', 'Progress has been added');
+        $dataProgress = Progress::create($progress);
+
+        // Simpan data riwayat
+        $history = [
+            'id_user' => Auth::user()->id,
+            'tanggal' => Carbon::now(),
+            'status_history' => 'progress',
+            // mengambil data teknisi yang di berikan di progress
+            'deskripsi' => 'progress di ajukan oleh ' . Auth::user()->nama_user . ' kepada ' . $dataProgress->users->nama_user,
+            'id_progress' => $dataProgress->id,
+            'id_pengajuan' => $request->id_pengajuan,
+        ];
+
+        History::create($history);
+
+        if (Auth::user()->level == 'teknisi') {
+            return redirect('/home')->with('success', 'Progress has been updated');
+        }else{
+            return redirect('/progress')->with('success', 'Progress has been updated');
+        }
     }
 
     public function updateProgress(Request $request, $id)
@@ -105,10 +123,15 @@ class ProgressController extends Controller
                     'id_progress' => $progress->id,
                     'id_pengajuan' => $request->id_pengajuan,
                 ];
+
+                $pengajuan = pengajuan::findOrFail($request->id_pengajuan);
+
                 if ($progress->nilai_pengerjaan == 100) {
                     $history['status_history'] = 'selesai';
+                    $pengajuan->status_pengajuan = 'selesai';
                 }
             
+                $pengajuan->save();
                 History::create($history);
             }
     

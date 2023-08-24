@@ -22,7 +22,7 @@ class CreatePengajuanTable extends Migration
             $table->string('judul_masalah');
             $table->string('deskripsi_masalah');
             $table->string('id_pengenal')->nullable();
-            $table->enum('status_pengajuan', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->enum('status_pengajuan', ['pending', 'approved', 'rejected', 'selesai'])->default('pending');
             $table->string('slug');
 
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');

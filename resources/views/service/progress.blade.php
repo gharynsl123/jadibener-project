@@ -33,6 +33,7 @@
                 </thead>
                 <tbody>
                     @foreach($pengajuan->reverse() as $items)
+                    @if($items->status_pengajuan != 'selesai')
                     <tr>
                         <td>
                             <!-- for go to detail use resouce route-->
@@ -59,6 +60,7 @@
                             </div>
                         </td>
                     </tr>
+                    @endif
                     @endforeach
                 </tbody>
             </table>

@@ -1,6 +1,6 @@
 @extends('layouts.main-view')
 @section('content')
-<div class="card border-left-primary">
+<div class="card border-left-success">
     <p class="card-header ">Tambah Daftar Peralatan RS</p>
     <div class="container my-4">
         <form action="{{route('peralatan.store')}}" method="post">

@@ -14,14 +14,14 @@
 
 <div class="row gap-2">
     <div class="col-md-3 my-1">
-        <div class="card d-flex text-center border-left-primary" style="min-height: 150px; padding: 10px;">
+        <div class="card d-flex text-center border-left-success" style="min-height: 150px; padding: 10px;">
             <p class="fix-bottom m-0">
                 Tickets Solved
             </p>
         </div>
     </div>
     <div class="col-md-3 my-1">
-        <div class="card text-center border-left-primary" style="min-height: 150px; padding: 10px;">
+        <div class="card text-center border-left-warning" style="min-height: 150px; padding: 10px;">
             <p class="fix-bottom m-0">
                 Tickets On Process
             </p>

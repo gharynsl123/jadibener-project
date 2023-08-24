@@ -65,6 +65,8 @@ Route::post('/create-data-merek', 'MerekController@store')->name('merek.store');
 Route::delete('/delete/{merek}', 'MerekController@destroy')->name('merek.destroy');
 Route::get('/edit/{nama_merek}', 'MerekController@edit')->name('merek.edit');
 
+Route::get('/get-data/merek', 'MerekController@dataMerek')->name('merek.data');
+
 // produk Route
 Route::get('/produk', 'ProdukController@index')->name('produk.index');
 Route::get('/detail-produk/{id}', 'ProdukController@show')->name('produk.show');
@@ -84,7 +86,7 @@ Route::get('/pengajuan/{slug}', 'PengajuanController@show')->name('pengajuan.sho
 
 // Part Route
 Route::get('/part', 'PartController@index')->name('part.index');
-Route::get('/pergantian-part/{id}', 'PartController@create')->name('part.create');
+Route::get('/pergantian-part', 'PartController@create')->name('part.create');
 Route::get('/edit-part/{id}', 'PartController@edit')->name('part.edit');
 Route::post('/add-part', 'PartController@store')->name('part.store');
 Route::delete('/delete-part/{id}', 'PartController@destroy')->name('part.destroy');
@@ -92,6 +94,7 @@ Route::delete('/delete-part/{id}', 'PartController@destroy')->name('part.destroy
 // Estimate Route
 Route::post('/add-estimate-part', 'PartController@storePart')->name('estimate.store');
 Route::get('estimasi-biaya', 'PartController@estimasi')->name('estimate.index');
+
 
 // Survey Route
 Route::get('survey/peralatan/{id}', 'SurveyController@create')->name('survey.create');
@@ -104,7 +107,15 @@ Route::post('/add-progress', 'ProgressController@store')->name('progress.store')
 Route::get('/detail-progress/{slug}', 'ProgressController@show')->name('progress.show');
 Route::put('/progress/{id}', 'ProgressController@updateProgress')->name('progress.update');
 
-Route::resource('peralatan', 'PeralatanController');
+
+// peralatan Route
+Route::get('peralatan', 'PeralatanController@index')->name('peralatan.index');
+Route::get('make/peralatan', 'PeralatanController@create')->name('peralatan.create');
+Route::post('add-data-peralatan', 'PeralatanController@store')->name('peralatan.store');
+Route::get('peralatan/{slug}', 'PeralatanController@show')->name('peralatan.show');
+Route::get('/edit/peralatan/{slug}', 'PeralatanController@edit')->name('peralatan.edit');
+Route::put('peralatan/{id}', 'PeralatanController@update')->name('peralatan.update');
+Route::delete('peralatan/{id}', 'PeralatanController@destroy')->name('peralatan.destroy');
 
 
 Route::resource('profile', 'ProfileController');

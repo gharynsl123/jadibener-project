@@ -72,7 +72,7 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="tahun-pemasangan">serveyor</label>
-                    <input type="text" class="form-control" name="saran_perbaikan" id="tahun-pemasangan" placeholder="Tahun Pemasangan" value="{{ $peralatan->user->nama_user }}">
+                    <input type="text" class="form-control" id="tahun-pemasangan" value="{{ $peralatan->user->nama_user }}">
                 </div>
                 
             </div>            

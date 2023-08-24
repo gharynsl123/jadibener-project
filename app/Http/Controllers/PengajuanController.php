@@ -56,8 +56,8 @@ class PengajuanController extends Controller
         $pengajuan = $request->all();
         
         $today = Carbon::now();
-        $formatedDate = $today->format('y-m-d');
-        $formattedSV = $today->format('sv');
+        $formatedDate = $today->format('d-m-Y');
+        $formattedSV = $today->format('ymdsv');
         $pengajuan['id_pengenal'] = "P" . $formattedSV;
         $pengajuan['slug'] = Str::slug($pengajuan['id_pengenal']).'-'.$formatedDate;
 

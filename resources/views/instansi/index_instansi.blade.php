@@ -25,7 +25,7 @@
 </div>
 
 <!-- Progress DataTales -->
-<div class="card shadow my-4">
+<div class="card shadow my-4 border-left-primary">
     <div class="p-3">
         <div class="table-responsive">
             <table class="table table-hover table-borderless" id="dataTable" width="100%" cellspacing="0">

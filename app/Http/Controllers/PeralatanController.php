@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Merek;
 use Carbon\Carbon;
 use App\Kategori;
+use Illuminate\Support\Str;
 use App\History;
 use App\Pengajuan;
 use App\Instansi;
@@ -66,8 +67,12 @@ class PeralatanController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->all();
-        $dataPeralatan = Peralatan::create($input);
+        $peralatan = $request->all();
+        $today = Carbon::now();
+        $formatedDate = $today->format('y-m-d');
+        $peralatan['slug'] = strtoupper(Str::slug($peralatan['serial_number']) . '-' . $formatedDate);
+
+        $dataPeralatan = Peralatan::create($peralatan);
 
         $today = Carbon::now();
         $formatedDate = $today->format('y-m-d');
@@ -91,13 +96,13 @@ class PeralatanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
           // Mengambil data peralatan berdasarkan ID
-        $peralatan = Peralatan::find($id);
+        $peralatan = Peralatan::where('slug', $slug)->first();
         
         // mengambil data history sesuai id peraltan yang di tuju
-        $history = History::where('id_peralatan', $id)->get();
+        $history = History::where('id_peralatan', $peralatan->id)->get();
         // Mengirim data peralatan ke view
         return view('peralatan.detail_peralatan', compact('peralatan', 'history'));
     }
@@ -108,10 +113,10 @@ class PeralatanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($slug)
     {
         // Mengambil data peralatan berdasarkan ID
-        $peralatan = Peralatan::find($id);
+        $peralatan = Peralatan::where('slug', $slug)->first();
         $merek = Merek::all();
         $kategori = Kategori::all();
         $instansi = Instansi::all();

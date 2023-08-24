@@ -14,10 +14,15 @@ class MerekController extends Controller
      */
     public function index()
     {
-        $merk = Merek::all();
-        return view('part.merk', compact('merk'));
+       return view('part.merk');
     }
 
+    public function dataMerek()
+    {
+        $merek = Merek::all();
+        return response()->json($merek);
+    }
+    
     /**
      * Show the form for creating a new resource.
      *
@@ -36,7 +41,7 @@ class MerekController extends Controller
      */
 public function store(Request $request)
     {
-        $input=$request->all();
+        $input = $request->all();
         $merek = Merek::create($input);
         return redirect('/merek');
     }

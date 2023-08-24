@@ -6,7 +6,8 @@
 <div class="row gap-2 mb-3">
     <div class="col-md-3">
         <div class="d-flex justify-content-center mb-3">
-            <img src="{{asset('storage/produk/'.$pengajuan->peralatan->produk->photo_produk)}}" alt="" class="img-fluid  img-thumbnail" style="width:250px;">
+            <img src="{{asset('storage/produk/'.$pengajuan->peralatan->produk->photo_produk)}}" alt=""
+                class="img-fluid  img-thumbnail" style="width:250px;">
         </div>
     </div>
     <div class="col-md-9">
@@ -105,7 +106,8 @@
             <p class="col-md-6"><strong>Nama Teknisi : </strong>{{$progress->users->nama_user}}</p>
             <div class="col-md-6">
                 <div class="progress" role="progressbar" aria-label="Animated striped example"
-                    aria-valuenow="{{$progress->nilai_pengerjaan}}" aria-valuemin="0" aria-valuemax="{{$progress->nilai_pengerjaan}}">
+                    aria-valuenow="{{$progress->nilai_pengerjaan}}" aria-valuemin="0"
+                    aria-valuemax="{{$progress->nilai_pengerjaan}}">
                     <div class="progress-bar progress-bar-striped progress-bar-animated"
                         style="width: {{$progress->nilai_pengerjaan}}%">
                         @if($progress->nilai_pengerjaan == null)
@@ -142,7 +144,7 @@
             @endif
 
             @if(Auth::user()->level == 'teknisi')
-            <div class="col-md-6">
+            <div class="col-md-6 @if($progress->nilai_pengerjaan == '100') d-none @endif">
                 @if($progress->jadwal)
                 <form action="{{ route('progress.update', $progress->id) }}" method="post">
                     @csrf
@@ -157,7 +159,7 @@
                         <textarea name="keterangan" class="form-control " rows="2" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Update Progress</button>
-                    <a href="{{route('part.create', $pengajuan->id)}}" class="btn btn-success">pergantian part</a>
+                    <a href="{{route('part.create')}}" class="btn btn-success">pergantian part</a>
                 </form>
                 @endif
             </div>
@@ -171,38 +173,41 @@
 @if(Auth::user()->level != 'teknisi')
 <!-- history table untuk item itu sendiri dengan relasi dari id_progress -->
 
-<h3 class="mt-4">traking progress</h3>
+<h3 class="mt-4">Tracking Progress</h3>
 <div class="card shadow">
-    <div class="card-header p-3 m-0">
-        <div class="d-flex justify-content-between">
-            <p class="my-0">di buat pada</p>
-            <p class="m-0">status</p>
-            <p class="m-0">keterangan</p>
-        </div>
-    </div>
-    <div class="card-body p-3">
+    <div class="card-body p-0">
+        
         <div class=" d-flex justify-content-start">
-            <div class="line">
+            <div class="line mt-5 pt-4">
+
                 @foreach($historyPengajuan as $items)
                 <div class="circle"></div>
                 @endforeach
             </div>
-            <div class="items-container mx-3 p-0">
-                <div class="d-flex table-responsive flex-column justify-content-between">
-                    @foreach($historyPengajuan as $items)
-                    <div class="d-flex my-2 justify-content-between border-bottom">
-                        <p class="m-0">{{$items->created_at}}</p>
-                        <p class="m-0">{{$items->status_history}}</p>
-                        <p class="m-0">{{$items->deskripsi}}</p>
-                    </div>
-                    @endforeach
-                    
-                </div>
+            <div class="table-responsive mx-2">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Di Buat Pada</th>
+                            <th>Status</th>
+                            <th>Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($historyPengajuan as $items)
+                        <tr>
+                            <td>{{ $items->created_at }}</td>
+                            <td>{{ $items->status_history }}</td>
+                            <td>{{ $items->deskripsi }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
-
     </div>
 </div>
+
 
 @endif
 @endsection

@@ -11,42 +11,44 @@
             <tr>
                 <th>Instansi</th>
                 <td>:</td>
-                <td>{{ $peralatan->instansi->nama_instansi }}</td>
+                <td>{{ $dataApp->peralatan->instansi->nama_instansi }}</td>
                 <th>Nama Product</th>
                 <td>:</td>
-                <td>{{$peralatan->produk->nama_produk}}</td>
+                <td>{{$dataApp->peralatan->produk->nama_produk}}</td>
             </tr>
             <tr>
                 <th>Serial Number</th>
                 <td>:</td>
-                <td>{{ $peralatan->serial_number }}</td>
+                <td>{{ $dataApp->peralatan->serial_number }}</td>
                 <th>Kode Product</th>
                 <td>:</td>
-                <td>{{ $peralatan->produk->kode_produk }}</td>
+                <td>{{ $dataApp->peralatan->produk->kode_produk }}</td>
             </tr>
 
             <tr>
                 <th>Merek</th>
                 <td>:</td>
-                <td>{{ $peralatan->merek->nama_merek }}</td>
+                <td>{{ $dataApp->peralatan->merek->nama_merek }}</td>
                 <th>Instalasi</th>
                 <td>:</td>
-                <td>{{ $peralatan->tahun_pemasangan }}</td>
+                <td>{{ $dataApp->peralatan->tahun_pemasangan }}</td>
             </tr>
             <tr>
                 <th>Status Alat</th>
                 <td>:</td>
-                <td>{{$peralatan->keterangan}}</td>
+                <td>{{$dataApp->peralatan->keterangan}}</td>
             </tr>
         </table>
     </div>
 </div>
 <div class="card shadow p-4">
-    <form action="" method="post">
+    <form action="{{route('estimate.store')}}" method="post">
+        @csrf
         <div class="row">
+            <input name="id_peralatan" value="{{$dataApp->peralatan->id}}" hidden>
             <div class="form-group col-md-6">
                 <label for="kategori-select">Kategori</label>
-                <select name="kategori" id="kategori-select" class="form-control">
+                <select name="id_kategori" id="kategori-select" class="form-control">
                     <option value="">Pilih</option>
                     @foreach($kategori as $item)
                     <option value="{{ $item->id }}">{{ $item->nama_kategori }}</option>
@@ -55,21 +57,21 @@
             </div>
             <div class="form-group col-md-6" id="part-group" style="display:none;">
                 <label for="part-select">Part</label>
-                <select name="part" id="part-select" class="form-control">
+                <select name="id_part" id="part-select" class="form-control">
                     <option value="">Pilih</option>
                 </select>
             </div>
             <div class="form-group col-md-6">
                 <label for="level">Harga</label>
-                <input type="number" name="level" class="form-control">
+                <input type="number" name="harga" class="form-control">
             </div>
             <div class="form-group col-md-6">
                 <label for="level">Quantity</label>
-                <input type="number" name="level" class="form-control">
+                <input type="number" name="quantity" class="form-control">
             </div>
             <div class="form-group col-md-6">
                 <label for="level">keterangan</label>
-                <input type="text" name="level" class="form-control">
+                <input type="text" name="keterangan" class="form-control">
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Tambahkan</button>

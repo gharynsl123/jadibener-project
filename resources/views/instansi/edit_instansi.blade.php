@@ -1,7 +1,7 @@
 @extends('layouts.main-view')
 
 @section('content')
-<div class="container mt-5">
+<div class="card shadow border-left-warning p-3 ">
     <h2>Edit Data Rumah Sakit / Institusi</h2>
     <form action="{{ route('instansi.update', $instansi->id) }}" method="POST" enctype="multipart/form-data">
         @csrf

@@ -18,4 +18,8 @@ class Progress extends Model
     {
         return $this->belongsTo('App\Pengajuan', 'id_pengajuan');
     }
+    public function history()
+    {
+        return $this->hasMany(History::class, 'id_progress');
+    }
 }

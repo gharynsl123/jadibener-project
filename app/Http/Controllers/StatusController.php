@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Status;
+use App\Progress;
+use App\History;
 use Illuminate\Http\Request;
 
 class StatusController extends Controller
@@ -14,8 +16,16 @@ class StatusController extends Controller
      */
     public function index()
     {
-        return view('service.status');
+        // Mendapatkan progress dengan history terbaru yang terkait
+        $progressList = Progress::with(['history' => function ($query) {
+            $query->orderByDesc('created_at')->take(1);
+        }])->get();
+    
+        return view('service.status', compact('progressList'));
     }
+    
+
+
 
     /**
      * Show the form for creating a new resource.

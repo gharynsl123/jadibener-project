@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -26,7 +27,6 @@
     <!-- Custom styles for this template -->
     <link href="{{asset('css/sb-admin-2.min.css')}}" rel="stylesheet">
 
-
     <!-- Custom styles for this page -->
     <link href="{{asset('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
 
@@ -34,18 +34,16 @@
 
 <body id="page-top">
 
-    <!-- Page Wrapper -->
     <div id="wrapper">
-        <!-- Sidebar - Brand -->
+
         <ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{url('home')}}">
             </a>
-            <!-- Heading -->
             <div class="sidebar-heading">
-                @if (Auth::user()->level == 'pic_rs')
+                @if (Auth::user()->level == 'pic')
                 Menu PIC
-                @elseif (Auth::user()->level == 'surveyor')
-                Menu Surveyor
+                @elseif (Auth::user()->role == 'kap_teknisi')
+                Menu Kepala Teknisi
                 @elseif(Auth::user()->level == 'teknisi')
                 Menu Teknisi
                 @elseif(Auth::user()->level == 'admin')
@@ -265,12 +263,9 @@
             </div>
         </ul>
 
-        <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
 
-            <!-- Main Content -->
             <div id="content">
-                <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar static-top shadow">
 
                     <!-- Sidebar Toggle (Topbar) -->
@@ -299,18 +294,13 @@
                         @endguest
                     </ul>
                 </nav>
-                <!-- End of Topbar -->
 
-                <!-- Begin Page Content -->
                 <div class="container-fluid my-5">
                     @yield('content')
                 </div>
-                <!-- /.container-fluid -->
 
             </div>
-            <!-- End of Main Content -->
 
-            <!-- Footer -->
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
@@ -318,32 +308,12 @@
                     </div>
                 </div>
             </footer>
-            <!-- End of Footer -->
-
         </div>
-        <!-- End of Content Wrapper -->
-
     </div>
-    <!-- End of Page Wrapper -->
 
-    <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-
-    <!-- CKEditor from CDN -->
-    <script src="https://cdn.ckeditor.com/ckeditor5/30.1.0/classic/ckeditor.js"></script>
-    <script>
-    ClassicEditor
-        .create(document.querySelector('#alamat'))
-        .then(editor => {
-            console.log(editor);
-        })
-        .catch(error => {
-            console.error(error);
-        });
-    </script>
-
 </body>
 
 <!-- Bootstrap core JavaScript-->

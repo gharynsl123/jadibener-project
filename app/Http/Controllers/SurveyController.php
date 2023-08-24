@@ -42,7 +42,7 @@ class SurveyController extends Controller
     public function store(Request $request)
     {
         Survey::create($request->all());
-        return redirect('/peralatan/{id}')->with('status', 'Data Survey Berhasil Ditambahkan!');
+        return redirect('/peralatan')->with('status', 'Data Survey Berhasil Ditambahkan!');
     }
 
     /**

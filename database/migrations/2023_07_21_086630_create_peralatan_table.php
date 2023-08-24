@@ -24,8 +24,9 @@ class CreatePeralatanTable extends Migration
             $table->enum('keterangan', ['baik', 'rusak', 'hilang'])->default('baik');
             $table->string('serial_number');
             $table->string('tahun_pemasangan');
+            $table->string('slug');
             $table->string('usia_barang');
-            $table->string('saran_perbaikan');
+            $table->string('saran_perbaikan')->nullable();
             $table->string('kondisi_product')->default('100');
             
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');

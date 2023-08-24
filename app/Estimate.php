@@ -17,4 +17,7 @@ class Estimate extends Model
     {
         return $this->belongsTo('App\Part', 'id_part');
     }
+    function peralatan() {
+        return $this->belongsTo('App\Peralatan', 'id_peralatan');
+    }
 }
