@@ -12,6 +12,12 @@ class MerekController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     public function __construct()
+     {
+         $this->middleware('auth');
+     }
+     
     public function index()
     {
        return view('part.merk');
@@ -39,11 +45,13 @@ class MerekController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-public function store(Request $request)
+    public function store(Request $request)
     {
-        $input = $request->all();
-        $merek = Merek::create($input);
-        return redirect('/merek');
+    
+        $merek = Merek::Insert([
+            'nama_merek' => $request->nama_merek,
+        ]);
+        return response()->json($merek);
     }
 
     /**
@@ -63,9 +71,10 @@ public function store(Request $request)
      * @param  \App\Merek  $merek
      * @return \Illuminate\Http\Response
      */
-    public function edit(Merek $merek, $nama_merek)
+    public function edit($id)
     {
-        //
+        $merek = Merek::find($id);
+        return response()->json($merek);
     }
 
     /**
@@ -75,9 +84,14 @@ public function store(Request $request)
      * @param  \App\Merek  $merek
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Merek $merek)
+    public function update(Request $request, $id)
     {
-        //
+        $merek = Merek::find($id); // Cari merek berdasarkan ID
+        // Update data merek
+        $merek->nama_merek = $request->nama_merek;
+        $merek->save();
+
+        return response()->json($merek);
     }
 
     /**
@@ -89,7 +103,13 @@ public function store(Request $request)
     public function destroy($id)
     {
         $merek = Merek::find($id);
-        $merek->delete();
-        return redirect('/merek');
+    
+        if ($merek) {
+            $merek->delete();
+            return response()->json(['message' => 'Data berhasil dihapus.']);
+        } else {
+            return response()->json(['message' => 'Data tidak ditemukan.'], 404);
+        }
     }
+    
 }

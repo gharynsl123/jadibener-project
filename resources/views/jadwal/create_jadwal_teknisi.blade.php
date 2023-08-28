@@ -41,4 +41,39 @@
         </table>
     </div>
 </div>
+
+<!-- buat form untuk atur jadwal teknisi -->
+<div class="card shadow border-left-primary">
+    <form action="" method="post" class="p-4">
+        <div class="row gap-2">
+            <div class="form-group col-md-6">
+                <label for="">pilih teknisi yang pergi</label>
+                <input type="text" name="id_user" class="form-control">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="">test</label>
+                <input type="date" name="jadwal" class="form-control">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="">test</label>
+                <input type="text" name="" class="form-control">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="">test</label>
+                <input type="text" name="" class="form-control">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="">test</label>
+                <input type="text" name="" class="form-control">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="">test</label>
+                <input type="text" name="" class="form-control">
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary">testing</button>
+            </div>
+        </div>
+    </form>
+</div>
 @endsection

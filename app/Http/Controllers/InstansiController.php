@@ -17,6 +17,7 @@ class InstansiController extends Controller
     {
         $this->middleware('auth');
     }
+    
     public function index()
     {
         $instansi = Instansi::all();

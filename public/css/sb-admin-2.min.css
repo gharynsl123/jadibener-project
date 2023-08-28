@@ -9820,6 +9820,13 @@ a.text-danger:focus, a.text-danger:hover {
     border-radius: 100%;
 }
 
+.circle {
+    width: 13px;
+    height: 13px;
+    background-color : black;
+    border-radius: 100%;
+}
+
 .items-container {
     width: 100%;
 }
@@ -11219,6 +11226,12 @@ form.user .btn-user {
     line-height: 1;
     width: 12.5rem
 }
+.error-503 {
+    color: #5a5c69;
+    font-size: 3rem;
+    position: relative;
+    line-height: 1;
+}
 
 @-webkit-keyframes noise-anim {
     0% {
@@ -11581,6 +11594,18 @@ form.user .btn-user {
     content: attr(data-text);
     position: absolute;
     left: -2px;
+    text-shadow: 1px 0 #4e73df;
+    top: 0;
+    color: #5a5c69;
+    background: #f8f9fc;
+    overflow: hidden;
+    clip: rect(0, 900px, 0, 0);
+    animation: noise-anim-2 3s infinite linear alternate-reverse
+}
+
+.error-503:before {
+    content: attr(data-text);
+    position: absolute;
     text-shadow: 1px 0 #4e73df;
     top: 0;
     color: #5a5c69;

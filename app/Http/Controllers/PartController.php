@@ -17,6 +17,12 @@ class PartController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     public function __construct()
+     {
+         $this->middleware('auth');
+     }
+     
     public function index()
     {
         $kategori = Kategori::all();
@@ -52,12 +58,18 @@ class PartController extends Controller
     public function storePart(Request $request) {
         $dataReq = $request->all();
         $dataReq['id_peralatan'] = $request->id_peralatan;
+        $dataReq['id_instansi'] = $request->id_instansi;
         Estimate::create($dataReq);
         return redirect('/estimasi-biaya');
     }
 
     public function estimasi() {
-        $estimasiData = Estimate::all();
+        // jika level dari user itu pic maka tampilkan data yang sesui dengan barangnya saya jika selain dari pic maka tampikan semua data
+        if (auth()->user()->level == 'pic') {
+            $estimasiData = Estimate::where('id_instansi', Auth::user()->id_instansi)->get();
+        } else {
+            $estimasiData = Estimate::all();
+        }
         return view('service.estimasi', compact('estimasiData'));
     }
 

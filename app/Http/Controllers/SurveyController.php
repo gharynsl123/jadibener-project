@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Peralatan;
 use App\Survey;
 use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class SurveyController extends Controller
 {
@@ -14,9 +15,19 @@ class SurveyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     public function __construct()
+     {
+         $this->middleware('auth');
+     }
     public function index()
     {
-        $survey = Survey::all();
+        // jika level dari user itu pic maka tampilkan data yang sesui dengan barangnya saya jika selain dari pic maka tampikan semua data
+        if (auth()->user()->level == 'pic') {
+            $survey = Survey::where('id_instansi', Auth::user()->id_instansi)->get();
+        } else {
+            $survey = Survey::all();
+        }
         return view('service.laporan', compact('survey'));
     }
 

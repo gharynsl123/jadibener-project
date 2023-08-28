@@ -12,7 +12,8 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    // guest only
+    return view('auth.login');
 });
 
 Auth::routes(['register' => false]);
@@ -53,6 +54,10 @@ Route::get('/home', 'HomeController@index')->name('home');
 // status Route
 Route::resource('status', 'StatusController');
 
+// Ajax Route Get Data
+Route::get('/get-data/merek', 'MerekController@dataMerek')->name('merek.data');
+Route::get('/get-data/kategori', 'KategoriController@dataKategori')->name('kategori.data');
+
 
 // informasi Route
 Route::get('/informasi', 'InformasiController@index')->name('informasi.index');
@@ -62,10 +67,17 @@ Route::post('/add-informasi', 'InformasiController@store')->name('informasi.stor
 // Merek Route
 Route::get('merek', 'MerekController@index')->name('merek.index');
 Route::post('/create-data-merek', 'MerekController@store')->name('merek.store');
-Route::delete('/delete/{merek}', 'MerekController@destroy')->name('merek.destroy');
-Route::get('/edit/{nama_merek}', 'MerekController@edit')->name('merek.edit');
+Route::delete('/delete/{id}', 'MerekController@destroy')->name('merek.destroy');
+Route::get('/edit/{id}', 'MerekController@edit')->name('merek.edit');
+Route::put('/update/{id}', 'MerekController@update')->name('merek.update');
 
-Route::get('/get-data/merek', 'MerekController@dataMerek')->name('merek.data');
+
+Route::get('/kategori', 'KategoriController@index')->name('kategori.index');
+Route::post('/create-data-kategori', 'KategoriController@store')->name('kategori.store');
+Route::delete('/delete/{id}', 'KategoriController@destroy')->name('kategori.destroy');
+Route::get('/edit/{id}', 'KategoriController@edit')->name('kategori.edit');
+Route::put('/update/{id}', 'KategoriController@update')->name('kategori.update');
+
 
 // jadwal teknisi Route
 Route::get('/atur/jadwal-teknisi', 'JadwalController@create')->name('jadwal.create');
@@ -124,4 +136,3 @@ Route::delete('peralatan/{id}', 'PeralatanController@destroy')->name('peralatan.
 
 
 Route::resource('profile', 'ProfileController');
-Route::resource('kategori', 'KategoriController');

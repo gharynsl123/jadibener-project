@@ -124,9 +124,11 @@
                 <strong>TANGGAL PROSES :</strong>
                 @if($progress->jadwal == null)
                 belum di ajukan jadwal
-                @if(Auth::user()->level == 'teknisi' || Auth::user()->level == 'admin')
-
-            <div class="col-md-12">
+                <!-- jika user adalah teknisi yang di tunjuk di form sebelumnnya maka tunjukan form berikut jika tidak jangan tampilkan form berikut nya-->
+                @if(Auth::user()->level == 'teknisi')
+                
+                <div class="col-md-12">
+                @if(Auth::user()->id == $progress->id_user)
                 <form action="{{ route('progress.update', $progress->id) }}" method="POST">
                     @csrf
                     @method('PUT')
@@ -135,6 +137,7 @@
 
                     <button class="btn btn-primary" type="submit">save</button>
                 </form>
+                @endif
             </div>
 
             @endif
@@ -146,6 +149,7 @@
             @if(Auth::user()->level == 'teknisi')
             <div class="col-md-6 @if($progress->nilai_pengerjaan == '100') d-none @endif">
                 @if($progress->jadwal)
+                @if(Auth::user()->id == $progress->id_user)
                 <form action="{{ route('progress.update', $progress->id) }}" method="post">
                     @csrf
                     @method('PUT')
@@ -162,6 +166,7 @@
                     <a href="{{route('part.create')}}" class="btn btn-success">pergantian part</a>
                 </form>
                 @endif
+                @endif
             </div>
             @endif
         </div>
@@ -170,13 +175,13 @@
     </div>
 </div>
 
-@if(Auth::user()->level != 'teknisi')
+@if(Auth::user()->level != 'teknisi' || Auth::user()->role == 'kap_teknisi')
 <!-- history table untuk item itu sendiri dengan relasi dari id_progress -->
 
 <h3 class="mt-4">Tracking Progress</h3>
 <div class="card shadow">
     <div class="card-body p-0">
-        
+
         <div class=" d-flex justify-content-start">
             <div class="line mt-5 pt-4">
 

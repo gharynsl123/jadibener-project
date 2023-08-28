@@ -45,6 +45,7 @@
     <form action="{{route('estimate.store')}}" method="post">
         @csrf
         <div class="row">
+            <input name="id_instansi" value="{{$dataApp->peralatan->instansi->id}}" hidden>
             <input name="id_peralatan" value="{{$dataApp->peralatan->id}}" hidden>
             <div class="form-group col-md-6">
                 <label for="kategori-select">Kategori</label>
@@ -75,7 +76,7 @@
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Tambahkan</button>
-        <a href="/pengajuan/{id}" class="btn btn-secondary">cencel</a>
+        <a href="" class="btn btn-secondary">cencel</a>
     </form>
 </div>
 

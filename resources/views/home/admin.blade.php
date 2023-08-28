@@ -10,9 +10,15 @@
 
 @section('content')
 <!-- Page Heading -->
-<h1 class="h3 mb-0 text-gray-800 d-sm-inline-block  mb-4"> Status Service</h1>
+<div class="d-flex justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800 d-sm-inline-block"> Status Service</h1>
+        <button id="button-gate" class="btn d-flex align-items-center">
+            <small class="mx-3">hide</small>
+            <i class="fa fa-arrow-up"></i>
+        </button>
+</div>
 
-<div class="row gap-2">
+<div class="row gap-2" id="gate-service">
     <div class="col-md-3 my-1">
         <div class="card d-flex text-center border-left-success" style="min-height: 150px; padding: 10px;">
             <p class="fix-bottom m-0">
@@ -117,6 +123,7 @@
 <script>
 
     var pengajuanData = @json($pengajuan); // Mengambil data pengajuan dari controller
+
     // Mengambil semua elemen baris pada tabel
     var rows = document.querySelectorAll("#dataTable tbody tr");
 

@@ -4,6 +4,7 @@
     <form action="{{route('survey.store')}}" method="post">
         @csrf
         <input type="hidden" name="id_peralatan" value="{{$peralatan->id}}">
+        <input type="hidden" name="id_instansi" value="{{$peralatan->instansi->id}}">
         <div class="row gap-2">
             <div class="col-md-6">
                 <div class="form-group">

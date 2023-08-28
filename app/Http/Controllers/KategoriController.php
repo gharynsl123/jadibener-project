@@ -7,86 +7,60 @@ use Illuminate\Http\Request;
 
 class KategoriController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
-        $kategori=Kategori::all();
+        $kategori = Kategori::all();
         return view('part.kategori', compact('kategori'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function dataKategori()
     {
-        //
+        $kategori = Kategori::all();
+        return response()->json($kategori);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        
-        $input=$request->all();
-        $kategori = Kategori::create($input);
-        return redirect('/kategori');
+        $kategori = Kategori::create([
+            'nama_kategori' => $request->nama_kategori,
+        ]);
+        return response()->json($kategori);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Kategori  $kategori
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Kategori $kategori)
+    public function edit($id)
     {
-        //
+        $kategori = Kategori::find($id);
+        return response()->json($kategori);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Kategori  $kategori
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Kategori $kategori)
+    public function update(Request $request, $id)
     {
-        //
+        $kategori = Kategori::find($id);
+
+        if (!$kategori) {
+            return response()->json(['message' => 'Data tidak ditemukan.'], 404);
+        }
+
+        $kategori->nama_kategori = $request->nama_kategori;
+        $kategori->save();
+
+        return response()->json($kategori);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Kategori  $kategori
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Kategori $kategori)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Kategori  $kategori
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        
         $kategori = Kategori::find($id);
+
+        if (!$kategori) {
+            return response()->json(['message' => 'Data tidak ditemukan.'], 404);
+        }
+
         $kategori->delete();
-        return redirect('/merk');
+        return response()->json(['message' => 'Data berhasil dihapus.']);
     }
 }
