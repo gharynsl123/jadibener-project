@@ -35,9 +35,9 @@ class PengajuanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id)
+    public function create($slug)
     {
-        $peralatan = Peralatan::find($id);
+        $peralatan = Peralatan::where('slug', $slug)->first();
         $kondisi = Kondisi::all();
         $user = Auth::user();
 
@@ -75,7 +75,7 @@ class PengajuanController extends Controller
         
         History::create($history);
         // mengambil data dari database pengajuan
-        return redirect('/peralatan')->with('success', 'Pengajuan has been added');
+        return redirect()->route('peralatan.show', $request->id_peralatan);
     }
     
 

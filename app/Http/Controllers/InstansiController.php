@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Instansi;
+use App\Imports\UsersImport;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use App\User;
 
 class InstansiController extends Controller
@@ -17,12 +19,19 @@ class InstansiController extends Controller
     {
         $this->middleware('auth');
     }
-    
+
     public function index()
     {
         $instansi = Instansi::all();
         $user = User::all();
         return view('instansi.index_instansi', compact('instansi', 'user'));
+    }
+
+    public function import() 
+    {
+        Excel::import(new UsersImport,request()->file('file'));
+           
+        return back();
     }
 
     /**

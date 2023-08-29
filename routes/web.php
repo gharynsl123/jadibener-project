@@ -31,6 +31,9 @@ Route::group(['middleware' => ['auth', 'role:admin,teknisi,surveyor,sub_service'
     Route::get('/detail-instansi/{id}', 'InstansiController@show')->name('instansi.show');
     Route::post('/add-instansi', 'InstansiController@store')->name('instansi.store');
     Route::delete('/delete-instansi/{id}', 'InstansiController@destroy')->name('instansi.destroy');
+
+    Route::post('/import', 'InstansiController@import')->name('import');
+    Route::get('/export-users', 'InstansiController@exportUsers')->name('export-users');
 });
 
 Route::group(['middleware' => ['auth', 'role:admin']], function () {
@@ -67,21 +70,22 @@ Route::post('/add-informasi', 'InformasiController@store')->name('informasi.stor
 // Merek Route
 Route::get('merek', 'MerekController@index')->name('merek.index');
 Route::post('/create-data-merek', 'MerekController@store')->name('merek.store');
-Route::delete('/delete/{id}', 'MerekController@destroy')->name('merek.destroy');
-Route::get('/edit/{id}', 'MerekController@edit')->name('merek.edit');
-Route::put('/update/{id}', 'MerekController@update')->name('merek.update');
+Route::delete('/delete-merek/{id}', 'MerekController@destroy')->name('merek.destroy');
+Route::get('/edit-merek/{id}', 'MerekController@edit')->name('merek.edit');
+Route::put('/update-merek/{id}', 'MerekController@update')->name('merek.update');
 
 
 Route::get('/kategori', 'KategoriController@index')->name('kategori.index');
 Route::post('/create-data-kategori', 'KategoriController@store')->name('kategori.store');
-Route::delete('/delete/{id}', 'KategoriController@destroy')->name('kategori.destroy');
-Route::get('/edit/{id}', 'KategoriController@edit')->name('kategori.edit');
-Route::put('/update/{id}', 'KategoriController@update')->name('kategori.update');
+Route::delete('/delete-kategori/{id}', 'KategoriController@destroy')->name('kategori.destroy');
+Route::get('/edit-kategori/{id}', 'KategoriController@edit')->name('kategori.edit');
+Route::put('/update-kategori/{id}', 'KategoriController@update')->name('kategori.update');
 
 
 // jadwal teknisi Route
-Route::get('/atur/jadwal-teknisi', 'JadwalController@create')->name('jadwal.create');
+Route::get('/atur/jadwal-teknisi/{slug}', 'JadwalController@create')->name('jadwal.create');
 Route::get('/jadwal-teknisi', 'JadwalController@index')->name('jadwal.index');
+Route::post('/add-jadwal-teknisi', 'JadwalController@store')->name('jadwal.store');
 
 
 // produk Route
@@ -103,7 +107,7 @@ Route::get('/pengajuan/{slug}', 'PengajuanController@show')->name('pengajuan.sho
 
 // Part Route
 Route::get('/part', 'PartController@index')->name('part.index');
-Route::get('/pergantian-part', 'PartController@create')->name('part.create');
+Route::get('/pergantian-part/{slug}', 'PartController@create')->name('part.create');
 Route::get('/edit-part/{id}', 'PartController@edit')->name('part.edit');
 Route::post('/add-part', 'PartController@store')->name('part.store');
 Route::delete('/delete-part/{id}', 'PartController@destroy')->name('part.destroy');

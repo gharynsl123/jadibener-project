@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Progress;
-use App\pengajuan;
+use App\Pengajuan;
 use Carbon\Carbon;
 use App\Peralatan;
 use App\History;
@@ -29,9 +29,9 @@ class ProgressController extends Controller
         $pengajuan = null;
         // Jika user adalah pic_rs, ambil data pengajuuan berdasarkan user buat. dan jika user adalah admin, ambil semua data peralatan
         if (Auth::user()->level == 'pic') {
-            $pengajuan = pengajuan::where('id_user', Auth::user()->id)->get();
+            $pengajuan = Pengajuan::where('id_user', Auth::user()->id)->get();
         } else {
-            $pengajuan = pengajuan::all();
+            $pengajuan = Pengajuan::all();
         }
         return view('service.progress', compact('pengajuan'));
     }
@@ -124,7 +124,7 @@ class ProgressController extends Controller
                     'id_pengajuan' => $request->id_pengajuan,
                 ];
 
-                $pengajuan = pengajuan::findOrFail($request->id_pengajuan);
+                $pengajuan = Pengajuan::findOrFail($request->id_pengajuan);
 
                 if ($progress->nilai_pengerjaan == 100) {
                     $history['status_history'] = 'selesai';

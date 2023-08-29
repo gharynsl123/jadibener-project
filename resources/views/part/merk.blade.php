@@ -12,7 +12,7 @@
                     <input type="text" name="nama_merek" id="nama_merek" class="mb-4 form-control" autocomplete="off" placeholder="Nama Merek">
                     <button class="btn btn-primary" id="addDataBtn" type="button" onclick="addData()">Input</button>
                     <button class="btn btn-success" id="updateDataBtn" type="button" onclick="updateData()">Edit</button>
-                    <button class="btn btn-secondary" id="cancelBtn" type="button" onclick="updateData()">Edit</button>
+                    <button class="btn btn-secondary" id="cancelBtn" type="button" onclick="cancelEdit()">Cancel</button>
                 </form>
             </div>
         </div>
@@ -163,7 +163,7 @@ function editData(id) {
     $.ajax({
         type: "GET",
         dataType: 'json',
-        url: "/edit/" + id,
+        url: "/edit-merek/" + id,
         success: function(response) {
             $('#nama_merek').val(response.nama_merek);
 
@@ -180,12 +180,12 @@ function editData(id) {
     });
 }
 
-function updateData(id) {
+function updateData() {
     var namaMerek = $('#nama_merek').val();
 
     $.ajax({
         type: "PUT",
-        url: "/update/" + id,
+        url: "/update-merek/" + id,
         data: {
             "_token": "{{ csrf_token() }}",
             "nama_merek": namaMerek
@@ -194,10 +194,21 @@ function updateData(id) {
             getAllData();
             $('#nama_merek').val('');
 
+            cancelEdit();
             $('#updateDataBtn').hide();
             $('#addDataBtn').show();
         }
     });
+}
+
+
+function cancelEdit() {
+    editingCategoryId = null;
+    $('#nama_merek').val('');
+    $('#updateDataBtn').hide();
+    $('#cancelBtn').hide();
+    $('#title-card').html('Add New kategori');
+    $('#addDataBtn').show();
 }
 
 function updateData(id) {
@@ -205,7 +216,7 @@ function updateData(id) {
 
     $.ajax({
         type: "PUT",
-        url: "/update/" + id,
+        url: "/update-merek/" + id,
         data: {
             "_token": "{{ csrf_token() }}",
             "nama_merek": namaMerek
@@ -225,7 +236,7 @@ function deleteData(id) {
     if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
         $.ajax({
             type: "DELETE",
-            url: "/delete/" + id,
+            url: "/delete-merek/" + id,
             data: {
                 "_token": "{{ csrf_token() }}"
             },
@@ -235,7 +246,5 @@ function deleteData(id) {
         });
     }
 }
-
-
 </script>
 @endsection

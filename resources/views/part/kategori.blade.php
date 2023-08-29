@@ -152,7 +152,7 @@ function editData(id) {
     $.ajax({
         type: "GET",
         dataType: 'json',
-        url: "/edit/" + id,
+        url: "/edit-kategori/" + id,
         success: function(response) {
             $('#nama_kategori').val(response.nama_kategori);
 
@@ -164,13 +164,13 @@ function editData(id) {
     });
 }
 
-function updateData() {
+function updateData(id) {
 
     var namakategori = $('#nama_kategori').val();
 
     $.ajax({
         type: "PUT",
-        url: "/update/" + id,
+        url: "/update-kategori/" + id,
         data: {
             "_token": "{{ csrf_token() }}",
             "nama_kategori": namakategori
@@ -196,7 +196,7 @@ function deleteData(id) {
     if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
         $.ajax({
             type: "DELETE",
-            url: "/delete/" + id,
+            url: "/delete-kategori/" + id,
             data: {
                 "_token": "{{ csrf_token() }}"
             },

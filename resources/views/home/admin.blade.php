@@ -79,7 +79,7 @@
                     <tr>
                         <td>
                             <!-- for go to detail -->
-                            <a href="#" class="btn btn-info">
+                            <a href="/pengajuan/{{$items->slug}}" class="btn btn-info">
                                 <i class="fa fa-eye text-white"></i>
                             </a>
                         </td>

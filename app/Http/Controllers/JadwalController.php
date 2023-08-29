@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Jadwal;
+use App\User;
 use App\History;
+use App\Peralatan;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class JadwalController extends Controller
@@ -20,7 +23,14 @@ class JadwalController extends Controller
 
     public function index()
     {
-        return view('service.jadwal');
+        $jadwal = null;
+        // jika user adalah pic maka ambil data jadwal yang sesuai dengan id intnasi yang di pegang oleh pic tersebut
+        if (Auth::user()->level == 'pic') {
+            $jadwal = Jadwal::where('id_instansi', Auth::user()->id_instansi)->get();
+        } else {
+            $jadwal = Jadwal::all();
+        }
+        return view('service.jadwal', compact('jadwal'));
     }
 
     /**
@@ -28,10 +38,12 @@ class JadwalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($slug)
     {
-        $dataApp = History::where('id_progress')->get()->first();
-        return view('jadwal.create_jadwal_teknisi', compact('dataApp'));
+        $peralatan = Peralatan::all();
+        $teknisi = User::where('level', 'teknisi')->get();
+        $dataApp = Peralatan::where('slug', $slug)->first();
+        return view('jadwal.create_jadwal_teknisi', compact('dataApp', 'teknisi', 'peralatan'));
     }
 
     /**
@@ -42,7 +54,10 @@ class JadwalController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Jadwal::create($request->all());
+        // kemabali ke page detail peralatan yang di pilih 
+        return redirect()->route('peralatan.show')->with('success', 'Jadwal berhasil ditambahkan');
+
     }
 
     /**

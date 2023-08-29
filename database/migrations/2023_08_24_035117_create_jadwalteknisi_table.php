@@ -19,7 +19,7 @@ class CreateJadwalteknisiTable extends Migration
             $table->integer('id_instansi')->unsigned();
             $table->integer('id_user')->unsigned();
             
-            $table->string('jadawal');
+            $table->string('jadwal');
             $table->string('keluhan');
             $table->string('renaca_tindakan');
 

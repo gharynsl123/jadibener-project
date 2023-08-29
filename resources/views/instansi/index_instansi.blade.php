@@ -24,6 +24,13 @@
     </div>
 </div>
 
+<form action="{{ route('import') }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    <input type="file" name="file" class="form-control">
+    <br>
+    <button class="btn btn-success">Import User Data</button>
+</form>
+
 <!-- Progress DataTales -->
 <div class="card shadow my-4 border-left-primary">
     <div class="p-3">

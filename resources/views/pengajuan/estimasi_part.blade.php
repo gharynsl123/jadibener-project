@@ -11,32 +11,31 @@
             <tr>
                 <th>Instansi</th>
                 <td>:</td>
-                <td>{{ $dataApp->peralatan->instansi->nama_instansi }}</td>
+                <td>{{ $dataApp->instansi->nama_instansi }}</td>
                 <th>Nama Product</th>
                 <td>:</td>
-                <td>{{$dataApp->peralatan->produk->nama_produk}}</td>
+                <td>{{$dataApp->produk->nama_produk}}</td>
             </tr>
             <tr>
                 <th>Serial Number</th>
                 <td>:</td>
-                <td>{{ $dataApp->peralatan->serial_number }}</td>
+                <td>{{ $dataApp->serial_number }}</td>
                 <th>Kode Product</th>
                 <td>:</td>
-                <td>{{ $dataApp->peralatan->produk->kode_produk }}</td>
+                <td>{{ $dataApp->produk->kode_produk }}</td>
             </tr>
-
             <tr>
                 <th>Merek</th>
                 <td>:</td>
-                <td>{{ $dataApp->peralatan->merek->nama_merek }}</td>
+                <td>{{ $dataApp->merek->nama_merek }}</td>
                 <th>Instalasi</th>
                 <td>:</td>
-                <td>{{ $dataApp->peralatan->tahun_pemasangan }}</td>
+                <td>{{ $dataApp->tahun_pemasangan }}</td>
             </tr>
             <tr>
                 <th>Status Alat</th>
                 <td>:</td>
-                <td>{{$dataApp->peralatan->keterangan}}</td>
+                <td>{{$dataApp->keterangan}}</td>
             </tr>
         </table>
     </div>
@@ -45,8 +44,8 @@
     <form action="{{route('estimate.store')}}" method="post">
         @csrf
         <div class="row">
-            <input name="id_instansi" value="{{$dataApp->peralatan->instansi->id}}" hidden>
-            <input name="id_peralatan" value="{{$dataApp->peralatan->id}}" hidden>
+            <input name="id_instansi" value="{{$dataApp->instansi->id}}" hidden>
+            <input name="id_peralatan" value="{{$dataApp->id}}" hidden>
             <div class="form-group col-md-6">
                 <label for="kategori-select">Kategori</label>
                 <select name="id_kategori" id="kategori-select" class="form-control">

@@ -230,7 +230,7 @@
 
             <!-- Nav Item Logout-->
             <li class="nav-item">
-                <a class="nav-link" data-toggle="modal" data-target="#logoutModal" data-target="#logoutModal">
+                <a class="nav-link" href="" data-toggle="modal" data-target="#logoutModal" data-target="#logoutModal">
                     <i class="fas fa-fw fa-sign-out"></i>
                     <span>logout</span></a>
             </li>

@@ -1,6 +1,10 @@
 @extends('layouts.main-view')
 
 @section('content')
+<!-- button back -->
+<div class="mb-4">
+    <a href="{{ route('instansi.index') }}" class="btn  btn-primary">Kembali</a>
+</div>
 <div class="container mt-5">
     <h2>Detail Data Rumah Sakit / Institusi</h2>
     <div class="row">

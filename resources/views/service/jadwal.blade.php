@@ -7,17 +7,23 @@
         <table class="table table-borderless table-striped" id="dataTable">
             <thead>
                 <tr>
-                    <th>trait_exists</th>
-                    <th>trait_exists2</th>
-                    <th>trait_exists3</th>
+                    <th>instansi</th>
+                    <th>keluhan</th>
+                    <th>teknisi yang di pilih</th>
+                    <th>datang pada tanggal</th>
+                    <th>rencana tindakan</th>
                 </tr>
             </thead>
             <tbody>
+                @foreach($jadwal as $items)
                 <tr>
-                    <td>trait_exists</td>
-                    <td>trait_exists2</td>
-                    <td>trait_exists3</td>
+                    <td>{{$items->peralatan->instansi->nama_instansi}}</td>
+                    <td>{{$items->keluhan}}</td>
+                    <td>{{$items->user->nama_user}}</td>
+                    <td>{{$items->jadwal}}</td>
+                    <td>{{$items->renaca_tindakan}}</td>
                 </tr>
+                @endforeach
             </tbody>
         </table>
     </div>

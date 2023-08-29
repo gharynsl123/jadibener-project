@@ -49,6 +49,7 @@
                         <td>{{$items->user->nama_user}}</td>
                         <td>{{$items->status_pengajuan}}</td>
                         <td>
+                            @if($items->status_pengajuan == 'selesai')
                             <!-- untuk feedback good or bad -->
                             <div class="d-flex justify-content-between">
                                 <a href="#" class="btn btn-success">
@@ -58,6 +59,9 @@
                                     <i class="fa fa-thumbs-down text-white"></i>
                                 </a>
                             </div>
+                            @else
+                            Belum selesai
+                            @endif
                         </td>
                     </tr>
                     @endif
