@@ -14,22 +14,47 @@
 </style>
 
 @if(Auth::user()->level == 'admin')
-
-
 <div class="d-sm-flex align-items-center justify-content-between my-4">
     <h1 class="h3 mb-0 d-none text-gray-800 d-sm-inline-block">Data Rumah Sakit</h1>
     <div class=" d-sm-inline-block">
         <a href="{{route('instansi.create')}}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">
             <i class="fas fa-plus fa-sm text-white-50"></i> Tambahkan Data RS</a>
+        <a href="/instansi-cetak-pdf" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+            <i class="fas fa-file fa-sm text-white-50"></i> cetak pdf</a>
+        <a data-toggle="modal" data-target="#importdata" data-target="#importdata"
+            class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+            <i class="fas fa-file-import fa-sm text-white-50"></i> Import Data</a>
+
+    </div>
+</div>
+@endif
+
+<!-- Logout Modal-->
+<div class="modal fade" id="importdata" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Import Data Rumah Sakit</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('import.instansi') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="d-flex ">
+                        <input type="file" required name="file">
+                        <button class="btn btn-secondary" type="submit">Import Data</button>
+                    </div>
+                    <small>format file Xsl, CSV</small>
+
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 
-<form action="{{ route('import') }}" method="POST" enctype="multipart/form-data">
-    @csrf
-    <input type="file" name="file" class="form-control">
-    <br>
-    <button class="btn btn-success">Import User Data</button>
-</form>
 
 <!-- Progress DataTales -->
 <div class="card shadow my-4 border-left-primary">
@@ -77,6 +102,7 @@
         </div>
     </div>
 </div>
-@endif
+
+
 
 @endsection

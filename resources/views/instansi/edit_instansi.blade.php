@@ -18,11 +18,8 @@
             </div>
             <div class="form-group col-md-6">
                 <label for="pic">Jenis Instansi</label>
-                <select class="form-control" id="pic" name="jenis_instansi">
-                    <option value=""> Pilih </option>
-                    <option value="pemerintah" @if($instansi->jenis_instansi == 'pemerintah') selected @endif>Pemerintah</option>
-                    <option value="swasta" @if($instansi->jenis_instansi == 'swasta') selected @endif>Swasta</option>
-                </select>
+                <input type="text" id="pic"  class="form-control" name="jenis_instansi" value="{{ $instansi->jenis_instansi }}" >
+
             </div>
             <div class="form-group col-md-6">
                 <label for="image">Image</label>

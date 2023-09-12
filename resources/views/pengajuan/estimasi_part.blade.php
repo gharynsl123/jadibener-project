@@ -75,7 +75,7 @@
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Tambahkan</button>
-        <a href="" class="btn btn-secondary">cencel</a>
+        <a href="{{route('peralatan.index')}}" class="btn btn-secondary">cencel</a>
     </form>
 </div>
 

@@ -40,10 +40,9 @@ class JadwalController extends Controller
      */
     public function create($slug)
     {
-        $peralatan = Peralatan::all();
         $teknisi = User::where('level', 'teknisi')->get();
         $dataApp = Peralatan::where('slug', $slug)->first();
-        return view('jadwal.create_jadwal_teknisi', compact('dataApp', 'teknisi', 'peralatan'));
+        return view('jadwal.create_jadwal_teknisi', compact('dataApp', 'teknisi'));
     }
 
     /**
@@ -52,11 +51,11 @@ class JadwalController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $slug)
     {
         Jadwal::create($request->all());
         // kemabali ke page detail peralatan yang di pilih 
-        return redirect()->route('peralatan.show')->with('success', 'Jadwal berhasil ditambahkan');
+        return redirect()->route('peralatan.show', $slug)->with('success', 'Jadwal berhasil ditambahkan');
 
     }
 

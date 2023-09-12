@@ -52,14 +52,14 @@
                 <label for="image_product">Image Product (Current Image)</label><br>
                 @if($produk->photo)
                 <div class="img-thumbnail card square" id="imagePreview"
-                    style="background-image: url('{{ asset('storage/images/' . $produk->photo) }}');"></div>
+                    style="background-image: url('{{ asset('storage/produk/' . $item->photo_produk) }}');"></div>
                 @else
                 <p>Image not available</p>
                 @endif
             </div>
             <div class="form-group col-md-8">
                 <label for="new_image_product">Edit Image Product (Optional)</label>
-                <input type="file" class="form-control form-control-file p-0" id="new_image_product" name="photo">
+                <input type="file" class="form-control form-control-file p-0" id="new_image_product" name="photo_produk">
             </div>
 
         </div>

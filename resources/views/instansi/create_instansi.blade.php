@@ -17,11 +17,7 @@
             </div>
             <div class="form-group col-md-6">
                 <label for="pic">Jenis Instansi</label>
-                <select class="form-control" id="pic" name="jenis_instansi">
-                    <option value=""> Pilih </option>
-                    <option value="pemerintah">Pemerintah</option>
-                    <option value="swasta">Swasta</option>
-                </select>
+                <input type="number" class="form-control" name="jenis_instansi" placeholder="tulis jenisnya">
             </div>
             <div class="form-group col-md-6">
                 <label for="image">Image</label>

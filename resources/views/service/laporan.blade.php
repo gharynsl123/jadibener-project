@@ -18,7 +18,7 @@
             <tbody>
                 @foreach($survey as $s)
                 <tr>
-                    <td>{{$s->peralatan->instansi->nama_instansi}}</td>
+                    <td>{{$s->instansi->nama_instansi}}</td>
                     @if($s->peralatan->update_at != null)
                     <td>{{ $s->peralatan->update_at->format('Y-m-d') }}</td>
                     @else
@@ -29,7 +29,7 @@
                     <td>{{$s->hasil_kunjungan}}</td>
                     <td>{{$s->kesimpulan_kunjungan}}</td>
                     <td>
-                        <a href="#" class="btn btn-primary"><i class="fa fa-file"></i></a>
+                        <a href="{{route('laporan.cetak_pdf', $s->id)}}" class="btn btn-primary"><i class="fa fa-file"></i></a>
                         <form action="#" method="post">
                             @csrf
                             @method('DELETE')

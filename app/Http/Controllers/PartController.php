@@ -6,6 +6,7 @@ use App\Part;
 use App\Kategori;
 use App\Pengajuan;
 use App\Peralatan;
+use Illuminate\Support\Facades\Auth;
 use App\History;
 use App\Estimate;
 use Illuminate\Http\Request;
@@ -40,10 +41,11 @@ class PartController extends Controller
         $kategori = Kategori::all(); // Get all data from table kategori
         $part = Part::all(); // Get all data from table suku cadang
 
-        // mengambil data peralatan yang dari bilih dari detail 
-        $dataApp =  Peralatan::where('slug', $slug)->first();
+        // mengambil data peralatan yang dari detail yang di instanisnya di pilih dari detail
+        $dataApp = Peralatan::where('slug', $slug)->first();
         return view('pengajuan.estimasi_part', compact('part', 'kategori', 'dataApp')); // Redirect to the create suku cadang's page with the data from table kategori and suku cadang
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -53,16 +55,8 @@ class PartController extends Controller
      */
     public function store(Request $request)
     {
-        Part::create($request->all());
-        return redirect('/part'); // Redirect to the newly created suku cadang's details page
-    }
-
-    public function storePart(Request $request) {
-        $dataReq = $request->all();
-        $dataReq['id_peralatan'] = $request->id_peralatan;
-        $dataReq['id_instansi'] = $request->id_instansi;
-        Estimate::create($dataReq);
-        return redirect('/estimasi-biaya');
+        $partreq = Part::create($request->all());
+        return response()->json($partreq);
     }
 
     public function estimasi() {
@@ -73,6 +67,20 @@ class PartController extends Controller
             $estimasiData = Estimate::all();
         }
         return view('service.estimasi', compact('estimasiData'));
+    }
+
+    public function storePart(Request $request) {
+        $dataReq = $request->all();
+        $dataReq['id_peralatan'] = $request->id_peralatan;
+        $dataReq['id_instansi'] = $request->id_instansi;
+        Estimate::create($dataReq);
+        return redirect('/estimasi-biaya');
+    }
+
+    public function dataPart()
+    {
+        $kategori = Part::all();
+        return response()->json($kategori);
     }
 
 
@@ -94,9 +102,11 @@ class PartController extends Controller
      * @param  \App\SukuCadang  $sukuCadang
      * @return \Illuminate\Http\Response
      */
-    public function edit(Part $part)
+    public function edit($id)
     {
-        //
+        $part = Part::find($id);
+        return response()->json($part);
+
     }
 
     /**
@@ -106,10 +116,22 @@ class PartController extends Controller
      * @param  \App\SukuCadang  $sukuCadang
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Part $part)
+    public function update(Request $request, $id)
     {
-        //
+        $part = Part::find($id);
+    
+        if (!$part) {
+            return response()->json(['message' => 'Data tidak ditemukan.'], 404);
+        }
+    
+        $part->nama_part = $request->nama_part;
+        $part->kode_part = $request->kode_part; // Ubah ini dari $part->nama_part menjadi $part->kode_part
+        $part->id_kategori = $request->id_kategori;
+        $part->save();
+    
+        return response()->json($part);
     }
+    
 
     /**
      * Remove the specified resource from storage.
@@ -117,9 +139,15 @@ class PartController extends Controller
      * @param  \App\SukuCadang  $sukuCadang
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id){
+    public function destroy($id)
+    {
         $part = Part::find($id);
+
+        if (!$part) {
+            return response()->json(['message' => 'Data tidak ditemukan.'], 404);
+        }
+
         $part->delete();
-        return redirect('/part'); // Redirect to the suku cadang's list page
+        return response()->json(['message' => 'Data berhasil dihapus.']);
     }
 }

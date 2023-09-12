@@ -50,7 +50,7 @@
                     <tr>
                         <th>No telepon</th>
                         <td>:</td>
-                        <td>{{$items->no_telp ? $items->no_telp  : 'Belum diisi'}}</td>
+                        <td>{{$items->nomor_telepon ? $items->nomor_telepon  : 'Belum diisi'}}</td>
                     </tr>
                     <tr>
                         <th>Level</th>

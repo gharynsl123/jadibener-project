@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\UserImport;
 use App\Instansi;
 use Illuminate\Support\Facades\Hash;
 
@@ -17,6 +19,13 @@ class UserController extends Controller
     public function index() {
         $user = User::all();
         return view('user.index_user', compact('user'));
+    }
+
+    public function import(Request $request)
+    {
+        $file = $request->file('file'); // Ambil file Excel dari formulir
+        Excel::import(new UserImport, $file);
+        return redirect()->back()->with('success', 'Data berhasil diimpor.');
     }
 
     public function create()

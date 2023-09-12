@@ -17,9 +17,8 @@
 
     .checklist-shown .show-when-checklist-shown {
         display: block;
-
-    border-top-right-radius: 10px !important;
-    border-bottom-right-radius: 10px !important;
+        border-top-right-radius: 10px !important;
+        border-bottom-right-radius: 10px !important;
     }
 
     /* Tambahan CSS untuk tampilan Checklist yang normal */
@@ -33,16 +32,58 @@
     }
 </style>
 
-<div class="d-none d-flex @if(Auth::user()->level == 'pic') justify-content-end @else justify-content-between @endif mb-3">
+<div class="d-none d-flex justify-content-end mb-3">
     @if(Auth::user()->level != 'pic')
     <a href="{{route('peralatan.create')}}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">
         <i class="fas fa-plus fa-sm text-white-50"></i> Tambahkan Data</a>
     @endif
+
+    <a href="/peralatan-cetak-pdf" class="mx-2 d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        <i class="fas fa-file fa-sm text-white-50"></i> cetak pdf</a>
+
+<a data-toggle="modal" data-target="#importAlat" data-target="#importAlat"
+    class="d-sm-inline-block btn btn-sm btn-success shadow-sm">
+    <i class="fas fa-file-import fa-sm text-white-50"></i> Import File alat</a>
 </div>
 
-<!-- Progress DataTales -->
+<!-- Logout Modal-->
+<div class="modal fade" id="importAlat" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Import Data Alat</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            <form action="{{ route('import.peralatan') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="d-flex">
+                    <input type="file" required name="file">
+                    <button class="btn btn-secondary" type="submit">Import Data</button>
+                </div>
+                <small>format file Xsl, CSV</small>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="card shadow my-4 border-left-primary">
     <div class="p-3">
+        <div class="">
+            <label for="kategori-select col-md-3">Shortby Kateg:</label>
+                <select id="kategori-select" class="">
+                    <option value="">Semua Kategori</option>
+                    @foreach($kategori as $item)
+                        <option value="{{ $item->nama_kategori }}">{{ $item->nama_kategori }}</option>
+                    @endforeach
+                </select>
+        </div>
+
         <div class="table-responsive">
             <table class="table table-hover table-borderless" id="dataTable" width="100%" cellspacing="0">
                 <thead class="bg-dark text-white">
@@ -87,7 +128,7 @@
                                     {{$peralatans->kondisi_product}}</div>
                             </div>
                         </td>
-                        @if (Auth::user()->level == 'admin' || Auth::user()->level == 'teknisi')
+                        @if (Auth::user()->level == 'admin' || Auth::user()->level == 'teknisi' || Auth::user()->level == 'surveyor2')
                         <td class="hide-when-checklist-shown">
                             <a href="{{ route('peralatan.edit', $peralatans->slug) }}" class="btn btn-warning btn-sm"><i
                                     class="fa fa-pen-to-square text-white"></i></a>
@@ -106,12 +147,31 @@
                 </tbody>
             </table>
         </div>
-
     </div>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    const kategoriSelect = document.getElementById('kategori-select');
+    const rows = document.querySelectorAll('#dataTable tbody tr'); // Ambil semua baris tabel
+    
+    kategoriSelect.addEventListener('change', function () {
+        const selectedCategoryId = kategoriSelect.value;
+    
+        // Loop melalui semua baris tabel
+        rows.forEach(row => {
+            const kategoriCell = row.querySelector('td:nth-child(2)'); // Ganti indeks kolom sesuai dengan posisi kategori di tabel
+            if (selectedCategoryId === '' || kategoriCell.textContent === selectedCategoryId) {
+                // Tampilkan baris jika "Semua Kategori" dipilih atau kategori cocok dengan yang dipilih
+                row.style.display = 'table-row'; // Tampilkan baris
+            } else {
+                // Sembunyikan baris jika kategori tidak cocok dengan yang dipilih
+                row.style.display = 'none'; // Sembunyikan baris
+            }
+        });
+    });
+
+
     // Panggil fungsi perbaruiSelisihTahunUntukSemuaPeralatan saat halaman dimuat
     perbaruiSelisihTahunUntukSemuaPeralatan();
 

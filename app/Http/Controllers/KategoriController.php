@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Kategori;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\KategoriImport;
 use Illuminate\Http\Request;
 
 class KategoriController extends Controller
@@ -51,6 +53,14 @@ class KategoriController extends Controller
 
         return response()->json($kategori);
     }
+
+    public function import(Request $request)
+    {
+        $file = $request->file('file'); // Ambil file Excel dari formulir
+        Excel::import(new KategoriImport, $file);
+        return redirect()->back()->with('success', 'Data berhasil diimpor.');
+    }
+
 
     public function destroy($id)
     {

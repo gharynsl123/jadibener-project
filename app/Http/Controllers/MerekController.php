@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Merek;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\MerekImport;
 use Illuminate\Http\Request;
 
 class MerekController extends Controller
@@ -52,6 +54,14 @@ class MerekController extends Controller
             'nama_merek' => $request->nama_merek,
         ]);
         return response()->json($merek);
+    }
+
+
+    public function import(Request $request)
+    {
+        $file = $request->file('file'); // Ambil file Excel dari formulir
+        Excel::import(new MerekImport, $file);
+        return redirect()->back()->with('success', 'Data berhasil diimpor.');
     }
 
     /**

@@ -14,6 +14,7 @@
 <div class="mb-4">
 <a href="{{ route('peralatan.index') }}" class="btn  btn-primary">Kembali</a>
 
+<a href="{{route('alat.cetak_pdf', $peralatan->slug)}}" class="btn my-2 btn-secondary">Cetak PDF</a>
 <a href="{{route('pengajuan.create', $peralatan->slug)}}" type="button" class="my-1 btn btn-success">Ajukan Survey / Perbaikan</a>
 
 @if(Auth::user()->level != 'pic')
@@ -184,6 +185,7 @@
         </div>
     </div>
 </div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Panggil fungsi perbaruiSelisihTahun saat halaman dimuat

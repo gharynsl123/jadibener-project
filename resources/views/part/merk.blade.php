@@ -171,7 +171,6 @@ function editData(id) {
                 updateData(response.id); // Berikan parameter id dari response
             });
 
-            // Ubah tombol dan fungsi pada form input
             $('#updateDataBtn').show();
             $('#cancelBtn').show();
             $('#title-card').html('Edit Merek');
@@ -180,7 +179,7 @@ function editData(id) {
     });
 }
 
-function updateData() {
+function updateData(id) {
     var namaMerek = $('#nama_merek').val();
 
     $.ajax({
@@ -193,7 +192,6 @@ function updateData() {
         success: function(response) {
             getAllData();
             $('#nama_merek').val('');
-
             cancelEdit();
             $('#updateDataBtn').hide();
             $('#addDataBtn').show();

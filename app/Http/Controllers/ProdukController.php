@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Produk;
 use App\Merek;
 use App\Kategori;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\ProdukImport;
 use Illuminate\Http\Request;
 
 class ProdukController extends Controller
@@ -27,6 +29,14 @@ class ProdukController extends Controller
         return view('product.index_product', compact('produk', 'mereks', 'kategoris'));
     }
     
+    public function import(Request $request)
+    {
+        $file = $request->file('file'); // Ambil file Excel dari formulir
+        Excel::import(new ProdukImport, $file);
+        return redirect()->back()->with('success', 'Data berhasil diimpor.');
+    }
+
+
     public function create()
     {
         $mereks = Merek::all();
@@ -102,12 +112,12 @@ class ProdukController extends Controller
         $product->kode_produk = $request->input('kode_produk');
         $product->nama_produk = $request->input('nama_produk');
 
-        if ($request->hasFile('photo')) {
-            $image = $request->file('photo');
+        if ($request->hasFile('photo_produk')) {
+            $image = $request->file('photo_produk');
             $image_name = $image->getClientOriginalName();
-            $destination_path = 'public/images';
-            $path = $request->file('photo')->storeAs($destination_path, $image_name);
-            $product->photo = $image_name;
+            $destination_path = 'public/produk'; 
+            $path = $request->file('photo_produk')->storeAs($destination_path, $image_name);
+            $product->photo_produk = $image_name;
         }
 
         $product->save();
@@ -122,8 +132,10 @@ class ProdukController extends Controller
      * @param  \App\Produk  $produk
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Produk $produk)
+    public function destroy($id)
     {
-        //
+        $product = Produk::find($id);
+        $product->delete();
+        return redirect()->route('produk.index')->with('success', 'Produk berhasil dihapus.');
     }
 }

@@ -31,10 +31,10 @@
 
     <!-- Custom styles for this page -->
     <link href="{{asset('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
-
 </head>
 
 <body id="page-top">
+
 
     <div id="wrapper">
 
@@ -57,21 +57,23 @@
 
             <hr class="sidebar-divider">
 
-            @if(Auth :: user()->level != 'pic_rs')
+            @if(Auth :: user()->level != 'surveyor')
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
+                <div class="slide-right"></div>
                 <a class="nav-link" href="{{url('home')}}">
                     <i class="fas fa-fw fa-home"></i>
-                    <span>Home</span></a>
+                    <span class="nav-text">Home</span></a>
             </li>
             @endif
 
             <!-- Nav Item - List Peralatan -->
             <li class="nav-item">
+                <div class="slide-right"></div>
                 <a class="nav-link"
                     href="@if (Auth::user()->level == 'pic_rs'){{route('peralatan.index')}}@else{{route('peralatan.index')}}@endif">
                     <i class="fas fa-fw fa-server"></i>
-                    <span>List Peralatan @if(Auth::user()->level == 'pic_rs')RS @endif</span></a>
+                    <span class="nav-text">List Peralatan @if(Auth::user()->level == 'pic_rs')RS @endif</span></a>
             </li>
 
 
@@ -122,22 +124,14 @@
             </li>
 
             @if(Auth::user()->level == 'admin')
-            <!-- Nav Item configuration Service-->
+
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#configurationCollapse"
-                    aria-expanded="false" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>User Configuration</span>
-                </a>
-                <div id="configurationCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{{url('users')}}">user config</a>
-                        <a class="collapse-item" href="{{url('kondisi')}}">urgently setting</a>
-                    </div>
-                </div>
+                <a class="nav-link" href="{{url('users')}}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>User Configuration</span></a>
             </li>
             @endif
-            
+
             @if(Auth::user()->level == 'pic_rs')
             @if(Auth::user()->role == 'gizi' || Auth::user()->role == 'manager')
             <!-- Nav Item informasi -->
@@ -187,7 +181,7 @@
                     <i class="fas fa-fw fa-cog"></i>
                     <span>Kategori</span></a>
             </li>
-            
+
             <!-- Nav Item informasi -->
             <li class="nav-item">
                 <a class="nav-link" href="{{url('part')}}">
@@ -332,22 +326,5 @@
 <!-- Page level custom scripts -->
 <script src="{{asset('js/demo/datatables-demo.js')}}"></script>
 <!-- Content Row -->
-<script>
-function updateNomorUrut() {
-    const rows = document.querySelectorAll('tr[data-nomor]');
-    rows.forEach((row, index) => {
-        row.querySelector('td:first-child').textContent = index + 1;
-    });
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    updateNomorUrut();
-});
-
-// Fungsi ini akan dipanggil ketika data dihapus, contoh: setelah submit form hapus
-function onDataDeleted() {
-    updateNomorUrut();
-}
-</script>
 
 </html>

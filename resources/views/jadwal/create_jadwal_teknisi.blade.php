@@ -44,7 +44,7 @@
 
 <!-- buat form untuk atur jadwal teknisi -->
 <div class="card shadow border-left-primary">
-    <form action="{{route('jadwal.store')}}" method="post" class="p-4">
+    <form action="{{route('jadwal.store', $dataApp->slug)}}" method="post" class="p-4">
         @csrf
         <div class="row gap-2">
             <div class="form-group col-md-6">
@@ -76,7 +76,8 @@
                 <textarea type="text" name="renaca_tindakan" class="form-control"></textarea>
             </div>
         </div>
-            <button type="submit" class="btn btn-primary">testing</button>
+            <button type="submit" class="btn btn-primary">kirim</button>
+            <a href="{{route('peralatan.index')}}" class="btn btn-secondary">cancel</a>
     </form>
 </div>
 @endsection

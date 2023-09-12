@@ -20,7 +20,7 @@ class CreateProdukTable extends Migration
 
             $table->string('kode_produk');
             $table->string('nama_produk');
-            $table->string('photo_produk');
+            $table->string('photo_produk')->nullable();
             
             $table->foreign('id_merek')->references('id')->on('merek')->onDelete('cascade');
             $table->foreign('id_kategori')->references('id')->on('kategori')->onDelete('cascade');

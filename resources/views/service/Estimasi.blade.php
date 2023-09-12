@@ -38,7 +38,7 @@
                     <td>{{ $estimasi->keterangan }}</td>
                     <td>
                         <!-- Tambahkan tombol aksi sesuai kebutuhan -->
-                        <a class="btn btn-sm btn-primary"><i class="fa fa-pen-to-square"></i></a>
+                        <a href="{{route('estimasi.cetak_pdf', $estimasi->id)}}" class="btn btn-sm btn-primary"><i class="fa fa-file"></i></a>
                         <a class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
                     </td>
                 </tr>

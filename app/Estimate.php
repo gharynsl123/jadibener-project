@@ -20,4 +20,8 @@ class Estimate extends Model
     function peralatan() {
         return $this->belongsTo('App\Peralatan', 'id_peralatan');
     }
+
+    function instansi(){
+        return $this->belongsTo('App\Instansi', 'id_instansi');
+    }
 }

@@ -4016,7 +4016,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
     color: #6e707e;
     background-color: #fff;
-    border-color: #dddfeb #dddfeb #fff
+    border-color: #dddfeb #dddfeb #fff;
 }
 
 .nav-tabs .dropdown-menu {
@@ -10530,8 +10530,35 @@ a:focus {
 }
 
 .sidebar .nav-item {
-    position: relative
+    position: relative;
+    overflow: hidden;
 }
+
+.slide-right {
+    position: absolute;
+    top: 0;
+    left: -100%; /* Mulai dari posisi di luar sidebar */
+    width: 85%;
+    height: 100%;
+    border-radius: 0 8px 8px 0;
+    background-color: #bf00ff;
+    transition: left 0.3s ease;
+}
+
+.nav-item:hover .slide-right {
+    left: 0; /* Muncul saat di-hover */
+}
+
+/* Tambahkan background pada teks dan ikon */
+.nav-text {
+    padding: 10px; /* Sesuaikan dengan kebutuhan */
+    display: inline-block;
+    border-radius: 0 8px 8px 0;
+    position: relative;
+    z-index: 2; /* Pastikan teks dan ikon berada di atas latar belakang */
+    color: white;
+}
+
 
 .sidebar .nav-item:last-child {
     margin-bottom: 1rem

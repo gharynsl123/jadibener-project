@@ -52,9 +52,10 @@
                         <label for="ugently">Ugently / Kondisi</label>
                         <select class="form-control" name="id_kondisi" id="ugently">
                             <option selected disabled>-- PILIH --</option>
-                            @foreach($kondisi as $urgensis)
-                            <option value="{{ $urgensis->id }}">{{ $urgensis->nama_kondisi }}</option>
-                            @endforeach
+                            <option value="ctok">pelayanan ctok</option>
+                            <option value="reguler">pelayanan reguler</option>
+                            <option value="berkala">pelayanan berkala</option>
+                            <option value="lain-lain">pelayanan lain</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -69,7 +70,7 @@
                     </div>
                     <div class="form-group text-center">
                         <button type="submit" class="btn btn-primary">Ajukan Item</button>
-                        <a href="{{route('peralatan.show', $peralatan->id)}}" class="btn btn-secondary">Batalkan</a>
+                        <a href="{{route('peralatan.show', $peralatan->slug)}}" class="btn btn-secondary">Batalkan</a>
                     </div>
                 </div>
             </div>

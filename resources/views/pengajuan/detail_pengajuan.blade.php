@@ -2,6 +2,7 @@
 @section('title', 'Detail Pengajuan')
 @section('content')
 
+<a href="{{route('pengajuan.cetak_pdf', $pengajuan->slug)}}" class="btn my-2 btn-secondary">Cetak PDF</a>
 
 <div class="row gap-2 mb-3">
     <div class="col-md-3">
@@ -163,7 +164,7 @@
                         <textarea name="keterangan" class="form-control " rows="2" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Update Progress</button>
-                    <a href="{{route('part.create')}}" class="btn btn-success">pergantian part</a>
+                    <a href="{{route('part.create', $pengajuan->slug)}}" class="btn btn-success">pergantian part</a>
                 </form>
                 @endif
                 @endif
@@ -212,7 +213,6 @@
         </div>
     </div>
 </div>
-
 
 @endif
 @endsection

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Pengajuan;
 use App\Kondisi;
 use App\Progress;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PermintaanPerbaikan;
 use App\User;
 use App\History;
 use Carbon\Carbon;
@@ -29,13 +31,14 @@ class PengajuanController extends Controller
     {
     //     
     }
+    
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($slug)
+    public function create(Request $request, $slug)
     {
         $peralatan = Peralatan::where('slug', $slug)->first();
         $kondisi = Kondisi::all();
@@ -55,6 +58,8 @@ class PengajuanController extends Controller
         // membuat data masuk ke database pengajuan dengan singkat
         $pengajuan = $request->all();
         
+        $peralatan = Peralatan::find($request->id_peralatan);
+        
         $today = Carbon::now();
         $formatedDate = $today->format('d-m-Y');
         $formattedSV = $today->format('ymdsv');
@@ -72,10 +77,11 @@ class PengajuanController extends Controller
         $history['id_peralatan'] = $request->id_peralatan;
 
         $history['id_pengajuan'] = $dataPengajuan->id;
-        
+
         History::create($history);
+        
+        return redirect()->route('peralatan.index');
         // mengambil data dari database pengajuan
-        return redirect()->route('peralatan.show', $request->id_peralatan);
     }
     
 
@@ -125,36 +131,39 @@ class PengajuanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // update status
-
-        $today = Carbon::now();
-        $formatedDate = $today->format('y-m-d');
-
+        // Update status pengajuan
         $pengajuan = Pengajuan::find($id);
         $pengajuan->status_pengajuan = $request->status_pengajuan;
-        $update = $pengajuan->save();
-
+        $pengajuan->save();
+    
+        // Tambahkan history
+        $today = Carbon::now();
+        $formattedDate = $today->format('y-m-d');
+    
         $history = [
             'id_user' => Auth::user()->id,
-            'tanggal' => $formatedDate,
+            'tanggal' => $formattedDate,
             'status_history' => 'masuk ke tahap teknisi',
-            'deskripsi' => 'tiket di' . $request->status_pengajuan . ' oleh ' . Auth::user()->nama_user,
+            'deskripsi' => 'tiket di ' . $request->status_pengajuan . ' oleh ' . Auth::user()->nama_user,
         ];
-        
+    
         $history['id_pengajuan'] = $pengajuan->id;
-
+    
         History::create($history);
+    
+        // Berikan respon untuk Ajax
+        return response()->json(['history' => $history, 'pengajuan' => $pengajuan]);
+    }
 
-        // tambah history
-        // $history = new History;
-        // $history->id_progress = $pengajuan->id;
-        // $history->id_user = $pengajuan->user->id;
-        // $history->tanggal = Carbon::now();
-        // $history->status_history = 'proses';
-        // $history->save();
-
-        // ke hlmn home
-        return redirect('/home')->with('success', 'Status has been updated');
+    public function getPengajuan() {
+        $pengajuan = Pengajuan::where('status_pengajuan', 'pending')
+        ->join('peralatan','peralatan.id', '=', 'Pengajuan.id_peralatan')
+        ->join('users','users.id', '=', 'Pengajuan.id_user')
+        ->join('kategori','kategori.id', '=', 'Peralatan.id_kategori')
+        ->join('produk','produk.id', '=', 'Peralatan.id_product')
+        ->join('kondisi','kondisi.id', '=', 'Pengajuan.id_kondisi')
+        ->join('instansi', 'instansi.id', '=' , 'Peralatan.id_instansi')->get()->all();
+        return response()->json($pengajuan);
     }
 
     /**

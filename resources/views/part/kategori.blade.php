@@ -2,17 +2,32 @@
 
 @section('content')
 <!-- Content Row -->
+
+
 <div class="row gap-2">
     <div class="col-md-5 mb-4">
+
+        <form action="{{ route('import.kategori') }}" method="POST" class="mb-3" enctype="multipart/form-data">
+            @csrf
+            <div class="d-flex">
+                <input type="file" required name="file">
+                <button class="btn btn-secondary" type="submit">Import Data</button>
+            </div>
+            <small>format file Xsl, CSV</small>
+        </form>
+
         <input type="text" id="searchInput" class="form-control mb-4" placeholder="Search by Name">
         <div class="card shadow">
             <div class="card-header mb-2" id="title-card">Add New kategori</div>
             <div class="card-body p-3">
                 <form>
-                    <input type="text" name="nama_kategori" id="nama_kategori" class="mb-4 form-control" autocomplete="off" placeholder="Nama kategori">
+                    <input type="text" name="nama_kategori" id="nama_kategori" class="mb-4 form-control"
+                        autocomplete="off" placeholder="Nama kategori">
                     <button class="btn btn-primary" id="addDataBtn" type="button" onclick="addData()">Input</button>
-                    <button class="btn btn-success" id="updateDataBtn" type="button" onclick="updateData()">Edit</button>
-                    <button class="btn btn-secondary" id="cancelBtn" type="button" onclick="cancelEdit()">Cancel</button>
+                    <button class="btn btn-success" id="updateDataBtn" type="button"
+                        onclick="updateData()">Edit</button>
+                    <button class="btn btn-secondary" id="cancelBtn" type="button"
+                        onclick="cancelEdit()">Cancel</button>
                 </form>
             </div>
         </div>
@@ -107,6 +122,51 @@ function updatePagination(data) {
     $('#pagination').html(paginationButtons);
 }
 
+function updateData(id) {
+
+    var namakategori = $('#nama_kategori').val();
+
+    $.ajax({
+        type: "PUT",
+        url: "/update-kategori/" + id,
+        data: {
+            "_token": "{{ csrf_token() }}",
+            "nama_kategori": namakategori
+        },
+        success: function(response) {
+            getAllData();
+            $('#nama_kategori').val('');
+            cancelEdit();
+            $('#updateDataBtn').hide();
+            $('#addDataBtn').show();
+        }
+    });
+}
+
+function cancelEdit() {
+    editingCategoryId = null;
+    $('#nama_kategori').val('');
+    $('#updateDataBtn').hide();
+    $('#cancelBtn').hide();
+    $('#title-card').html('Add New kategori');
+    $('#addDataBtn').show();
+}
+
+function deleteData(id) {
+    if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
+        $.ajax({
+            type: "DELETE",
+            url: "/delete-kategori/" + id,
+            data: {
+                "_token": "{{ csrf_token() }}"
+            },
+            success: function(response) {
+                getAllData();
+            }
+        });
+    }
+}
+
 function changePage(page) {
     currentPage = page;
     displayData(data);
@@ -147,8 +207,6 @@ function addData() {
 }
 
 function editData(id) {
-    editingCategoryId = id; // Set ID kategori yang sedang diedit
-
     $.ajax({
         type: "GET",
         dataType: 'json',
@@ -156,55 +214,16 @@ function editData(id) {
         success: function(response) {
             $('#nama_kategori').val(response.nama_kategori);
 
+            $('#updateDataBtn').click(function() {
+                updateData(response.id); // Berikan parameter id dari response
+            });
+
             $('#updateDataBtn').show();
             $('#cancelBtn').show();
             $('#title-card').html('Edit kategori');
             $('#addDataBtn').hide();
         }
     });
-}
-
-function updateData(id) {
-
-    var namakategori = $('#nama_kategori').val();
-
-    $.ajax({
-        type: "PUT",
-        url: "/update-kategori/" + id,
-        data: {
-            "_token": "{{ csrf_token() }}",
-            "nama_kategori": namakategori
-        },
-        success: function(response) {
-            getAllData();
-            $('#nama_kategori').val('');
-            cancelEdit();
-        }
-    });
-}
-
-function cancelEdit() {
-    editingCategoryId = null;
-    $('#nama_kategori').val('');
-    $('#updateDataBtn').hide();
-    $('#cancelBtn').hide();
-    $('#title-card').html('Add New kategori');
-    $('#addDataBtn').show();
-}
-
-function deleteData(id) {
-    if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
-        $.ajax({
-            type: "DELETE",
-            url: "/delete-kategori/" + id,
-            data: {
-                "_token": "{{ csrf_token() }}"
-            },
-            success: function(response) {
-                getAllData();
-            }
-        });
-    }
 }
 </script>
 @endsection

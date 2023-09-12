@@ -10,7 +10,7 @@
             <tr>
                 <th>No</th>
                 <th>Id Pengajuan</th>
-                <th>Reported by</th>
+                <th>dikerjakan oleh</th>
                 <th>instansi</th>
                 <th>Jadwal</th>
                 <th>kategori</th>

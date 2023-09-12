@@ -31,9 +31,6 @@ Route::group(['middleware' => ['auth', 'role:admin,teknisi,surveyor,sub_service'
     Route::get('/detail-instansi/{id}', 'InstansiController@show')->name('instansi.show');
     Route::post('/add-instansi', 'InstansiController@store')->name('instansi.store');
     Route::delete('/delete-instansi/{id}', 'InstansiController@destroy')->name('instansi.destroy');
-
-    Route::post('/import', 'InstansiController@import')->name('import');
-    Route::get('/export-users', 'InstansiController@exportUsers')->name('export-users');
 });
 
 Route::group(['middleware' => ['auth', 'role:admin']], function () {
@@ -44,22 +41,25 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::get('/edit-users/{id}', 'UserController@edit')->name('user.edit');
     Route::put('/update-users/{id}', 'UserController@update')->name('users.update');
     Route::delete('/delete-users/{id}', 'UserController@destroy')->name('users.destroy');
-
-    // Urgently Route
-    Route::get('/kondisi', 'KondisiController@index')->name('urgently.index');
-    Route::post('/add-kondisi', 'KondisiController@store')->name('urgent.store');
-    Route::delete('/delete-kondisi/{id}', 'KondisiController@destroy')->name('urgent.destroy');
 });
 
 // Home Route
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/get-process-ticket-count', 'HomeController@getProcessTicketCount');
+Route::get('/get-pending-count', 'HomeController@getPendingCount');
+Route::get('/get-proses-count', 'HomeController@getProsesCount');
+Route::get('/get-selesai-count', 'HomeController@getSolvedCount');
+
 
 // status Route
 Route::resource('status', 'StatusController');
 
 // Ajax Route Get Data
 Route::get('/get-data/merek', 'MerekController@dataMerek')->name('merek.data');
+Route::get('/get-data/kondisi', 'KondisiController@dataKondisi')->name('kondisi.data');
 Route::get('/get-data/kategori', 'KategoriController@dataKategori')->name('kategori.data');
+Route::get('/get-data/part', 'PartController@dataPart')->name('part.data');
+Route::get('/get-pengajuan', 'PengajuanController@getPengajuan')->name('pengajuan.get');
 
 
 // informasi Route
@@ -81,11 +81,25 @@ Route::delete('/delete-kategori/{id}', 'KategoriController@destroy')->name('kate
 Route::get('/edit-kategori/{id}', 'KategoriController@edit')->name('kategori.edit');
 Route::put('/update-kategori/{id}', 'KategoriController@update')->name('kategori.update');
 
+// DOM PDF LAPORAN
+Route::get('/peralatan-cetak-pdf', 'PrintController@peralatanCetakPdf')->name('peralatan.cetak_pdf');
+Route::get('/estimasi-cetak-pdf/{id}', 'PrintController@estimasiCetakPdf')->name('estimasi.cetak_pdf');
+Route::get('/instansi-cetak-pdf', 'PrintController@instansiCetakPdf')->name('instansi.cetak_pdf');
+Route::get('/laporan-cetak-pdf/{id}', 'PrintController@laporanCetakPdf')->name('laporan.cetak_pdf');
+Route::get('/alat-cetak-pdf/{slug}', 'PrintController@alatCetakPdf')->name('alat.cetak_pdf');
+Route::get('/pengajuan-cetak-pdf/{slug}', 'PrintController@pengajuanCetakPdf')->name('pengajuan.cetak_pdf');
+
+// import route
+Route::post('/import-instansi', 'InstansiController@import')->name('import.instansi');
+Route::post('/import-produk', 'ProdukController@import')->name('import.produk');
+Route::post('/import-kategori', 'KategoriController@import')->name('import.kategori');
+Route::post('/import-user', 'UserController@import')->name('import.user');
+Route::post('/import-peralatan', 'PeralatanController@import')->name('import.peralatan');
 
 // jadwal teknisi Route
 Route::get('/atur/jadwal-teknisi/{slug}', 'JadwalController@create')->name('jadwal.create');
 Route::get('/jadwal-teknisi', 'JadwalController@index')->name('jadwal.index');
-Route::post('/add-jadwal-teknisi', 'JadwalController@store')->name('jadwal.store');
+Route::post('/add-jadwal-teknisi/{slug}', 'JadwalController@store')->name('jadwal.store');
 
 
 // produk Route
@@ -107,9 +121,10 @@ Route::get('/pengajuan/{slug}', 'PengajuanController@show')->name('pengajuan.sho
 
 // Part Route
 Route::get('/part', 'PartController@index')->name('part.index');
+Route::post('/add-part', 'PartController@store')->name('part.store');
 Route::get('/pergantian-part/{slug}', 'PartController@create')->name('part.create');
 Route::get('/edit-part/{id}', 'PartController@edit')->name('part.edit');
-Route::post('/add-part', 'PartController@store')->name('part.store');
+Route::put('/update-part/{id}', 'PartController@update')->name('part.update');
 Route::delete('/delete-part/{id}', 'PartController@destroy')->name('part.destroy');
 
 // Estimate Route
@@ -128,7 +143,10 @@ Route::post('/add-progress', 'ProgressController@store')->name('progress.store')
 Route::get('/detail-progress/{slug}', 'ProgressController@show')->name('progress.show');
 Route::put('/progress/{id}', 'ProgressController@updateProgress')->name('progress.update');
 
-
+Route::get('/test', function () {
+    // guest only
+    return view('test');
+});
 // peralatan Route
 Route::get('peralatan', 'PeralatanController@index')->name('peralatan.index');
 Route::get('make/peralatan', 'PeralatanController@create')->name('peralatan.create');

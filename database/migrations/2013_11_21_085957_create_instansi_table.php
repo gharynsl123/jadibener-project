@@ -18,8 +18,8 @@ class CreateInstansiTable extends Migration
             $table->string('nama_instansi');
             $table->string('alamat_instansi');
 
-            $table->bigInteger('jumlah_kasur');
-            $table->enum('jenis_instansi', ['pemerintah', 'swasta']);
+            $table->bigInteger('jumlah_kasur')->nullable();
+            $table->string('jenis_instansi')->nullable();
 
             $table->string('photo_instansi')->nullable();
             $table->timestamps();

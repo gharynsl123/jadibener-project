@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Instansi;
 use App\Progress;
+use App\Kategori;
 use App\User;
 use App\Pengajuan;
+use App\Peralatan;
 
 class HomeController extends Controller
 {
@@ -29,6 +31,8 @@ class HomeController extends Controller
     public function index()
     {
         $user = Auth::user();
+        $kategori = Kategori::all();
+        $peralatan = Peralatan::all();
         $instansi = Auth::user()->instansi;
         // Inisialisasi variabel untuk data pengajuan dan progress
         $pengajuan = null;
@@ -42,13 +46,39 @@ class HomeController extends Controller
             // Jika user adalah teknisi tanpa role kap_teknisi, ambil data progress sesuai dengan id_pengajuan yang terkait dengan user
             $progress = Progress::where('id_user', $user->id)->get();
         }
-        
 
         // Ambil semua data pengajuan jika user bukan teknisi atau tidak ada data progress yang diambil di atas
         if ($pengajuan === null) {
             $pengajuan = Pengajuan::all();
         }
+
     
-        return view('home.admin', compact('instansi', 'user', 'progress', 'pengajuan'));
+        return view('home.admin', compact('instansi', 'peralatan','kategori','user', 'progress', 'pengajuan'));
     }
+
+    public function getProcessTicketCount()
+    {
+        $count = Pengajuan::count(); // Menghitung jumlah pengajuan
+        return response()->json(['count' => $count]);
+    }
+
+    public function getPendingCount()
+    {
+        $count = Pengajuan::where('status_pengajuan', 'pending')->count();
+        return response()->json(['count' => $count]);
+    }
+
+    public function getProsesCount()
+    {
+        $count = Pengajuan::where('status_pengajuan', 'approved')->count();
+        return response()->json(['count' => $count]);
+    }
+
+    public function getSolvedCount()
+    {
+        $count = Pengajuan::where('status_pengajuan', 'selesai')->count();
+        return response()->json(['count' => $count]);
+    }
+    
+    
 }

@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Merek;
-use Carbon\Carbon;
 use App\Kategori;
-use Illuminate\Support\Str;
 use App\History;
 use App\Pengajuan;
 use App\Instansi;
 use App\Produk;
-use Illuminate\Support\Facades\Auth;
 use App\Peralatan;
+use Carbon\Carbon;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Imports\PeralatanImport;
+use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PeralatanController extends Controller
 {
@@ -73,10 +75,7 @@ class PeralatanController extends Controller
         $peralatan['slug'] = strtoupper(Str::slug($peralatan['serial_number']) . '-' . $formatedDate);
 
         $dataPeralatan = Peralatan::create($peralatan);
-
-        $today = Carbon::now();
-        $formatedDate = $today->format('y-m-d');
-
+        
         $history = [
             'status_history' => 'Pendataan Alat',
             'deskripsi' => 'Disurvey pada oleh ' . Auth::user()->nama_user,
@@ -96,9 +95,17 @@ class PeralatanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+     public function import(Request $request)
+     {
+         $file = $request->file('file'); // Ambil file Excel dari formulir
+         Excel::import(new PeralatanImport, $file);
+         return redirect()->back()->with('success', 'Data berhasil diimpor.');
+     }
+
     public function show($slug)
     {
-          // Mengambil data peralatan berdasarkan ID
+        // Mengambil data peralatan berdasarkan ID
         $peralatan = Peralatan::where('slug', $slug)->first();
         
         // mengambil data history sesuai id peraltan yang di tuju

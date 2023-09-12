@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\InstansiImport;
 use App\Instansi;
-use App\Imports\UsersImport;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\User;
@@ -26,12 +26,12 @@ class InstansiController extends Controller
         $user = User::all();
         return view('instansi.index_instansi', compact('instansi', 'user'));
     }
-
-    public function import() 
+    
+    public function import(Request $request)
     {
-        Excel::import(new UsersImport,request()->file('file'));
-           
-        return back();
+        $file = $request->file('file'); // Ambil file Excel dari formulir
+        Excel::import(new InstansiImport, $file);
+        return redirect()->back()->with('success', 'Data berhasil diimpor.');
     }
 
     /**
