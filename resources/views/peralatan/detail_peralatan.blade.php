@@ -1,5 +1,6 @@
 @extends('layouts.main-view')
 
+@section('title',"Detail {$peralatan->serial_number}")
 @section('content')
 <style>
 .square {
@@ -14,12 +15,14 @@
 <div class="mb-4">
 <a href="{{ route('peralatan.index') }}" class="btn  btn-primary">Kembali</a>
 
-<a href="{{route('alat.cetak_pdf', $peralatan->slug)}}" class="btn my-2 btn-secondary">Cetak PDF</a>
+<a href="{{route('alat.cetak_pdf', $peralatan->slug)}}" target="_blank" class="btn my-2 btn-secondary">Cetak PDF</a>
 <a href="{{route('pengajuan.create', $peralatan->slug)}}" type="button" class="my-1 btn btn-success">Ajukan Survey / Perbaikan</a>
 
 @if(Auth::user()->level != 'pic')
 <a href="{{route('part.create', $peralatan->slug)}}" class="btn my-2 btn-info">Input Estimasi Biaya</a>
+@if(Auth::user()->level == 'surveyor' || Auth::user()->level == 'admin')
 <a href="{{route('jadwal.create', $peralatan->slug)}}" class="btn my-2 btn-warning">Atur Jadwal Teknisi</a>
+@endif
 <a href="{{route('survey.create', $peralatan->id)}}" class="btn my-1 btn-danger">Input Hasil Kunjungan Teknisi</a>
 @endif
 
@@ -73,7 +76,7 @@
                         </td>
                         <th>Status Alat</th>
                         <td>:</td>
-                        <td>{{$peralatan->keterangan}}</td>
+                        <td>{{$peralatan->produk_dalam_kondisi}}</td>
                     </tr>
                 </table>
             </div>

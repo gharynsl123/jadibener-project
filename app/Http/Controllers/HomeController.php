@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Instansi;
 use App\Progress;
 use App\Kategori;
+use App\Departement;
 use App\User;
 use App\Pengajuan;
 use App\Peralatan;
@@ -32,6 +33,7 @@ class HomeController extends Controller
     {
         $user = Auth::user();
         $kategori = Kategori::all();
+        $depart = Departement::all();
         $peralatan = Peralatan::all();
         $instansi = Auth::user()->instansi;
         // Inisialisasi variabel untuk data pengajuan dan progress
@@ -49,11 +51,11 @@ class HomeController extends Controller
 
         // Ambil semua data pengajuan jika user bukan teknisi atau tidak ada data progress yang diambil di atas
         if ($pengajuan === null) {
-            $pengajuan = Pengajuan::all();
+            $pengajuan = Pengajuan::where('status_pengajuan', 'pending')->get();
         }
 
     
-        return view('home.admin', compact('instansi', 'peralatan','kategori','user', 'progress', 'pengajuan'));
+        return view('home.admin', compact('instansi', 'peralatan','kategori','user', 'depart', 'progress', 'pengajuan'));
     }
 
     public function getProcessTicketCount()

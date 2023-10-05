@@ -1,4 +1,7 @@
 @extends('layouts.main-view')
+
+@section('title', 'Jadwal Teknisi')
+
 @section('content')
 
 <!-- table menggunakan dataTable -->

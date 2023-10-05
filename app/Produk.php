@@ -17,4 +17,8 @@ class Produk extends Model
     {
         return $this->belongsTo('App\Kategori', 'id_kategori');
     }
+    function departement()
+    {
+        return $this->belongsTo('App\Departement', 'id_departement');
+    }
 }

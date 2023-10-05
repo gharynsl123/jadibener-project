@@ -2,7 +2,8 @@
 @section('title', 'Detail Pengajuan')
 @section('content')
 
-<a href="{{route('pengajuan.cetak_pdf', $pengajuan->slug)}}" class="btn my-2 btn-secondary">Cetak PDF</a>
+<a href="{{route('progres.index')}}" class="btn my-2 btn-secondary">kembali</a>
+<a href="{{route('pengajuan.cetak_pdf', $pengajuan->slug)}}" target="_blank" class="btn my-2 btn-secondary">Cetak PDF</a>
 
 <div class="row gap-2 mb-3">
     <div class="col-md-3">

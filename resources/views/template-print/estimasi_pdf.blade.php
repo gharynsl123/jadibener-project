@@ -13,7 +13,7 @@
     <table>
         <tr>
             <td>
-                <img src="{{ public_path('image/medhigen.jpg') }}" class="image-thumbnail" style="width: 180px;"
+                <img src="{{ public_path('image/mdh_logo.png') }}" class="image-thumbnail" style="width: 180px;"
                     alt="Gambar">
             </td>
             <td>
@@ -38,28 +38,30 @@
 
     <h3 class="text-dark">Estimasi Biaya Service Dan Penukaran Part</h3>
     <div class="table-resposive">
-        <table style="color : #000000;" class="table table-borderless">
+        <table style="color : #000000" class="table table-bordered">
             <thead>
                 <tr>
-                    <td>instansi</td>
-                    <td>estimasi barang</td>
-                    <td>total harga</td>
+                    <th colspan="6">{{$estimasi->instansi->nama_instansi}} <br> {{$estimasi->peralatan->produk->nama_produk}}</th>
+                </tr>
+                <tr>
+                    <th>No.</th>
+                    <th>Nama Part</th>
+                    <th>Harga Satuan</th>
+                    <th>Quantity</th>
+                    <th>Total Harga</th>
+                    <th>Keterangan</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>{{$estimasi->instansi->nama_instansi}}</td>
-                    <td>
-                        <p>
-                            nama : {{$estimasi->part->nama_part}} <br>
-                            kode part : {{$estimasi->part->kode_part}} <br>
-                            quantity part : {{$estimasi->quantity}} <br>
-                            harga satuan : {{$estimasi->harga}} <br>
-                            keterangan : {{$estimasi->keterangan}} <br>
-                        </p>
-                    </td>
-                    <td><strong>{{ $estimasi->harga * $estimasi->quantity}} </strong></td>
+                    <td>1</td>
+                    <td>{{$estimasi->part->nama_part}} <br> {{$estimasi->part->kode_part}}</td>
+                    <td>{{$estimasi->harga}}</td>
+                    <td>{{$estimasi->quantity}}</td>
+                    <td>{{$estimasi->harga * $estimasi->quantity}} </td>
+                    <td>{{$estimasi->keterangan}}</td>
                 </tr>
+                <!-- Tambahkan baris data tambahan sesuai kebutuhan -->
             </tbody>
         </table>
     </div>

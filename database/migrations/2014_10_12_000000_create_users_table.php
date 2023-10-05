@@ -16,6 +16,7 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('id_instansi')->unsigned()->nullable()->default(null);
+            $table->integer('id_departement')->unsigned()->nullable()->default(null);
 
             $table->string('nama_user');
             $table->string('alamat_user')->nullable();
@@ -25,9 +26,10 @@ class CreateUsersTable extends Migration
 
             $table->enum('jenis_kelamin', ['laki-laki', 'perempuan'])->nullable()->default(null);
             $table->enum('level', ['admin', 'pic', 'sub_service', 'teknisi', 'surveyor'])->default('admin');
-            $table->enum('role', ['qizi', 'alkes', 'manager', 'kap_teknisi', 'cssd'])->nullable()->default(null);
+            $table->enum('role', ['kap_teknisi'])->nullable()->default(null);
 
             $table->foreign('id_instansi')->references('id')->on('instansi')->onDelete('cascade');
+            $table->foreign('id_departement')->references('id')->on('departement')->onDelete('cascade');
 
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

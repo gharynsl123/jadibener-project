@@ -27,6 +27,8 @@ class ProgressController extends Controller
     public function index()
     {
         $pengajuan = null;
+
+
         // Jika user adalah pic_rs, ambil data pengajuuan berdasarkan user buat. dan jika user adalah admin, ambil semua data peralatan
         if (Auth::user()->level == 'pic') {
             $pengajuan = Pengajuan::where('id_user', Auth::user()->id)->get();

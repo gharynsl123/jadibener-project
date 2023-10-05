@@ -1,5 +1,7 @@
 @extends('layouts.main-view')
 
+@section('title', 'Informasi')
+
 @section('content')
 <style>
 .max-line-5 {

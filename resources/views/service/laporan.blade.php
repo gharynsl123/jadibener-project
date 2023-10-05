@@ -1,5 +1,5 @@
 @extends('layouts.main-view')
-@section('title', 'laporan page')
+@section('title', 'Laporan Survey')
 @section('content')
 <div class="card shadow p-3 border-left-primary">
     <div class="table-responsive p-3">
@@ -29,7 +29,7 @@
                     <td>{{$s->hasil_kunjungan}}</td>
                     <td>{{$s->kesimpulan_kunjungan}}</td>
                     <td>
-                        <a href="{{route('laporan.cetak_pdf', $s->id)}}" class="btn btn-primary"><i class="fa fa-file"></i></a>
+                        <a href="{{route('laporan.cetak_pdf', $s->id)}}" target="_blank" class="btn btn-primary"><i class="fa fa-file"></i></a>
                         <form action="#" method="post">
                             @csrf
                             @method('DELETE')

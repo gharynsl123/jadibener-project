@@ -16,12 +16,19 @@
                 </select>
             </div>
             <div class="form-group col-md-6">
+                <label for="kategori">departement</label>
+                <select class="form-control" id="departemen" name="id_departement">
+                    <option>-- PILIH --</option>
+                    @foreach($departement as $dep)
+                    <option value="{{ $dep->id }}">{{ $dep->nama_departement }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group col-md-6" id="kategori-group" style="display:none;">
                 <label for="kategori">Kategori</label>
                 <select class="form-control" id="kategori" name="id_kategori">
                     <option>-- PILIH --</option>
-                    @foreach($kategoris as $kategori)
-                    <option value="{{ $kategori->id }}">{{ $kategori->nama_kategori }}</option>
-                    @endforeach
+
                 </select>
             </div>
             <div class="form-group col-md-6">
@@ -41,4 +48,41 @@
         <a href="{{ route('produk.index') }}" class="btn btn-secondary">Batal</a>
     </form>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const departemenSelect = document.getElementById('departemen');
+    const kategoriSelect = document.getElementById('kategori');
+    const groupKategori = document.getElementById('kategori-group');
+    const kategoris = @json($kategoris); // Data kategori dari controller
+
+    departemenSelect.addEventListener('change', function() {
+        const selectedDepartemenId = departemenSelect.value;
+
+        // Clear existing options
+        kategoriSelect.innerHTML = '<option>-- PILIH --</option>';
+
+        if (selectedDepartemenId === '-- PILIH --') {
+            groupKategori.style.display = 'none';
+        } else {
+            groupKategori.style.display = 'block';
+        }
+
+
+        // Filter kategori based on selected departemen
+        const filteredKategoris = kategoris.filter(kategori => kategori.id_departement ==
+            selectedDepartemenId);
+        console.log(filteredKategoris)
+
+        // Add filtered kategoris as options
+        filteredKategoris.forEach(kategori => {
+            const option = document.createElement('option');
+            option.value = kategori.id;
+            option.textContent = kategori.nama_kategori;
+            kategoriSelect.appendChild(option);
+        });
+    });
+});
+</script>
+
 @endsection

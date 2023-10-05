@@ -17,9 +17,15 @@ class User extends Authenticatable
      */
     protected $table = 'users';
     protected $guarded = [];
+    protected $username = 'nama_user';
 
     function instansi() {
         return $this->belongsTo('App\Instansi', 'id_instansi');
+    }
+
+
+    function departement() {
+        return $this->belongsTo('App\Departement', 'id_departement');
     }
 
     /**

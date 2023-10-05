@@ -1,35 +1,36 @@
 @extends('layouts.main-view')
 
+@section('title', 'Peralatan Rumah Sakit')
 @section('content')
 <!-- Style Css -->
 <style>
-    .hide-when-checklist-shown {
-        display: block;
-    }
+.hide-when-checklist-shown {
+    display: block;
+}
 
-    .show-when-checklist-shown {
-        display: none;
-    }
+.show-when-checklist-shown {
+    display: none;
+}
 
-    .checklist-shown .hide-when-checklist-shown {
-        display: none;
-    }
+.checklist-shown .hide-when-checklist-shown {
+    display: none;
+}
 
-    .checklist-shown .show-when-checklist-shown {
-        display: block;
-        border-top-right-radius: 10px !important;
-        border-bottom-right-radius: 10px !important;
-    }
+.checklist-shown .show-when-checklist-shown {
+    display: block;
+    border-top-right-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
+}
 
-    /* Tambahan CSS untuk tampilan Checklist yang normal */
-    .checklist-checkbox-label {
-        display: flex;
-        align-items: center;
-    }
+/* Tambahan CSS untuk tampilan Checklist yang normal */
+.checklist-checkbox-label {
+    display: flex;
+    align-items: center;
+}
 
-    .checklist-checkbox {
-        margin-right: 8px;
-    }
+.checklist-checkbox {
+    margin-right: 8px;
+}
 </style>
 
 <div class="d-none d-flex justify-content-end mb-3">
@@ -38,12 +39,12 @@
         <i class="fas fa-plus fa-sm text-white-50"></i> Tambahkan Data</a>
     @endif
 
-    <a href="/peralatan-cetak-pdf" class="mx-2 d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+    <a href="/peralatan-cetak-pdf" target="_blank" class="mx-2 d-sm-inline-block btn btn-sm btn-primary shadow-sm">
         <i class="fas fa-file fa-sm text-white-50"></i> cetak pdf</a>
 
-<a data-toggle="modal" data-target="#importAlat" data-target="#importAlat"
-    class="d-sm-inline-block btn btn-sm btn-success shadow-sm">
-    <i class="fas fa-file-import fa-sm text-white-50"></i> Import File alat</a>
+    <a data-toggle="modal" data-target="#importAlat" data-target="#importAlat"
+        class="d-sm-inline-block btn btn-sm btn-success shadow-sm">
+        <i class="fas fa-file-import fa-sm text-white-50"></i> Import File alat</a>
 </div>
 
 <!-- Logout Modal-->
@@ -58,14 +59,14 @@
                 </button>
             </div>
             <div class="modal-body">
-            <form action="{{ route('import.peralatan') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="d-flex">
-                    <input type="file" required name="file">
-                    <button class="btn btn-secondary" type="submit">Import Data</button>
-                </div>
-                <small>format file Xsl, CSV</small>
-            </form>
+                <form action="{{ route('import.peralatan') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="d-flex">
+                        <input type="file" required name="file">
+                        <button class="btn btn-secondary" type="submit">Import Data</button>
+                    </div>
+                    <small>format file Xsl, CSV</small>
+                </form>
             </div>
         </div>
     </div>
@@ -74,15 +75,22 @@
 
 <div class="card shadow my-4 border-left-primary">
     <div class="p-3">
-        <div class="">
-            <label for="kategori-select col-md-3">Shortby Kateg:</label>
-                <select id="kategori-select" class="">
-                    <option value="">Semua Kategori</option>
-                    @foreach($kategori as $item)
-                        <option value="{{ $item->nama_kategori }}">{{ $item->nama_kategori }}</option>
-                    @endforeach
-                </select>
-        </div>
+        <label for="kategori-select col-md-3">Shortby Kateg:</label>
+        <select id="kategori-select" class="">
+            <option value="">Semua Kategori</option>
+            @foreach($kategori as $item)
+            <option value="{{ $item->nama_kategori }}">{{ $item->nama_kategori }}</option>
+            @endforeach
+        </select>
+        @if(Auth::user()->level == 'pic' && (Auth::user()->departement->nama_departement == 'Purchasing' || Auth::user()->departement->nama_departement == 'IPS-RS') || Auth::user()->level == 'admin' ||  Auth::user()->level == 'surveyor')
+        <label for="departemen-select col-md-3">Shortby Department:</label>
+        <select id="departemen-select" class="">
+            <option value="">Semua departement</option>
+            @foreach($depart as $item)
+            <option value="{{ $item->nama_departement }}">{{ $item->nama_departement }}</option>
+            @endforeach
+        </select>
+        @endif
 
         <div class="table-responsive">
             <table class="table table-hover table-borderless" id="dataTable" width="100%" cellspacing="0">
@@ -90,6 +98,7 @@
                     <tr>
                         <th class="th-start">Instansi</th>
                         <th>Kategori</th>
+                        <th style="display:none;">Departement</th>
                         <th>Merk</th>
                         <th>Product</th>
                         <th>Serial Number</th>
@@ -108,6 +117,7 @@
                     <tr>
                         <td>{{ $peralatans->instansi->nama_instansi }}</td>
                         <td>{{ $peralatans->kategori->nama_kategori }}</td>
+                        <td style="display:none;">{{ $peralatans->kategori->departement ? $peralatans->kategori->departement->nama_departement : 'Belum ada departement'}}</td>
                         <td>{{ $peralatans->merek->nama_merek }}</td>
                         <td>{{ $peralatans->produk->nama_produk}}</td>
                         <!-- menuju ke detail barang menggunakan a herf -->
@@ -119,7 +129,7 @@
                             <span id="selisih-tahun-{{ $peralatans->id }}"></span>
                         </td>
 
-                        <td>{{$peralatans->keterangan}}</td>
+                        <td>{{$peralatans->produk_dalam_kondisi}}</td>
                         <td>
                             <div class="progress">
                                 <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
@@ -128,7 +138,8 @@
                                     {{$peralatans->kondisi_product}}</div>
                             </div>
                         </td>
-                        @if (Auth::user()->level == 'admin' || Auth::user()->level == 'teknisi' || Auth::user()->level == 'surveyor2')
+                        @if (Auth::user()->level == 'admin' || Auth::user()->level == 'teknisi' || Auth::user()->level
+                        == 'surveyor')
                         <td class="hide-when-checklist-shown">
                             <a href="{{ route('peralatan.edit', $peralatans->slug) }}" class="btn btn-warning btn-sm"><i
                                     class="fa fa-pen-to-square text-white"></i></a>
@@ -153,30 +164,40 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const kategoriSelect = document.getElementById('kategori-select');
-    const rows = document.querySelectorAll('#dataTable tbody tr'); // Ambil semua baris tabel
-    
-    kategoriSelect.addEventListener('change', function () {
-        const selectedCategoryId = kategoriSelect.value;
-    
-        // Loop melalui semua baris tabel
+    const departemenSelect = document.getElementById('departemen-select'); // Tambahkan ini
+    const rows = document.querySelectorAll('#dataTable tbody tr');
+
+    kategoriSelect.addEventListener('change', function() {
+        filterData();
+    });
+
+    departemenSelect.addEventListener('change', function() { // Tambahkan ini
+        filterData();
+    });
+
+    function filterData() {
+        const selectedKategoriId = kategoriSelect.value;
+        const selectedDepartemen = departemenSelect.value; // Tambahkan ini
+
         rows.forEach(row => {
-            const kategoriCell = row.querySelector('td:nth-child(2)'); // Ganti indeks kolom sesuai dengan posisi kategori di tabel
-            if (selectedCategoryId === '' || kategoriCell.textContent === selectedCategoryId) {
-                // Tampilkan baris jika "Semua Kategori" dipilih atau kategori cocok dengan yang dipilih
-                row.style.display = 'table-row'; // Tampilkan baris
+            const kategoriCell = row.querySelector('td:nth-child(2)');
+            const departemenCell = row.querySelector('td:nth-child(3)'); // Tambahkan ini
+            if ((selectedKategoriId === '' || kategoriCell.textContent === selectedKategoriId) &&
+                (selectedDepartemen === '' || departemenCell.textContent === selectedDepartemen)) { // Tambahkan ini
+                row.style.display = 'table-row';
             } else {
-                // Sembunyikan baris jika kategori tidak cocok dengan yang dipilih
-                row.style.display = 'none'; // Sembunyikan baris
+                row.style.display = 'none';
             }
         });
-    });
+    }
 
 
     // Panggil fungsi perbaruiSelisihTahunUntukSemuaPeralatan saat halaman dimuat
     perbaruiSelisihTahunUntukSemuaPeralatan();
 
     // Panggil fungsi perbaruiSelisihTahunUntukSemuaPeralatan setiap tahun (menggunakan setInterval)
-    setInterval(perbaruiSelisihTahunUntukSemuaPeralatan, 1000 * 60 * 60 * 24 * 365); // Setiap 1 tahun (dalam milidetik)
+    setInterval(perbaruiSelisihTahunUntukSemuaPeralatan, 1000 * 60 * 60 * 24 *
+    365); // Setiap 1 tahun (dalam milidetik)
 });
 
 function hitungSelisihTahun(tahunPemasangan) {
@@ -192,9 +213,11 @@ function perbaruiSelisihTahun(idPeralatan, tahunPemasangan) {
 
 function perbaruiSelisihTahunUntukSemuaPeralatan() {
     @foreach($peralatan as $peralatans)
-    perbaruiSelisihTahun({{ $peralatans->id }}, {{ $peralatans->tahun_pemasangan }});
+    perbaruiSelisihTahun({{$peralatans -> id}}, {{$peralatans -> tahun_pemasangan}});
     @endforeach
 }
+console.log(@json($peralatan));
+
 </script>
 
 @endsection

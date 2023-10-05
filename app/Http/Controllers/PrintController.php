@@ -21,16 +21,26 @@ class PrintController extends Controller
     {
         $peralatan = null;
         $instansi = null;
+        $user = Auth::user();
     
-        // Jika user adalah pic_rs, ambil data peralatan berdasarkan rumah sakit yang dipegang. dan jika user adalah admin, ambil semua data peralatan
-        if (Auth::user()->level == 'pic') {
-            $peralatan = Peralatan::where('id_instansi', Auth::user()->id_instansi)->get();
+        $departemenUser = Auth::user()->id_departement;
+        $userAuth = Auth::user()->id_instansi;
+        
+        if (Auth::user()->level == 'pic' && (Auth::user()->departement->nama_departement == 'Purchasing' || Auth::user()->departement->nama_departement == 'IPS-RS')) {
+            $peralatan = Peralatan::where('id_instansi', $userAuth)->get();
             $instansi = Instansi::where('id', Auth::user()->id_instansi)->first();
+            
+        } else if (Auth::user()->level == 'pic' && Auth::user()->departement->nama_departement) {
+            $peralatan = Peralatan::where('id_instansi', $userAuth)
+            ->where('id_kategori', $departemenUser)
+            ->get();
+            $instansi = Instansi::where('id', Auth::user()->id_instansi)->first();
+
         } else {
             $peralatan = Peralatan::all();
         }
     
-        $pdf = PDF::loadView('template-print.peralatan_pdf', ['peralatan' => $peralatan, 'instansi' => $instansi]);
+        $pdf = PDF::loadView('template-print.peralatan_pdf', ['peralatan' => $peralatan,'user' => $user, 'instansi' => $instansi]);
         return $pdf->stream();
     }
     
@@ -81,5 +91,12 @@ class PrintController extends Controller
         return $pdf->stream();
     }
     
-    
+    public function ProfileRs() {
+        
+        $user = Auth::user();
+        $instansi = Auth::user()->instansi;
+
+        $pdf = PDF::loadView('template-print.account_rs_pdf', ['instansi' => $instansi, 'user' => $user]);
+        return $pdf->stream();
+    }
 }

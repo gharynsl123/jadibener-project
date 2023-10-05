@@ -38,8 +38,19 @@
                     <td>{{ $estimasi->keterangan }}</td>
                     <td>
                         <!-- Tambahkan tombol aksi sesuai kebutuhan -->
-                        <a href="{{route('estimasi.cetak_pdf', $estimasi->id)}}" class="btn btn-sm btn-primary"><i class="fa fa-file"></i></a>
-                        <a class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                        <a href="{{route('estimasi.cetak_pdf', $estimasi->id)}}" target="_blank"
+                            class="btn btn-sm btn-primary"><i class="fa fa-file"></i></a>
+                        @if(Auth::user()->level == 'admin')
+                        <form action="{{ route('estimate.delete', ['id' => $estimasi->id]) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger"
+                                onclick="return confirm('Anda yakin ingin menghapus estimasi biaya ini?')">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </form>
+
+                        @endif
                     </td>
                 </tr>
                 @endforeach

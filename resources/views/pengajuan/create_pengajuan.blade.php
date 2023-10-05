@@ -50,7 +50,7 @@
                     <h5 class="card-title">Pengajuan Item</h5>
                     <div class="form-group">
                         <label for="ugently">Ugently / Kondisi</label>
-                        <select class="form-control" name="id_kondisi" id="ugently">
+                        <select class="form-control" name="kondisi" id="ugently">
                             <option selected disabled>-- PILIH --</option>
                             <option value="ctok">pelayanan ctok</option>
                             <option value="reguler">pelayanan reguler</option>

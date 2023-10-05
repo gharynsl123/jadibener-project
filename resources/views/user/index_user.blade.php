@@ -1,4 +1,5 @@
 @extends('layouts.main-view')
+@section('title', 'User Configuration')
 @section('content')
 <style>
 .single-line {
@@ -16,14 +17,14 @@
 <a href="{{route('users.create')}}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">
     <i class="fas fa-plus fa-sm text-white-50"></i> Tambahkan Data User</a>
 
-<a data-toggle="modal" data-target="#importUser" data-target="#importUser"
+    <a data-toggle="modal" data-target="#importUser" data-target="#importUser"
     class="d-sm-inline-block btn btn-sm btn-success shadow-sm">
     <i class="fas fa-file-import fa-sm text-white-50"></i>Tambahkan Data User</a>
 
-@endif
+    @endif
 
-<!-- Logout Modal-->
-<div class="modal fade" id="importUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <!-- Logout Modal-->
+    <div class="modal fade" id="importUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -45,7 +46,7 @@
             </div>
         </div>
     </div>
-</div>
+    </div>
 
     
 <div class="card shadow my-4">
@@ -68,18 +69,21 @@
                 <tbody>
                     @foreach($user->reverse() as $users)
                     <tr>
+                        <a href="{{ route('user.edit', $users->id) }}">
                         <td>{{ $users->nama_user }}</td>
                         <td>{{ $users->level }}</td>
                         <td>
                             @if($users->role)
                             {{ $users->role }}
+                            @elseif($users->id_departement)
+                            {{ $users->departement->nama_departement }}
                             @elseif(in_array($users->level, ['pic', 'teknisi']))
                             Belum ada
                             @else
                             <p class="text-danger">defult user tidak ada role</p>
                             @endif
                         </td>
-                        <td class="single-line">{{ $users->alamat_user }}</td>
+                        <td class="single-line">{!! $users->alamat_user !!}</td>
                         <td>{{ $users->email }}</td>
                         <td>{{ $users->jenis_kelamin }}</td>
                         <td>{{ $users->nomor_telepon }}</td>
@@ -99,11 +103,12 @@
                                 <a href="{{ route('user.edit', $users->id) }}" class="btn btn-warning">
                                     <i class="fa fa-pen-to-square text-white"></i>
                                 </a>
-                                <button type="submit" class="btn btn-danger">
+                                <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus {{$users->nama_user}} ini?')" class="btn btn-danger">
                                     <i class="fa fa-trash text-white"></i>
                                 </button>
                             </form>
                         </td>
+                        </a>
                     </tr>
                     @endforeach
                 </tbody>

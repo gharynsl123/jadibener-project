@@ -1,14 +1,14 @@
-
 @if ($instansi)
 <!-- Code to display the hospital profile -->
+
 <h1 class="h3 mb-0 text-gray-800 d-sm-inline-block mb-4">Profile Rumah Sakit</h1>
 <div class="border-0">
     <!-- Your existing code to display the hospital profile here -->
     <div class="card shadow border-0 ">
         <div class="row">
             <div class="col-md-3 d-flex justify-content-center">
-                <img src="{{ asset('storage/rumahsakit/'.$instansi->photo_instansi) }}" alt="Hospital Logo" class="img-fluid rounded"
-                    style="width: 100%;">
+                <img src="{{ asset('storage/rumahsakit/'.$instansi->photo_instansi) }}" alt="Hospital Logo"
+                    class="img-fluid rounded" style="width: 100%;">
             </div>
             <div class="col-md-9 my-4 px-4">
                 <h4 class="mb-3">{{$instansi->nama_instansi}}</h4>
@@ -19,12 +19,13 @@
                 <div class="text-capitalize">
                     <strong>PIC:</strong> {{$user->nama_user}} <br>
                     <!-- jika divisi belumm ada maka muncul kan text belum ada -->
-                    <strong>Divisi:</strong> {{$user->role ? $user->role : 'Belum ada'}}
+                    <strong>Divisi:</strong> {{$user->departement ? $user->departement->nama_departement : 'Belum ada'}}
                 </div>
                 <div class="contact-info">
                     <strong>HP:</strong> {{$user->nomor_telepon}}<br>
                     <strong>Email:</strong> {{$user->email}}
                 </div>
+                <a href="{{route('profileInstansi.cetak_pdf')}}" target="_blank" class="btn my-2 btn-secondary">Cetak PDF</a>
             </div>
         </div>
     </div>

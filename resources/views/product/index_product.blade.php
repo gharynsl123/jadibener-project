@@ -1,5 +1,7 @@
 @extends('layouts.main-view')
 
+@section('title', 'Product')
+
 @section('content')
 <style>
 .square {

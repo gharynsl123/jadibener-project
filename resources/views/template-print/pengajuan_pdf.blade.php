@@ -14,7 +14,7 @@
     <table>
         <tr>
             <td>
-                <img src="{{ public_path('image/medhigen.jpg') }}" class="image-thumbnail" style="width: 180px;"
+                <img src="{{ public_path('image/mdh_logo.png') }}" class="image-thumbnail" style="width: 180px;"
                     alt="Gambar">
             </td>
             <td>

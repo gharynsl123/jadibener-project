@@ -28,6 +28,15 @@
                 </select>
             </div>
             <div class="form-group col-md-6">
+                <label for="kategori">departement</label>
+                <select class="form-control" id="departemen" name="id_departement">
+                    <option>-- PILIH --</option>
+                    @foreach($departement as $dep)
+                    <option value="{{ $dep->id }}" {{ $produk->kategori->id_departement == $dep->id ? 'selected' : '' }}>{{ $dep->nama_departement }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group col-md-6">
                 <label for="kategori">Kategori</label>
                 <select class="form-control" id="kategori" name="id_kategori">
                     <option>-- PILIH --</option>
@@ -48,16 +57,7 @@
                 <input type="text" class="form-control" id="nama_product" name="nama_produk" placeholder="Nama Product"
                     value="{{ $produk->nama_produk }}">
             </div>
-            <div class="form-group col-md-4">
-                <label for="image_product">Image Product (Current Image)</label><br>
-                @if($produk->photo)
-                <div class="img-thumbnail card square" id="imagePreview"
-                    style="background-image: url('{{ asset('storage/produk/' . $item->photo_produk) }}');"></div>
-                @else
-                <p>Image not available</p>
-                @endif
-            </div>
-            <div class="form-group col-md-8">
+            <div class="form-group col-md-6">
                 <label for="new_image_product">Edit Image Product (Optional)</label>
                 <input type="file" class="form-control form-control-file p-0" id="new_image_product" name="photo_produk">
             </div>
@@ -67,27 +67,42 @@
         <a href="{{ route('produk.index') }}" class="btn btn-secondary">Batal</a>
     </form>
 </div>
-<script>
-    // Ambil elemen input file
-    const inputImage = document.getElementById('new_image_product');
-    // Ambil elemen gambar priview
-    const imagePreview = document.getElementById('imagePreview');
 
-    // Tambahkan event listener untuk memantau perubahan pada input file
-    inputImage.addEventListener('change', function () {
-        // Pastikan ada gambar yang dipilih oleh pengguna
-        if (this.files && this.files[0]) {
-            // Buat objek URL untuk gambar yang dipilih
-            const imageURL = URL.createObjectURL(this.files[0]);
-            // Tampilkan gambar priview dengan URL gambar yang baru
-            imagePreview.style.backgroundImage = `url('${imageURL}')`;
-            imagePreview.style.display = 'block'; // Tampilkan elemen gambar
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const departemenSelect = document.getElementById('departemen');
+    const kategoriSelect = document.getElementById('kategori');
+    const groupKategori = document.getElementById('kategori-group');
+    const kategoris = @json($kategoris);  // Data kategori dari controller
+
+    departemenSelect.addEventListener('change', function() {
+        const selectedDepartemenId = departemenSelect.value;
+
+        // Clear existing options
+        kategoriSelect.innerHTML = '<option>-- PILIH --</option>';
+
+        if (selectedDepartemenId === '-- PILIH --') {
+            groupKategori.style.display = 'none';
         } else {
-            // Jika tidak ada gambar yang dipilih, sembunyikan gambar priview
-            imagePreview.style.backgroundImage = '';
-            imagePreview.style.display = 'none'; // Sembunyikan elemen gambar
+            groupKategori.style.display = 'block';
         }
+
+
+        // Filter kategori based on selected departemen
+        const filteredKategoris = kategoris.filter(kategori => kategori.id_departement ==
+            selectedDepartemenId);
+        console.log(filteredKategoris)
+
+        // Add filtered kategoris as options
+        filteredKategoris.forEach(kategori => {
+            const option = document.createElement('option');
+            option.value = kategori.id;
+            option.textContent = kategori.nama_kategori;
+            kategoriSelect.appendChild(option);
+        });
     });
+});
 </script>
 
 @endsection

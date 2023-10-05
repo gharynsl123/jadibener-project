@@ -1,5 +1,7 @@
 @extends('layouts.main-view')
 
+@section('title', 'Profile User')
+
 @section('content')
 
 <div class="row gap-2">
@@ -20,7 +22,7 @@
                         <th>Alamat</th>
                         <td>:</td>
                         <!-- if null buat percabangan dalam satu baris-->
-                        <td>{{ $items->alamat_user ? $items->alamat_user : 'Belum diisi' }}</td>
+                        <td>{!! $items->alamat_user ? $items->alamat_user : 'Belum diisi' !!}</td>
                     </tr>
                     <tr>
                         <th>Jenis Kelamin</th>
@@ -85,6 +87,11 @@
                         <th>Level</th>
                         <td>:</td>
                         <td>{{$items->level}}</td>
+                    </tr>
+                    <tr>
+                        <th>Departement</th>
+                        <td>:</td>
+                        <td>{{$items->departement->nama_departement}}</td>
                     </tr>
                 </table>
             </div>

@@ -24,4 +24,7 @@ class Peralatan extends Model
     function produk(){
         return $this->belongsTo('App\Produk', 'id_product');
     }
+    function departement(){
+        return $this->belongsTo('App\Departement', 'id_departement');
+    }
 }

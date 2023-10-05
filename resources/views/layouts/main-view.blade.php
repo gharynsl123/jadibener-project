@@ -13,10 +13,11 @@
     <title>@yield('title')</title>
 
     <!-- image icon web -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('images/icon-web.png') }}">
+    <link rel="shortcut icon" href="{{ asset('image/mdh.png') }}">
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+    
     <!-- Custom fonts for this template -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
@@ -39,7 +40,7 @@
     <div id="wrapper">
 
         <ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{url('home')}}">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center">
             </a>
             <div class="sidebar-heading">
                 @if (Auth::user()->level == 'pic')
@@ -48,6 +49,8 @@
                 Menu Kepala Teknisi
                 @elseif(Auth::user()->level == 'teknisi')
                 Menu Teknisi
+                @elseif(Auth::user()->level == 'surveyor')
+                Menu surveyor
                 @elseif(Auth::user()->level == 'admin')
                 Menu Admin
                 @elseif(Auth::user()->level == 'sub_service')
@@ -57,15 +60,13 @@
 
             <hr class="sidebar-divider">
 
-            @if(Auth :: user()->level != 'surveyor')
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
                 <div class="slide-right"></div>
                 <a class="nav-link" href="{{url('home')}}">
                     <i class="fas fa-fw fa-home"></i>
-                    <span class="nav-text">Home</span></a>
+                    <span>Home</span></a>
             </li>
-            @endif
 
             <!-- Nav Item - List Peralatan -->
             <li class="nav-item">
@@ -73,35 +74,36 @@
                 <a class="nav-link"
                     href="@if (Auth::user()->level == 'pic_rs'){{route('peralatan.index')}}@else{{route('peralatan.index')}}@endif">
                     <i class="fas fa-fw fa-server"></i>
-                    <span class="nav-text">List Peralatan @if(Auth::user()->level == 'pic_rs')RS @endif</span></a>
+                    <span>List Peralatan @if(Auth::user()->level == 'pic_rs')RS @endif</span></a>
             </li>
 
 
-            @if(Auth::user()->level == 'admin')
+            @if(Auth::user()->level == 'admin' || Auth::user()->level == 'surveyor' )
             <!-- Nav Item - List Peralatan -->
             <li class="nav-item">
+                <div class="slide-right"></div>
                 <a class="nav-link" href="{{route('instansi.index')}}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Data Instansi</span></a>
             </li>
+
+            @endif
+            @if(Auth::user()->level == 'admin' )
+            <li class="nav-item">
+                <div class="slide-right"></div>
+                <a class="nav-link" href="{{url('users')}}">
+                    <i class="fas fa-wrench"></i>
+                    <span>User Configuration</span></a>
+            </li>
             @endif
 
-            <!-- Nav Item Profile-->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#usercollaps"
-                    aria-expanded="false" aria-controls="collapseTwo">
+                <div class="slide-right"></div>
+                <a class="nav-link" href="{{route('profile.index')}}">
                     <i class="fas fa-fw fa-user"></i>
-                    <span>Profile</span>
-                </a>
-                <div id="usercollaps" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        @if(Auth::user()->level == 'pic_rs')
-                        <a class="collapse-item" href="{{url('/home')}}">Rumah Sakit</a>
-                        @endif
-                        <a class="collapse-item" href="{{route('profile.index')}}">Account</a>
-                    </div>
-                </div>
+                    <span>Profile User</span></a>
             </li>
+
 
             <!-- Nav Item Layanan Service-->
             <li class="nav-item">
@@ -124,45 +126,6 @@
             </li>
 
             @if(Auth::user()->level == 'admin')
-
-            <li class="nav-item">
-                <a class="nav-link" href="{{url('users')}}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>User Configuration</span></a>
-            </li>
-            @endif
-
-            @if(Auth::user()->level == 'pic_rs')
-            @if(Auth::user()->role == 'gizi' || Auth::user()->role == 'manager')
-            <!-- Nav Item informasi -->
-            <li class="nav-item">
-                <a class="nav-link" href="{{url('merke')}}">
-                    <i class="fas fa-fw fa-universal-access"></i>
-                    <span>Dapur</span></a>
-            </li>
-            @endif
-
-            @if(Auth::user()->role == 'alkes' || Auth::user()->role == 'manager')
-            <!-- Nav Item informasi -->
-            <li class="nav-item">
-                <a class="nav-link" href="{{url('part')}}">
-                    <i class="fas fa-fw fa-universal-access"></i>
-                    <span>Alkes</span></a>
-            </li>
-            @endif
-
-            @if(Auth::user()->role == 'cssd' || Auth::user()->role == 'manager')
-            <!-- Nav Item informasi -->
-            <li class="nav-item">
-                <a class="nav-link" href="{{url('create-user')}}">
-                    <i class="fas fa-fw fa-universal-access"></i>
-                    <span>CSSD</span></a>
-            </li>
-            @endif
-            @endif
-
-
-            @if(Auth::user()->level == 'admin')
             <hr class="sidebar-divider">
             <!-- Heading -->
             <div class="sidebar-heading">
@@ -171,29 +134,41 @@
 
             <!-- Nav Item informasi -->
             <li class="nav-item">
+                <div class="slide-right"></div>
                 <a class="nav-link" href="{{url('merek')}}">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="fas fa-asterisk"></i>
                     <span>Merk</span></a>
             </li>
             <!-- Nav Item informasi -->
             <li class="nav-item">
+                <div class="slide-right"></div>
                 <a class="nav-link" href="{{url('kategori')}}">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="fas fa-list"></i>
                     <span>Kategori</span></a>
             </li>
 
             <!-- Nav Item informasi -->
             <li class="nav-item">
+                <div class="slide-right"></div>
                 <a class="nav-link" href="{{url('part')}}">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="fas fa-tools"></i>
                     <span>Suku Cadang</span></a>
             </li>
 
             <!-- Nav Item informasi -->
             <li class="nav-item">
+                <div class="slide-right"></div>
                 <a class="nav-link" href="{{url('produk')}}">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="fas fa-box"></i>
                     <span>Product</span></a>
+            </li>
+
+            <!-- Nav Item informasi -->
+            <li class="nav-item">
+                <div class="slide-right"></div>
+                <a class="nav-link" href="{{route('dep.index')}}">
+                    <i class="fas fa-sitemap"></i>
+                    <span>Departement</span></a>
             </li>
 
 
@@ -209,17 +184,12 @@
 
             <!-- Nav Item informasi -->
             <li class="nav-item">
+                <div class="slide-right"></div>
                 <a class="nav-link" href="{{url('informasi')}}">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="fas fa-newspaper"></i>
                     <span>Informasi</span></a>
             </li>
 
-            <!--Nav Itemm News -->
-            <li class="nav-item">
-                <a class="nav-link" href="{{url('create-user')}}">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>News</span></a>
-            </li>
 
 
             <!-- Nav Item Logout-->
@@ -269,7 +239,7 @@
                         <i class="fa fa-bars"></i>
                     </button>
 
-                    <img src="{{ asset('image/medhigen.jpg') }}" class="image-thumbnail" style="width: 100px;"
+                    <img src="{{ asset('image/mdh_logo.png') }}" class="image-thumbnail" style="width: 180px;"
                         alt="Gambar">
 
 
@@ -326,5 +296,9 @@
 <!-- Page level custom scripts -->
 <script src="{{asset('js/demo/datatables-demo.js')}}"></script>
 <!-- Content Row -->
+<script src="{{ asset('vendor/ckeditor/ckeditor.js') }}"></script>
+<script>
+CKEDITOR.replace('editor');
+</script>
 
 </html>

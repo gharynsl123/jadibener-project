@@ -1,5 +1,7 @@
 @extends('layouts.main-view')
 
+@section('title', 'Merek')
+
 @section('content')
 <!-- Content Row -->
 <div class="row gap-2">
@@ -34,7 +36,13 @@
                         </tbody>
                     </table>
                 </div>
-                <div id="pagination" class="m-2"></div>
+                <div id="pagination" class="text-center">
+                    <button class="btn" id="prevPageButton">&gt;</button>
+                    <!-- Tombol panah mundur -->
+                    <button class="btn" id="nextPageButton">&gt;</button>
+                    <!-- Tombol panah maju -->
+                </div>
+
             </div>
         </div>
     </div>
@@ -42,6 +50,24 @@
 <script>
 const itemsPerPage = 5; // Jumlah item per halaman
 let currentPage = 1; // Halaman saat ini
+
+// Event listener for the "Next" button
+$('#nextPageButton').click(function() {
+    console.log('Tombol "nect" ditekan');
+    if (currentPage < totalPages) {
+        currentPage++;
+        displayData(data);
+    }
+});
+
+$('#prevPageButton').click(function() {
+    console.log('Tombol "Previous" ditekan');
+    if (currentPage > 1) {
+        currentPage--;
+        displayData(data);
+    }
+});
+
 
 $('#searchInput').on('input', function() {
     const searchTerm = $(this).val().toLowerCase();
@@ -97,10 +123,26 @@ function updatePagination(data) {
     const totalPages = Math.ceil(data.length / itemsPerPage);
     let paginationButtons = '';
 
+    if (currentPage > 1) {
+        paginationButtons += `
+            <button class="btn" onclick="changePage(${currentPage - 1})">&lt;</button>
+        `;
+    } else {
+        paginationButtons += `<button class="btn" disabled>&lt;</button>`;
+    }
+
     for (let i = 1; i <= totalPages; i++) {
         paginationButtons += `
             <button class="btn" onclick="changePage(${i})">${i}</button>
         `;
+    }
+
+    if (currentPage < totalPages) {
+        paginationButtons += `
+            <button class="btn" onclick="changePage(${currentPage + 1})">&gt;</button>
+        `;
+    } else {
+        paginationButtons += `<button class="btn" disabled>&gt;</button>`;
     }
 
     $('#pagination').html(paginationButtons);

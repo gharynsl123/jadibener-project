@@ -44,10 +44,10 @@
                                 <form class="user" method="POST" action="{{route('login')}}">
                                     @csrf
                                     <div class="form-group">
-                                        <input type="email"
-                                            class="form-control @error('email') is-invalid @enderror form-control-user"
-                                            id="exampleInputEmail" name="email" autocomplete="email" required
-                                            aria-describedby="emailHelp" placeholder="Enter Email Address...">
+                                        <input type="text"
+                                            class="form-control @error('nama_user') is-invalid @enderror form-control-user"
+                                            id="exampleInputEmail" name="nama_user" autocomplete="email" required
+                                            aria-describedby="emailHelp" placeholder="Enter Username...">
 
                                         @error('email')
                                         <span class="invalid-feedback" role="alert">

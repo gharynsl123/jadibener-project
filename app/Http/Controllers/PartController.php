@@ -150,4 +150,20 @@ class PartController extends Controller
         $part->delete();
         return response()->json(['message' => 'Data berhasil dihapus.']);
     }
+
+    public function destroyPart($id) {
+        try {
+            // Temukan estimasi biaya berdasarkan ID
+            $estimate = Estimate::findOrFail($id);
+    
+            // Hapus estimasi biaya
+            $estimate->delete();
+    
+            // Redirect ke halaman yang sesuai atau tampilkan pesan sukses
+            return redirect()->route('estimate.index')->with('success', 'Estimasi biaya berhasil dihapus.');
+        } catch (\Exception $e) {
+            // Tangani kesalahan jika diperlukan
+            return redirect()->route('estimate.index')->with('error', 'Terjadi kesalahan saat menghapus estimasi biaya.');
+        }
+    }
 }

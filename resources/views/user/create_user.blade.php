@@ -42,15 +42,20 @@
                     </select>
                 </div>
 
-
                 <div class="form-group col-md-6 " id="roleField" style="display: none;">
-                    <label for="role">{{ __('Role') }}</label>
+                    <label for="role">{{ __('Departement') }}</label>
+                    <select id="role" class="form-control @error('role') is-invalid @enderror" name="id_departement">
+                        <option value="">-- Select Role --</option>
+                        @foreach($departement as $dep)
+                        <option value="{{$dep->id}}">{{$dep->nama_departement}}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="form-group col-md-6 " id="teknisiField" style="display: none;">
+                    <label for="role">{{ __('Departement') }}</label>
                     <select id="role" class="form-control @error('role') is-invalid @enderror" name="role">
                         <option value="">-- Select Role --</option>
-                        <option value="qizi">Qizi</option>
-                        <option value="alkes">Alkes</option>
-                        <option value="cssd">CSSD</option>
-                        <option value="manager">Manager</option>
                         <option id="roleTeknisi" value="kap_teknisi">Kepala Teknisi</option>
                     </select>
                     <small class="text-muted">jika user hanya teknisi biasa maka kosong kan role ini</small>
@@ -78,29 +83,21 @@
                     </span>
                     @enderror
                 </div>
-                
-                <div class="form-group col-md-6">
-                    <label for="password-confirm">{{ __('Confirm Password') }}</label>
-                    <input id="password-confirm" type="password" class="form-control"
-                        required autocomplete="new-password">
+
+
+                <div class="form-group col-md-6 " id="roleField">
+                    <label for="role">{{ __('Jenis Kelamin') }}</label>
+                    <select id="role" class="form-control @error('role') is-invalid @enderror"
+                        name="jenis_kelamin">
+                        <option value="">-- Select Gender --</option>
+                        <option value="laki-laki">Laki-Laki</option>
+                        <option value="perempuan">Perempuan</option>
+                    </select>
                 </div>
 
-                <div class="input-group form-group col-md-6 mb-auto">
-                    <div class="input-group-text form-control" id="gender">
-                        <input class="form-check mr-3" type="radio" name="jenis_kelamin" value="laki-laki">
-                        Laki-Laki
-                    </div>
-
-                    <div class="input-group-text form-control">
-                        <input class="form-check mr-3" type="radio" name="jenis_kelamin" value="perempuan">
-                        Perempuan
-                    </div>
-
-                </div>
-
-                <div class="form-group col-md-12">
+                <div class="form-group mt-3 col-md-12">
                     <label for="alamat">Alamat</label>
-                    <textarea class="form-control" id="alamat" name="alamat_user" rows="3"
+                    <textarea class="form-control" id="editor" name="alamat_user"
                         placeholder="your alamat in here"></textarea>
                 </div>
             </div>
@@ -124,6 +121,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     var levelSelect = document.getElementById('level');
     var roleField = document.getElementById('roleField');
+    var teknisiField = document.getElementById('teknisiField');
     var roleTeknisi = document.getElementById('roleTeknisi');
     var instansiField = document.getElementById('instansiField');
 
@@ -131,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var selectedLevel = levelSelect.value;
 
             if (selectedLevel === 'teknisi') {
-                roleField.style.display = 'block';
+                teknisiField.style.display = 'block';
                 instansiField.style.display = 'none';
                 roleTeknisi.style.display = 'block';
 

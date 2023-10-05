@@ -1,9 +1,8 @@
 @extends('layouts.main-view')
 
+@section('title', 'Kategori')
+
 @section('content')
-<!-- Content Row -->
-
-
 <div class="row gap-2">
     <div class="col-md-5 mb-4">
 
@@ -21,6 +20,11 @@
             <div class="card-header mb-2" id="title-card">Add New kategori</div>
             <div class="card-body p-3">
                 <form>
+                    <select name="id_departement" id="id_departement" class="mb-4 form-control">
+                        <option value="">Pilih Departement</option>
+                        <!-- Data departement akan dimuat melalui AJAX -->
+                    </select>
+
                     <input type="text" name="nama_kategori" id="nama_kategori" class="mb-4 form-control"
                         autocomplete="off" placeholder="Nama kategori">
                     <button class="btn btn-primary" id="addDataBtn" type="button" onclick="addData()">Input</button>
@@ -41,6 +45,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Nama kategori</th>
+                                <th>departemen</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -49,15 +54,74 @@
                         </tbody>
                     </table>
                 </div>
-                <div id="pagination" class="m-2"></div>
+                <div id="pagination" class="m-2 text-center">
+                    <button class="btn pagination-btn" onclick="changePage('prev')">
+                        <i class="fas fa-angle-left"></i>
+                    </button>
+                    <!-- Tampilkan nomor halaman di sini -->
+                    <button class="btn pagination-btn" onclick="changePage('next')">
+                        <i class="fas fa-angle-right"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 </div>
 <script>
+
+
 const itemsPerPage = 5; // Jumlah item per halaman
 let currentPage = 1; // Halaman saat ini
 let editingCategoryId = null; // ID kategori yang sedang diedit
+
+
+function updatePagination(data) {
+    const totalPages = Math.ceil(data.length / itemsPerPage);
+    let paginationButtons = '';
+
+    for (let i = 1; i <= totalPages; i++) {
+        paginationButtons += `
+            <button class="btn pagination-btn" onclick="changePage(${i})">${i}</button>
+        `;
+    }
+
+    $('#pagination').html(paginationButtons);
+}
+
+function changePage(page) {
+    if (page === 'prev' && currentPage > 1) {
+        currentPage--;
+    } else if (page === 'next' && currentPage < Math.ceil(data.length / itemsPerPage)) {
+        currentPage++;
+    } else {
+        currentPage = page;
+    }
+
+    displayData(data);
+}
+
+function fillDepartementDropdown() {
+    $.ajax({
+        type: "GET",
+        dataType: 'json',
+        url: "/get-data/departement", // Sesuaikan dengan route yang benar
+        success: function(response) {
+            const dropdown = $('#id_departement');
+            dropdown.empty(); // Kosongkan dropdown
+
+            // Tambahkan opsi default
+            dropdown.append('<option value="">Pilih Departement</option>');
+
+            // Tambahkan data departement ke dalam dropdown
+            $.each(response, function(key, entry) {
+                dropdown.append($('<option></option>').attr('value', entry.id).text(entry.nama_departement));
+            });
+        }
+    });
+}
+
+// Panggil fungsi fillDepartementDropdown() untuk mengisi dropdown saat halaman dimuat
+fillDepartementDropdown();
 
 $('#searchInput').on('input', function() {
     const searchTerm = $(this).val().toLowerCase();
@@ -94,6 +158,9 @@ function displayData(data) {
                         <td>${key + 1}</td>
                         <td>${value.nama_kategori}</td>
                         <td>
+                            ${value.nama_departement ? value.nama_departement : 'Belum ada departemen'}
+                        </td>
+                        <td>
                             <button onclick="editData(${value.id})" class="btn btn-primary">
                                 <i class="fa fa-pen-to-square text-white"></i>
                             </button>
@@ -109,6 +176,7 @@ function displayData(data) {
     updateNomorUrut();
 }
 
+
 function updatePagination(data) {
     const totalPages = Math.ceil(data.length / itemsPerPage);
     let paginationButtons = '';
@@ -123,19 +191,21 @@ function updatePagination(data) {
 }
 
 function updateData(id) {
-
     var namakategori = $('#nama_kategori').val();
+    var idDepartement = $('#id_departement').val(); // Ambil nilai dari dropdown
 
     $.ajax({
         type: "PUT",
         url: "/update-kategori/" + id,
         data: {
             "_token": "{{ csrf_token() }}",
-            "nama_kategori": namakategori
+            "nama_kategori": namakategori,
+            "id_departement": idDepartement // Kirim nilai id_departement
         },
         success: function(response) {
             getAllData();
             $('#nama_kategori').val('');
+            $('#id_departement').val('');
             cancelEdit();
             $('#updateDataBtn').hide();
             $('#addDataBtn').show();
@@ -189,13 +259,15 @@ function getAllData() {
 
 function addData() {
     var namakategori = $('#nama_kategori').val();
+    var idDepartement = $('#id_departement').val(); // Ambil nilai dari dropdown
 
     $.ajax({
         type: "POST",
         url: "{{ route('kategori.store') }}",
         data: {
             "_token": "{{ csrf_token() }}",
-            "nama_kategori": namakategori
+            "nama_kategori": namakategori,
+            "id_departement": idDepartement // Kirim nilai id_departement
         },
         success: function(response) {
             // Panggil fungsi getAllData() untuk mereload data
@@ -213,6 +285,9 @@ function editData(id) {
         url: "/edit-kategori/" + id,
         success: function(response) {
             $('#nama_kategori').val(response.nama_kategori);
+            
+            // Set nilai dropdown ke departement yang sesuai
+            $('#id_departement').val(response.id_departement);
 
             $('#updateDataBtn').click(function() {
                 updateData(response.id); // Berikan parameter id dari response
@@ -225,5 +300,6 @@ function editData(id) {
         }
     });
 }
+
 </script>
 @endsection

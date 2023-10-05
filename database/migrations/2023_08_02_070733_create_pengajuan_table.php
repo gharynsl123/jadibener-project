@@ -17,7 +17,6 @@ class CreatePengajuanTable extends Migration
             $table->increments('id');
             $table->integer('id_user')->unsigned();
             $table->integer('id_peralatan')->unsigned();
-            $table->integer('id_kondisi')->unsigned();
 
             $table->string('judul_masalah');
             $table->string('deskripsi_masalah');
@@ -28,7 +27,6 @@ class CreatePengajuanTable extends Migration
 
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('id_peralatan')->references('id')->on('peralatan')->onDelete('cascade');
-            $table->foreign('id_kondisi')->references('id')->on('kondisi')->onDelete('cascade');
             $table->timestamps();
         });
     }

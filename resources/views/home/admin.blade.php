@@ -1,5 +1,7 @@
 @extends('layouts.main-view')
 
+@section('title', 'Home')
+
 @if (Auth::user()->level == 'pic')
 
 @section('content')
@@ -13,7 +15,7 @@
 @elseif(Auth::user()->level == 'surveyor')
 
 @section('content')
-@include('peralatan.index_peralatan')
+@include('home.surveyor')
 @endsection
 
 @else
@@ -27,38 +29,88 @@
     </button>
 </div>
 <div id="gate-service">
-    <marquee behavior="" direction="">tetststets</marquee>
     <div class="row gap-2">
-        <div class="col-md-3 my-1">
-            <div class="card d-flex text-center border-left-success" style="min-height: 150px; padding: 10px;">
-                <h3 id="doneCount">0</h3>
-                <p class="fix-bottom m-0">
-                    Tickets Solved
-                </p>
+        <!-- Earnings (Annual) Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Tickets Solved</div>
+                            <div id="doneCount" class="h5 mb-0 font-weight-bold text-gray-800">0</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-md-3 my-1">
-            <div class="card text-center border-left-warning" style="min-height: 150px; padding: 10px;">
-                <h3 id="prosesCount">0</h3>
-                <p class="fix-bottom m-0">
-                    Tickets On Process
-                </p>
+        <!-- Tasks Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tickets On Process
+                            </div>
+                            <div class="row no-gutters align-items-center">
+                                <div class="col-auto">
+                                    <div id="prosesCount" class="h5 mb-0 mr-3 font-weight-bold text-gray-800">0</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="col-md-3 my-1">
-            <div class="card text-center border-left-primary" style="min-height: 150px; padding: 10px;">
-                <h3 id="pendingCount">0</h3>
-                Tickets Waiting Approval By Admin
+        <!-- Pending Requests Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Tickets Waiting Approval By Admin</div>
+                            <div id="pendingCount" class="h5 mb-0 font-weight-bold text-gray-800">0</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="col-md-3 my-1">
-            <div class="card text-center border-left-primary" style="min-height: 150px; padding: 10px;">
-                <h3 id="processTicketCount">0</h3>
-                <p class="fix-bottom m-0">
-                    Tickets Pengajuan Keseluruhan
-                </p>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Tickets Pengajuan Keseluruhan</div>
+                            <div id="processTicketCount" class="h5 mb-0 font-weight-bold text-gray-800">0</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-ticket fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="my-1 col-md-6">
+            <div class="card shadow">
+                Puas Dengan Servicenya
+            </div>
+        </div>
+        <div class="my-1 col-md-6">
+            <div class="card shadow">
+                Kurang puas dengan servicenya
             </div>
         </div>
     </div>
@@ -92,7 +144,45 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Data akan dimuat melalui AJAX -->
+                    @foreach($pengajuan as $item)
+                    <tr>
+                        <td>
+                            <a href="pengajuan/{{$item->slug}}" class="btn btn-info">
+                                <i class="fa fa-eye text-white"></i>
+                            </a>
+                        </td>
+                        <td>{{$item->created_at}}</td>
+                        <td>{{$item->peralatan->instansi->nama_instansi}}</td>
+                        <td>{{$item->user->nama_user}}</td>
+                        <td>{{$item->peralatan->serial_number}}</td>
+                        <td>{{$item->peralatan->kategori->nama_kategori}}</td>
+                        <td>{{$item->peralatan->produk->nama_produk}}</td>
+                        <td>{{$item->peralatan->produk_dalam_kondisi}}</td>
+                        <td>{{$item->status_pengajuan}}</td>
+                        <td>
+                            <div class="d-flex justify-content-between">
+                                <form class="update-form" action="{{ route('pengajuan.update', $item->id) }}"
+                                    method="post">
+                                    @csrf
+                                    {{ method_field('POST') }}
+                                    <input type="text" name="status_pengajuan" value="approved" hidden>
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fa fa-thumbs-up text-white"></i>
+                                    </button>
+                                </form>
+                                <form class="update-form" action="{{ route('pengajuan.update', $item->id) }}"
+                                    method="post">
+                                    @csrf
+                                    {{ method_field('POST') }}
+                                    <input type="text" name="status_pengajuan" value="rejected" hidden>
+                                    <button type="submit" class="btn btn-danger">
+                                        <i class="fa fa-thumbs-down text-white"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
@@ -101,85 +191,6 @@
 
 <script>
 $(document).ready(function() {
-
-    function getPengajuan() {
-        $.ajax({
-            type: "GET",
-            url: "/get-pengajuan",
-            success: function(data) {
-                $('#dataTable tbody').empty();
-
-                console.log(data)
-                $.each(data, function(index, item) {
-                    var row = `
-                        <tr>
-                            <td>
-                                <a href="/peralatan/${item.slug}" class="btn btn-info">
-                                    <i class="fa fa-eye text-white"></i>
-                                </a>
-                            </td>
-                            <td>${item.created_at}</td>
-                            <td>${item.nama_instansi}</td>
-                            <td>${item.nama_user}</td>
-                            <td>${item.serial_number}</td>
-                            <td>${item.nama_kategori}</td>
-                            <td>${item.nama_produk}</td>
-                            <td>${item.nama_kondisi}</td>
-                            <td>${item.status_pengajuan}</td>
-                            <td>
-                                <div class="d-flex justify-content-between">
-                                    <form class="update-form" action="{{ route('pengajuan.update', '') }}/${item.id}" method="post">
-                                        @csrf
-                                        {{ method_field('POST') }}
-                                        <input type="text" name="status_pengajuan" value="approved" hidden>
-                                        <button type="submit" class="btn btn-success">
-                                            <i class="fa fa-thumbs-up text-white"></i>
-                                        </button>
-                                    </form>
-                                    <form class="update-form" action="{{ route('pengajuan.update', '') }}/${item.id}" method="post">
-                                        @csrf
-                                        {{ method_field('POST') }}
-                                        <input type="text" name="status_pengajuan" value="rejected" hidden>
-                                        <button type="submit" class="btn btn-danger">
-                                            <i class="fa fa-thumbs-down text-white"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>`;
-                    $('#dataTable tbody').append(row);
-                });
-
-            },
-            error: function(xhr) {
-                alert('Terjadi kesalahan saat mengambil data pengajuan.');
-            }
-        });
-    }
-
-    // Panggil fungsi untuk pertama kali saat halaman dimuat
-    getPengajuan();
-
-    $('.update-form').on('submit', function(e) {
-        e.preventDefault();
-
-        var form = $(this);
-
-        $.ajax({
-            type: "POST",
-            url: form.attr('action'),
-            data: form.serialize(),
-            success: function(response) {
-                alert('Status pengajuan berhasil diperbarui.');
-                getPengajuan();
-
-            },
-            error: function(xhr) {
-                alert('Terjadi kesalahan saat mengupdate status pengajuan.');
-            }
-        });
-    });
-
     function updatePendingCount() {
         $.ajax({
             type: "GET",
@@ -243,6 +254,12 @@ $(document).ready(function() {
         }
     });
 });
+// Contoh polling setiap 5 detik
+// Contoh polling setiap 5 detik
+setInterval(() => {
+    // Me-refresh halaman saat polling dilakukan setiap 5 detik
+    location.reload();
+}, 1800000);
 </script>
 @endsection
 @endif

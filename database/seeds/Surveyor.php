@@ -15,8 +15,7 @@ class Surveyor extends Seeder
         $user->nama_user = "rahmat hidayat";
         $user->alamat_user = "Jl. Saturnus Timur No. 20 Margahayu Raya. Desa/Kelurahan, : MANJAHLEGA. Kecamatan/Kota (LN), : KEC. RANCASARI.";
         $user->email = "hidayatalina@gmail.com";
-        $user->level = "teknisi";
-        $user->role = "kap_teknisi";
+        $user->level = "surveyor";
         $user->nomor_telepon = "081299106344";
         $user->password = \Hash::make('rahmat987');
         $user->save();

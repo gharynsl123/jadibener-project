@@ -7,6 +7,7 @@ use App\Kategori;
 use App\History;
 use App\Pengajuan;
 use App\Instansi;
+use App\Departement;
 use App\Produk;
 use App\Peralatan;
 use Carbon\Carbon;
@@ -30,19 +31,25 @@ class PeralatanController extends Controller
 
     public function index()
     {
-        $merek = Merek::all();
-        $product = Produk::all();
-        $kategori = Kategori::all();
         $peralatan = null;
-    
-        // Jika user adalah pic_rs, ambil data peralatan berdasarkan rumah sakit yang dipegang. dan jika user adalah admin, ambil semua data peralatan
-        if (Auth::user()->level == 'pic') {
-            $peralatan = Peralatan::where('id_instansi', Auth::user()->id_instansi)->get();
+        
+        $kategori = Kategori::all();
+        $depart = Departement::all();
+
+        $departemenUser = Auth::user()->id_departement;
+        $userAuth = Auth::user()->id_instansi;
+        
+        if (Auth::user()->level == 'pic' && (Auth::user()->departement->nama_departement == 'Purchasing' || Auth::user()->departement->nama_departement == 'IPS-RS')) {
+            $peralatan = Peralatan::where('id_instansi', $userAuth)->get();
+        } else if (Auth::user()->level == 'pic' && Auth::user()->departement->nama_departement) {
+            $peralatan = Peralatan::where('id_instansi', $userAuth)
+            ->where('id_departement', $departemenUser)
+            ->get();
         } else {
             $peralatan = Peralatan::all();
         }
     
-        return view('peralatan.index_peralatan', compact('merek', 'product', 'kategori', 'peralatan'));
+        return view('peralatan.index_peralatan', compact(  'kategori', 'depart', 'peralatan'));
     }
 
 

@@ -1,5 +1,7 @@
 @extends('layouts.main-view')
 
+@section('title', 'Instansi')
+
 @section('content')
 <style>
 .single-line {
@@ -19,7 +21,7 @@
     <div class=" d-sm-inline-block">
         <a href="{{route('instansi.create')}}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">
             <i class="fas fa-plus fa-sm text-white-50"></i> Tambahkan Data RS</a>
-        <a href="/instansi-cetak-pdf" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        <a href="/instansi-cetak-pdf" target="_blank" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">
             <i class="fas fa-file fa-sm text-white-50"></i> cetak pdf</a>
         <a data-toggle="modal" data-target="#importdata" data-target="#importdata"
             class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">
@@ -75,7 +77,7 @@
                     <!-- Add '->reverse()' after '$instansi' to reverse the order -->
                     <tr>
                         <td>{{$items->nama_instansi}}</td>
-                        <td class="single-line">{{$items->alamat_instansi}}</td>
+                        <td class="single-line">{!!$items->alamat_instansi!!}</td>
                         <td>{{$items->jenis_instansi}}</td>
                         <td>{{$items->jumlah_kasur}}</td>
                         <td>
@@ -90,7 +92,7 @@
                                 <a href="{{route('instansi.edit', $items->id)}}" class="btn btn-warning">
                                     <i class="fa fa-pen-to-square text-white"></i>
                                 </a>
-                                <button type="submit" class="btn btn-danger">
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus {{$items->nama_instansi}} ini?')">
                                     <i class="fa fa-trash text-white"></i>
                                 </button>
                             </form>

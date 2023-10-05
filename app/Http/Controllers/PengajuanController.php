@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Pengajuan;
-use App\Kondisi;
 use App\Progress;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\PermintaanPerbaikan;
+use App\Mail\NewPengajuan;
 use App\User;
 use App\History;
 use Carbon\Carbon;
@@ -41,10 +40,9 @@ class PengajuanController extends Controller
     public function create(Request $request, $slug)
     {
         $peralatan = Peralatan::where('slug', $slug)->first();
-        $kondisi = Kondisi::all();
         $user = Auth::user();
 
-        return view('pengajuan.create_pengajuan', compact('peralatan', 'user', 'kondisi'));
+        return view('pengajuan.create_pengajuan', compact('peralatan', 'user'));
     }
 
     /**
@@ -79,7 +77,8 @@ class PengajuanController extends Controller
         $history['id_pengajuan'] = $dataPengajuan->id;
 
         History::create($history);
-        
+    
+
         return redirect()->route('peralatan.index');
         // mengambil data dari database pengajuan
     }
@@ -104,22 +103,6 @@ class PengajuanController extends Controller
         $teknisiList = User::where('level', 'teknisi')->get();
             
         return view('pengajuan.detail_pengajuan', compact('teknisiList', 'historyPengajuan', 'pengajuan', 'progress'));
-    }
-
-
-
-
-
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Pengajuan  $pengajuan
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Pengajuan $pengajuan)
-    {
-        //
     }
 
     /**
@@ -152,20 +135,9 @@ class PengajuanController extends Controller
         History::create($history);
     
         // Berikan respon untuk Ajax
-        return response()->json(['history' => $history, 'pengajuan' => $pengajuan]);
+        return redirect('/home')->with('success', 'Data Peralatan Berhasil Diupdate');
     }
-
-    public function getPengajuan() {
-        $pengajuan = Pengajuan::where('status_pengajuan', 'pending')
-        ->join('peralatan','peralatan.id', '=', 'Pengajuan.id_peralatan')
-        ->join('users','users.id', '=', 'Pengajuan.id_user')
-        ->join('kategori','kategori.id', '=', 'Peralatan.id_kategori')
-        ->join('produk','produk.id', '=', 'Peralatan.id_product')
-        ->join('kondisi','kondisi.id', '=', 'Pengajuan.id_kondisi')
-        ->join('instansi', 'instansi.id', '=' , 'Peralatan.id_instansi')->get()->all();
-        return response()->json($pengajuan);
-    }
-
+    
     /**
      * Remove the specified resource from storage.
      *

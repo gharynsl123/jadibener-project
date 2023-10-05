@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Instansi;
+use App\Departement;
 
 class InstansiSeeder extends Seeder
 {
@@ -44,10 +45,19 @@ class InstansiSeeder extends Seeder
                 'jumlah_kasur' => '567',
             ],
         ];
+
+        $departement = [
+            ['nama_departement' => 'Dapur Gizi'],
+            ['nama_departement' => 'CSSD'],
+            ['nama_departement' => 'Purchasing'],
+            ['nama_departement' => 'IPS-RS'],
+        ];
         
         foreach ($instansi as $addItems) {
-
             Instansi::create($addItems);
+        }
+        foreach ($departement as $addDep){
+            Departement::create($addDep);
         }
     }
 }

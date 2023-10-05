@@ -1,5 +1,7 @@
 @extends('layouts.main-view')
 
+@section('title', 'Suku Cadang')
+
 @section('content')
 <!-- Content Row -->
 <div class="row gap-2">
@@ -62,7 +64,6 @@ let editingCategoryId = null; // ID part yang sedang diedit
 $('#updateDataBtn').hide();
 $('#cancelBtn').hide();
 
-
 function editData(id) {
     $.ajax({
         type: "GET",
@@ -96,6 +97,9 @@ function cancelEdit() {
     $('#title-card').html('Add New part');
     $('#addDataBtn').show();
 }
+getAllData();
+updateNomorUrut(); // Panggil fungsi updateNomorUrut
+
 
 function deleteData(id) {
     if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
@@ -159,7 +163,6 @@ function changePage(page) {
     displayData(data);
 }
 
-getAllData();
 
 function getAllData() {
     $.ajax({
@@ -204,7 +207,7 @@ function updateData(id) {
 
     $.ajax({
         type: "PUT",
-        url: `/update-part/${id}`, // Anda perlu mengirimkan ID sebagai bagian dari URL
+        url: `/update-part/${id}`, // Menggunakan tanda backtick untuk memasukkan ID ke dalam URL
         data: {
             "_token": "{{ csrf_token() }}",
             "nama_part": nama_part,

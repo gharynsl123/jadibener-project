@@ -4,7 +4,8 @@
 @section('content')
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800 d-sm-inline-block"> @if (Auth::user()->level == 'admin') List pengajuan @else List Pengajuan Mu @endif
+    <h1 class="h3 mb-0 text-gray-800 d-sm-inline-block"> @if (Auth::user()->level == 'admin') List pengajuan @else List
+        Pengajuan Mu @endif
     </h1>
     <div class="d-none d-sm-inline-block">
         <a href="{{url('peralatan')}}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">
@@ -33,7 +34,6 @@
                 </thead>
                 <tbody>
                     @foreach($pengajuan->reverse() as $items)
-                    @if($items->status_pengajuan != 'selesai')
                     <tr>
                         <td>
                             <!-- for go to detail use resouce route-->
@@ -52,23 +52,53 @@
                             @if($items->status_pengajuan == 'selesai')
                             <!-- untuk feedback good or bad -->
                             <div class="d-flex justify-content-between">
-                                <a href="#" class="btn btn-success">
+                                <button class="btn btn-success feedback-btn" data-feedback="good">
                                     <i class="fa fa-thumbs-up text-white"></i>
-                                </a>
-                                <a href="#" class="btn btn-danger">
+                                </button>
+                                <button class="btn btn-danger feedback-btn" data-feedback="bad">
                                     <i class="fa fa-thumbs-down text-white"></i>
-                                </a>
+                                </button>
                             </div>
                             @else
                             Belum selesai
                             @endif
                         </td>
                     </tr>
-                    @endif
                     @endforeach
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+
+<script>
+// Fungsi untuk mengirim feedback ke server
+function sendFeedback(id, feedback) {
+    $.ajax({
+        type: "POST",
+        url: "/send-feedback/" + id,
+        data: {
+            "_token": "{{ csrf_token() }}",
+            "feedback": feedback
+        },
+        success: function(response) {
+            // Handle respon jika diperlukan
+            if (response.success) {
+                alert("Feedback berhasil dikirim!");
+            } else {
+                alert("Terjadi kesalahan saat mengirim feedback.");
+            }
+        }
+    });
+}
+
+// Menambahkan event listener untuk tombol feedback
+$(document).on('click', '.feedback-btn', function() {
+    var id = $(this).closest('tr').data('id'); // Dapatkan ID tiket dari baris yang sesuai
+    var feedback = $(this).data('feedback'); // Dapatkan jenis feedback (good atau bad)
+
+    sendFeedback(id, feedback); // Kirim feedback ke server
+});
+</script>
+
 @endsection

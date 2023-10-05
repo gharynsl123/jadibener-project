@@ -16,10 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call(SubService::class);
         $this->call(Teknisi::class);
         $this->call(Surveyor::class);
-        $this->call(KategoriSeeder::class);
-        $this->call(MerekSeeder::class);
-        $this->call(Product::class);
-        $this->call(PartSeeder::class);
         $this->call(InstansiSeeder::class);
+        $this->call(HeadTeknisi::class);
     }
 }

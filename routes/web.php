@@ -39,9 +39,14 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::get('/make/users', 'UserController@create')->name('users.create');
     Route::post('/add-users', 'UserController@store')->name('users.store');
     Route::get('/edit-users/{id}', 'UserController@edit')->name('user.edit');
+    Route::delete('delete-estimasi-biaya/{id}', 'PartController@destroyPart')->name('estimate.delete');
     Route::put('/update-users/{id}', 'UserController@update')->name('users.update');
     Route::delete('/delete-users/{id}', 'UserController@destroy')->name('users.destroy');
 });
+
+// surveyor route
+Route::get('surveyor/create-data', 'SurveyorController@createData')->name('survey.creat-data');
+Route::post('create-new-data/surveyor', 'SurveyorController@storeData')->name('survey.store-data');
 
 // Home Route
 Route::get('/home', 'HomeController@index')->name('home');
@@ -54,12 +59,20 @@ Route::get('/get-selesai-count', 'HomeController@getSolvedCount');
 // status Route
 Route::resource('status', 'StatusController');
 
+// departement Route
+Route::get('departement', 'DepartemenController@index')->name('dep.index');
+Route::get('edit-departement/{id}', 'DepartemenController@edit')->name('dep.edit');
+Route::post('submit-data/departement', 'DepartemenController@store')->name('dep.store');
+Route::put('update-departement/{id}', 'DepartemenController@update')->name('dep.update');
+Route::delete('delete-departement/{id}', 'DepartemenController@destroy')->name('dep.destroy');
+
+
 // Ajax Route Get Data
 Route::get('/get-data/merek', 'MerekController@dataMerek')->name('merek.data');
 Route::get('/get-data/kondisi', 'KondisiController@dataKondisi')->name('kondisi.data');
 Route::get('/get-data/kategori', 'KategoriController@dataKategori')->name('kategori.data');
 Route::get('/get-data/part', 'PartController@dataPart')->name('part.data');
-Route::get('/get-pengajuan', 'PengajuanController@getPengajuan')->name('pengajuan.get');
+Route::get('/get-data/departement', 'DepartemenController@getDepartement')->name('departement.get');
 
 
 // informasi Route
@@ -88,6 +101,7 @@ Route::get('/instansi-cetak-pdf', 'PrintController@instansiCetakPdf')->name('ins
 Route::get('/laporan-cetak-pdf/{id}', 'PrintController@laporanCetakPdf')->name('laporan.cetak_pdf');
 Route::get('/alat-cetak-pdf/{slug}', 'PrintController@alatCetakPdf')->name('alat.cetak_pdf');
 Route::get('/pengajuan-cetak-pdf/{slug}', 'PrintController@pengajuanCetakPdf')->name('pengajuan.cetak_pdf');
+Route::get('/profile-cetak-pdf', 'PrintController@ProfileRs')->name('profileInstansi.cetak_pdf');
 
 // import route
 Route::post('/import-instansi', 'InstansiController@import')->name('import.instansi');
@@ -112,7 +126,6 @@ Route::post('/create-data-produk', 'ProdukController@store')->name('produk.store
 Route::delete('/delete-data-produk/{id}', 'ProdukController@destroy')->name('produk.destroy');
 
 // Pengajuan Route
-// Route::get('/pengajuan', 'PengajuanController@index')->name('pengajuan.index');
 Route::post('/update-pengajuan/{id}', 'PengajuanController@update')->name('pengajuan.update');
 Route::get('/make/pengajuan/{slug}', 'PengajuanController@create')->name('pengajuan.create');
 Route::post('/add-pengajuan', 'PengajuanController@store')->name('pengajuan.store');
@@ -143,10 +156,6 @@ Route::post('/add-progress', 'ProgressController@store')->name('progress.store')
 Route::get('/detail-progress/{slug}', 'ProgressController@show')->name('progress.show');
 Route::put('/progress/{id}', 'ProgressController@updateProgress')->name('progress.update');
 
-Route::get('/test', function () {
-    // guest only
-    return view('test');
-});
 // peralatan Route
 Route::get('peralatan', 'PeralatanController@index')->name('peralatan.index');
 Route::get('make/peralatan', 'PeralatanController@create')->name('peralatan.create');

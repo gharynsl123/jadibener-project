@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Kategori;
+use App\Departement;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\KategoriImport;
 use Illuminate\Http\Request;
@@ -22,7 +23,9 @@ class KategoriController extends Controller
 
     public function dataKategori()
     {
-        $kategori = Kategori::all();
+        $kategori = Kategori::select('kategori.*', 'departement.nama_departement')
+    ->leftJoin('departement', 'kategori.id_departement', '=', 'departement.id')
+    ->get();
         return response()->json($kategori);
     }
 
@@ -30,6 +33,7 @@ class KategoriController extends Controller
     {
         $kategori = Kategori::create([
             'nama_kategori' => $request->nama_kategori,
+            'id_departement' => $request->id_departement,
         ]);
         return response()->json($kategori);
     }
@@ -44,11 +48,9 @@ class KategoriController extends Controller
     {
         $kategori = Kategori::find($id);
 
-        if (!$kategori) {
-            return response()->json(['message' => 'Data tidak ditemukan.'], 404);
-        }
-
         $kategori->nama_kategori = $request->nama_kategori;
+        $kategori->id_departement = $request->id_departement;
+        
         $kategori->save();
 
         return response()->json($kategori);

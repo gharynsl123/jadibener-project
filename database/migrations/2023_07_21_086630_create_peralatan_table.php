@@ -20,8 +20,10 @@ class CreatePeralatanTable extends Migration
             $table->integer('id_merek')->unsigned();
             $table->integer('id_kategori')->unsigned();
             $table->integer('id_product')->unsigned();
+            $table->integer('id_departement')->unsigned();
+            
 
-            $table->enum('keterangan', ['baik', 'rusak', 'hilang'])->default('baik');
+            $table->enum('produk_dalam_kondisi', ['baik', 'rusak', 'hilang'])->default('baik');
             $table->string('serial_number');
             $table->string('tahun_pemasangan');
             $table->string('slug');
@@ -34,6 +36,7 @@ class CreatePeralatanTable extends Migration
             $table->foreign('id_merek')->references('id')->on('merek')->onDelete('cascade');
             $table->foreign('id_kategori')->references('id')->on('kategori')->onDelete('cascade');
             $table->foreign('id_product')->references('id')->on('produk')->onDelete('cascade');
+            $table->foreign('id_departement')->references('id')->on('departement')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\User;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\UserImport;
 use App\Instansi;
+use App\Departement;
+use App\Imports\UserImport;
+use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -31,14 +32,16 @@ class UserController extends Controller
     public function create()
     {
         $instansi = Instansi::all();
-        return view('user.create_user', compact('instansi'));
+        $departement = Departement::all();
+        return view('user.create_user', compact('instansi', 'departement'));
     }
 
     public function edit($id)
     {
         $user = User::find($id);
+        $departement = Departement::all();
         $instansi = Instansi::all();
-        return view('user.edit_user', compact('user', 'instansi'));
+        return view('user.edit_user', compact('user', 'instansi', 'departement'));
     }
 
     public function update(Request $request, $id)
