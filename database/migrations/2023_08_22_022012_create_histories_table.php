@@ -20,11 +20,13 @@ class CreateHistoriesTable extends Migration
             $table->integer('id_peralatan')->unsigned()->nullable();
             $table->integer('id_pengajuan')->unsigned()->nullable();
             $table->integer('id_progress')->unsigned()->nullable();
+            $table->integer('id_estimasibiaya')->unsigned()->nullable();
 
             $table->string('tanggal');
             $table->string('status_history');
             $table->string('deskripsi')->nullable();
-
+            
+            $table->foreign('id_estimasibiaya')->references('id')->on('estimasibiaya')->onDelete('cascade');
             $table->foreign('id_progress')->references('id')->on('progress')->onDelete('cascade');
             $table->foreign('id_pengajuan')->references('id')->on('pengajuan')->onDelete('cascade');
             $table->foreign('id_peralatan')->references('id')->on('peralatan')->onDelete('cascade');

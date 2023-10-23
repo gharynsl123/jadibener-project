@@ -36,8 +36,7 @@
                     placeholder="your alamat in here"></textarea>
             </div>
         </div>
-
+        <button type="submit" class="btn ml-auto btn-primary">Submit</button>
     </form>
-    <button type="submit" class="btn ml-auto btn-primary">Submit</button>
 </div>
 @endsection

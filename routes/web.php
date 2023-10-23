@@ -46,7 +46,11 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
 
 // surveyor route
 Route::get('surveyor/create-data', 'SurveyorController@createData')->name('survey.creat-data');
+Route::get('surveyor/exist-data/{id}', 'SurveyorController@existData')->name('survey.exist-data');
 Route::post('create-new-data/surveyor', 'SurveyorController@storeData')->name('survey.store-data');
+Route::post('create-existing-data/surveyor/{id}', 'SurveyorController@existStore')->name('survey.store-exist');
+Route::get('add/peralatan/surveyor/{id}', 'SurveyorController@addAlat')->name('survey.create-alat');
+Route::post('store-data-alat/survey/{id}', 'SurveyorController@storeAlatSurvey')->name('survey.store-alat');
 
 // Home Route
 Route::get('/home', 'HomeController@index')->name('home');
@@ -166,4 +170,7 @@ Route::put('peralatan/{id}', 'PeralatanController@update')->name('peralatan.upda
 Route::delete('peralatan/{id}', 'PeralatanController@destroy')->name('peralatan.destroy');
 
 
-Route::resource('profile', 'ProfileController');
+Route::get('profile', 'ProfileController@index')->name('profile.index');
+Route::post('req-store/{id}', 'ProfileController@reqStore')->name('req.store');
+Route::post('/approve-surveyor/{user}', 'ProfileController@approveSurveyor')->name('approve.surveyor');
+Route::post('/reject-surveyor/{user}', 'ProfileController@rejectSurveyor')->name('reject.surveyor');

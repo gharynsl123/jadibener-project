@@ -43,7 +43,7 @@
             </select>
         </div>
 
-        <input type="text" id="departemenInput" name="id_departement" hidden readonly >
+        <input type="text" id="departemenInput" name="id_departement" hidden readonly>
 
         <div class="form-group" id="produk-group" style="display: none;">
             <label for="merk">Nama Product</label>
@@ -72,7 +72,6 @@
         <button type="submit" class="ml-auto btn btn-primary">Submit</button>
     </form>
 </div>
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const pertahunProductInput = document.getElementById('pertahun-product');

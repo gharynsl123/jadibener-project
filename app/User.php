@@ -23,9 +23,13 @@ class User extends Authenticatable
         return $this->belongsTo('App\Instansi', 'id_instansi');
     }
 
+    public function peralatan()
+    {
+        return $this->hasMany(Peralatan::class, 'id_user');
+    }
 
     function departement() {
-        return $this->belongsTo('App\Departement', 'id_departement');
+        return $this->belongsTo(Departement::class, 'id_departement');
     }
 
     /**

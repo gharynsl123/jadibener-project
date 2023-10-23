@@ -172,14 +172,22 @@
                         <td>{{$items->status_history}}</td>
                         <td>{{$items->deskripsi}}</td>
                         <td>{{$items->tanggal}}</td>
-                        @if($items->pengajuan == null)
-                        <td>-</td>
-                        <td>-</td>
-                        @else
+                        @if($items->pengajuan)
                         <td>
                             <a href="/pengajuan/{{$items->pengajuan->slug}}" class="btn btn-primary">{{$items->pengajuan->id_pengenal}}</a>
                         </td>
                         <td>{{$items->pengajuan->judul_masalah}}</td>
+                        {{$items->estimasibiaya}}
+                        @elseif($items->estimasibiaya)
+                        <td>
+                            <!-- Tambahkan tombol aksi sesuai kebutuhan -->
+                            <a href="{{route('estimasi.cetak_pdf', $items->estimasibiaya->id)}}" target="_blank"
+                                class="btn btn-sm btn-primary"><i class="fa fa-file"></i></a>   
+                        </td>                         
+                        <td>-</td>
+                        @else
+                        <td>-</td>
+                        <td>-</td>
                         @endif
                     </tr>
                     @endforeach
@@ -204,12 +212,12 @@ function hitungSelisihTahun(tahunPemasangan) {
 }
 
 function perbaruiSelisihTahun() {
-    const idPeralatan = {{ $peralatan->id }};
-    const tahunPemasangan = {{ $peralatan->tahun_pemasangan }};
-    const nilaiTahun = {{ $peralatan->usia_barang }};
+    const idPeralatan = '{{ $peralatan->id }}';
+    const tahunPemasangan = '{{ $peralatan->tahun_pemasangan }}';
+    const nilaiTahun = '{{ $peralatan->usia_barang }}';
 
     // Hitung selisih tahun dan kondisi berdasarkan nilai tahun dan durasi
-    const selisihTahun = hitungSelisihTahun(tahunPemasangan);
+    const selisihTahun = isNaN(hitungSelisihTahun(tahunPemasangan)) ? 0 : hitungSelisihTahun(tahunPemasangan);
     const kondisiPengurangan = Math.max(0, 100 - (selisihTahun * (100 / nilaiTahun)));
 
     // Perbarui progress bar dan teks kondisi
@@ -220,8 +228,10 @@ function perbaruiSelisihTahun() {
 
     // Perbarui selisih tahun pada tampilan
     const elemenSelisihTahun = document.getElementById(`selisih-tahun-${idPeralatan}`);
+    // jika hasilnya 0 maka munculkan angka 0 
     elemenSelisihTahun.innerText = `${selisihTahun} tahun`;
 }
+
 </script>
 
 @endsection

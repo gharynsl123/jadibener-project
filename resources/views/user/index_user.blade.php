@@ -1,5 +1,7 @@
 @extends('layouts.main-view')
+
 @section('title', 'User Configuration')
+
 @section('content')
 <style>
 .single-line {
@@ -16,16 +18,13 @@
 @if(Auth::user()->level != 'pic_rs')
 <a href="{{route('users.create')}}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">
     <i class="fas fa-plus fa-sm text-white-50"></i> Tambahkan Data User</a>
+    
+<a data-toggle="modal" data-target="#importUser" class="d-sm-inline-block btn btn-sm btn-success shadow-sm">
+    <i class="fas fa-file-import fa-sm text-white-50"></i> Import Data User</a>
+@endif
 
-    <a data-toggle="modal" data-target="#importUser" data-target="#importUser"
-    class="d-sm-inline-block btn btn-sm btn-success shadow-sm">
-    <i class="fas fa-file-import fa-sm text-white-50"></i>Tambahkan Data User</a>
-
-    @endif
-
-    <!-- Logout Modal-->
-    <div class="modal fade" id="importUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+<!-- Logout Modal-->
+<div class="modal fade" id="importUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -46,9 +45,8 @@
             </div>
         </div>
     </div>
-    </div>
+</div>
 
-    
 <div class="card shadow my-4">
     <div class="p-3">
         <div class="table-responsive">
@@ -56,31 +54,30 @@
                 <thead class="bg-dark text-white">
                     <tr>
                         <th class="th-start">Nama</th>
-                        <th>level</th>
-                        <th>Role</th>
-                        <th>alamat</th>
+                        <th>Level</th>
+                        <th>Role/Departemen</th>
+                        <th>Alamat</th>
                         <th>Email</th>
                         <th>Jenis Kelamin</th>
                         <th>No Telp</th>
                         <th>Instansi</th>
-                        <th class="th-end">action</th>
+                        <th class="th-end">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($user->reverse() as $users)
                     <tr>
-                        <a href="{{ route('user.edit', $users->id) }}">
                         <td>{{ $users->nama_user }}</td>
                         <td>{{ $users->level }}</td>
                         <td>
                             @if($users->role)
-                            {{ $users->role }}
+                                {{ $users->role }}
                             @elseif($users->id_departement)
-                            {{ $users->departement->nama_departement }}
+                                {{ $users->departement->nama_departement }}
                             @elseif(in_array($users->level, ['pic', 'teknisi']))
-                            Belum ada
+                                Belum ada
                             @else
-                            <p class="text-danger">defult user tidak ada role</p>
+                                <p class="text-danger">Default user tidak memiliki role</p>
                             @endif
                         </td>
                         <td class="single-line">{!! $users->alamat_user !!}</td>
@@ -89,11 +86,11 @@
                         <td>{{ $users->nomor_telepon }}</td>
                         <td>
                             @if($users->instansi)
-                            {{ $users->instansi->nama_instansi }}
+                                {{ $users->instansi->nama_instansi }}
                             @elseif($users->level != 'pic')
-                            <p class="text-danger">User Bukan PIC</p>
+                                <p class="text-danger">User Bukan PIC</p>
                             @else
-                            Belum ada
+                                Belum ada
                             @endif
                         </td>
                         <td>
@@ -108,7 +105,6 @@
                                 </button>
                             </form>
                         </td>
-                        </a>
                     </tr>
                     @endforeach
                 </tbody>

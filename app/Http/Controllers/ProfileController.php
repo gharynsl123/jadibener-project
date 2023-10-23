@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Instansi;
 use App\User;
+use App\ReqSurveyor;
 use App\Profile;
 use Illuminate\Http\Request;
 
@@ -24,15 +25,64 @@ class ProfileController extends Controller
     {
 
         // mengambil data user yang sedang login
-        $user = User::where('id', Auth::user()->id)->get()->all();
+        $user = User::where('id', Auth::user()->id)->first();
+        // Cari permintaan surveyor terbaru untuk pengguna ini
+        $latestRequest = ReqSurveyor::where('id_user', $user->id)
+        ->orderBy('created_at', 'desc')
+        ->first();
 
         // mengambil data yang ada di table instasi dengan user yang sedang login
         $instansi = Instansi::where('id', Auth::user()->id_instansi)->get()->all();
             
         // memunculkan data ke view
-        return view('profile.account', compact('instansi', 'user'));
+        return view('profile.account', compact('instansi', 'user', 'latestRequest'));
     }
 
+
+    public function reqStore(Request $req, $id) {
+        ReqSurveyor::create([
+            'id_user' => Auth::user()->id,
+            'state' => 'pending',
+        ]);
+
+        return redirect()->route('profile.index');
+    }
+
+    public function approveSurveyor(User $user)
+    {
+        $user->level = 'surveyor';
+        $user->save();
+    
+        // Cari rekaman ReqSurveyor terkait yang masih dalam status 'pending'
+        $reqSurveyor = ReqSurveyor::where('state', 'pending')->first();
+    
+        // Periksa apakah ReqSurveyor ditemukan sebelum memperbarui statusnya
+        if ($reqSurveyor) {
+            $reqSurveyor->update([
+                'state' => 'approve',
+            ]);
+        }
+    
+        // Redirect kembali ke halaman "Suveyor Request" atau halaman lain yang sesuai
+        return redirect()->route('home');
+    }
+
+    public function rejectSurveyor(User $user)
+    {
+        // Cari rekaman ReqSurveyor terkait
+        $reqSurveyor = ReqSurveyor::where('state', 'pending')->first();
+    
+        // Periksa apakah ReqSurveyor ditemukan sebelum memperbarui statusnya
+        if ($reqSurveyor) {
+            $reqSurveyor->update([
+                'state' => 'reject',
+            ]);
+        }
+    
+        // Redirect kembali ke halaman "Suveyor Request" atau halaman lain yang sesuai
+        return redirect()->route('home');
+    }
+    
 
     /**
      * Show the form for creating a new resource.

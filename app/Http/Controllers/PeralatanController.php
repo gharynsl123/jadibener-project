@@ -39,16 +39,22 @@ class PeralatanController extends Controller
         $departemenUser = Auth::user()->id_departement;
         $userAuth = Auth::user()->id_instansi;
         
-        if (Auth::user()->level == 'pic' && (Auth::user()->departement->nama_departement == 'Purchasing' || Auth::user()->departement->nama_departement == 'IPS-RS')) {
+        if (Auth::user()->level == 'pic'){
             $peralatan = Peralatan::where('id_instansi', $userAuth)->get();
+
         } else if (Auth::user()->level == 'pic' && Auth::user()->departement->nama_departement) {
             $peralatan = Peralatan::where('id_instansi', $userAuth)
             ->where('id_departement', $departemenUser)
             ->get();
-        } else {
+
+            
+        } else if (Auth::user()->level == 'pic' && (Auth::user()->departement->nama_departement == 'Purchasing' || Auth::user()->departement->nama_departement == 'IPS-RS')) {
+            return view('peralatan.index_peralatan', compact(  'kategori', 'depart', 'peralatan'));
+        }
+        else {
             $peralatan = Peralatan::all();
         }
-    
+
         return view('peralatan.index_peralatan', compact(  'kategori', 'depart', 'peralatan'));
     }
 

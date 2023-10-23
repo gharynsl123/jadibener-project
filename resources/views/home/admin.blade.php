@@ -189,6 +189,55 @@
     </div>
 </div>
 
+<div class="d-sm-flex align-items-center justify-content-between my-4">
+    <h1 class="h3 mb-0 text-gray-800 d-sm-inline-block"> Suveyor Request </h1>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-borderless">
+        <thead>
+            <tr>
+                <th>nama</th>
+                <th>nomor telepone</th>
+                <th>jenis kelamin</th>
+                <th>level saat ini</th>
+                <th>action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($dataReq as $items)
+            <tr>
+                <td>
+                    {{$items->user->nama_user}}
+                </td>
+                <td>
+                    {{$items->user->nomor_telepon}}
+                </td>
+                <td>
+                    {{$items->user->jenis_kelamin}}
+                </td>
+                <td>
+                    {{$items->user->level}}
+                </td>
+                <td>
+                    <form method="POST" action="{{ route('approve.surveyor', $items->user) }}">
+                        @csrf
+                        <button type="submit" class="btn btn-success">Approve</button>
+                    </form>
+                    <form method="POST" action="{{ route('reject.surveyor', $items->user) }}">
+                        @csrf
+                        <button type="submit" class="btn btn-danger">reject</button>
+                    </form>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+
+@endsection
+
+@section('custom-js')
 <script>
 $(document).ready(function() {
     function updatePendingCount() {

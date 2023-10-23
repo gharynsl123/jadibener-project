@@ -68,10 +68,12 @@ date_default_timezone_set('Asia/Jakarta');
             </thead>
             <tbody>
                 <tr>
+                    @if($item->photo_produk)
                     <td>
                         <img src="{{ public_path('storage/produk/' . $item->produk->photo_produk) }}"
                             style="width:100px;">
                     </td>
+                    @endif
                     <td>
                         <p class="text-dark ">
                             Nama : <strong> {{ $item->produk->nama_produk }} </strong> <br>

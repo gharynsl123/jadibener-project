@@ -30,10 +30,10 @@
                     <td>{{ $estimasi->peralatan->serial_number }}</td>
                     <td>{{ $estimasi->part->kode_part }}</td>
                     <td>{{ $estimasi->part->nama_part }}</td>
-                    <td>{{ $estimasi->harga }}</td>
+                    <td> @currency($estimasi->harga) </td>
                     <td>{{ $estimasi->quantity }}</td>
                     <td>
-                        {{ $estimasi->harga * $estimasi->quantity }}
+                        @currency($estimasi->harga * $estimasi->quantity)
                     </td>
                     <td>{{ $estimasi->keterangan }}</td>
                     <td>

@@ -93,9 +93,9 @@
             </div>
 
         </div>
+        <button type="submit" class="btn ml-auto btn-primary">Update</button>
     </form>
     
-    <button type="submit" class="btn ml-auto btn-primary">Update</button>
 </div>
 
 <script>

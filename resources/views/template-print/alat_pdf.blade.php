@@ -59,7 +59,7 @@
                 <tr>
                     <td>Durasi Pemakaian : <strong> <span>{{ date('Y') - $peralatan->tahun_pemasangan }}
                                 tahun</span> </strong> </td>
-                    <td>Status Alat : <strong> {{$peralatan->keterangan}} </strong> </td>
+                    <td>Status Alat : <strong> {{$peralatan->produk_dalam_kondisi}} </strong> </td>
                 </tr>
                 <tr>
                     <td>Kondisi : <strong> {{$peralatan->kondisi_product}} % </strong> </td>

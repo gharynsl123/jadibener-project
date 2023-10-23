@@ -40,7 +40,7 @@
                     placeholder="your alamat in here">{{ $instansi->alamat_instansi }}</textarea>
             </div>
         </div>
+        <button type="submit" class="btn ml-auto btn-primary">Update</button>
     </form>
-    <button type="submit" class="btn ml-auto btn-primary">Update</button>
 </div>
 @endsection

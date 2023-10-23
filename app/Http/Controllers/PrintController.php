@@ -32,7 +32,7 @@ class PrintController extends Controller
             
         } else if (Auth::user()->level == 'pic' && Auth::user()->departement->nama_departement) {
             $peralatan = Peralatan::where('id_instansi', $userAuth)
-            ->where('id_kategori', $departemenUser)
+            ->where('id_departement', $departemenUser)
             ->get();
             $instansi = Instansi::where('id', Auth::user()->id_instansi)->first();
 

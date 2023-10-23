@@ -6,6 +6,7 @@ use App\Imports\InstansiImport;
 use App\Instansi;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Peralatan;
 use App\User;
 
 class InstansiController extends Controller
@@ -75,9 +76,15 @@ class InstansiController extends Controller
     public function show($id)
     {
         $instansi = Instansi::find($id);
-        // mengambil data yang ada di table instasi dengan user yang sedang login
-        $user = User::where('id_instansi', $instansi->id)->get()->all();
-        return view('instansi.detail_instansi', compact('user', 'instansi'));
+        $alat = Peralatan::all();
+        $user = User::where('id_instansi', $instansi->id)
+        ->with(['departement.peralatan' => function ($query) use ($instansi) {
+            $query->where('id_instansi', $instansi->id);
+        }])
+        ->get();
+
+
+        return view('instansi.detail_instansi', compact('user','alat', 'instansi'));
     }
 
     /**
@@ -117,7 +124,6 @@ class InstansiController extends Controller
         } else{
             $dataInstansi['photo_instansi'] = $instansi->photo_instansi;
         }
-
         $instansi->update($dataInstansi);
 
         return redirect('/instansi')->with('success', 'Data rumah sakit berhasil diubah.');

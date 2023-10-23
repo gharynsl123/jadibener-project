@@ -26,4 +26,8 @@ class History extends Model
     function progress() {
         return $this->belongsTo('App\Progress', 'id_progress');
     }
+    
+    function estimasibiaya() {
+        return $this->belongsTo('App\Estimate', 'id_estimasibiaya');
+    }
 }

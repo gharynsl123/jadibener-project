@@ -27,7 +27,7 @@ class ProdukController extends Controller
         $mereks = Merek::all();
         $kategoris = Kategori::all();
         $produk = Produk::all();
-        return view('product.index_product', compact('produk',  'mereks', 'kategoris'));
+        return view('product.index_product', compact('produk', 'mereks', 'kategoris'));
     }
     
     public function import(Request $request)

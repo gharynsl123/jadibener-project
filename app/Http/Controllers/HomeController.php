@@ -7,8 +7,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Instansi;
 use App\Progress;
 use App\Kategori;
-use App\Departement;
 use App\User;
+use App\ReqSurveyor;
+use App\Departement;
 use App\Pengajuan;
 use App\Peralatan;
 
@@ -31,6 +32,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $dataReq = ReqSurveyor::where('state', 'pending')->get();
         $user = Auth::user();
         $kategori = Kategori::all();
         $depart = Departement::all();
@@ -55,7 +57,7 @@ class HomeController extends Controller
         }
 
     
-        return view('home.admin', compact('instansi', 'peralatan','kategori','user', 'depart', 'progress', 'pengajuan'));
+        return view('home.admin', compact('instansi','dataReq', 'peralatan','kategori','user', 'depart', 'progress', 'pengajuan'));
     }
 
     public function getProcessTicketCount()

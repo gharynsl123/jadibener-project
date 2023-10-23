@@ -93,7 +93,7 @@ class PengajuanController extends Controller
     public function show($slug)
     {
         $pengajuan = Pengajuan::where('slug', $slug)->first();
-    
+        
         // Mengambil data history pengajuan sesuai dengan id pengajuan
         $historyPengajuan = History::where('id_pengajuan', $pengajuan->id)->get();
     
@@ -102,7 +102,7 @@ class PengajuanController extends Controller
     
         $teknisiList = User::where('level', 'teknisi')->get();
             
-        return view('pengajuan.detail_pengajuan', compact('teknisiList', 'historyPengajuan', 'pengajuan', 'progress'));
+        return view('pengajuan.detail_pengajuan', compact('teknisiList','historyPengajuan', 'pengajuan', 'progress'));
     }
 
     /**

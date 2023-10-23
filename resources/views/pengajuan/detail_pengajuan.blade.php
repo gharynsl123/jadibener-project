@@ -165,7 +165,7 @@
                         <textarea name="keterangan" class="form-control " rows="2" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Update Progress</button>
-                    <a href="{{route('part.create', $pengajuan->slug)}}" class="btn btn-success">pergantian part</a>
+                    <a href="{{route('part.create', $peralatan->slug)}}" class="btn btn-success">pergantian part</a>
                 </form>
                 @endif
                 @endif

@@ -2,54 +2,47 @@
 
 @section('title', 'Peralatan Rumah Sakit')
 @section('content')
-<!-- Style Css -->
 <style>
-.hide-when-checklist-shown {
-    display: block;
-}
+    .hide-when-checklist-shown {
+        display: block;
+    }
 
-.show-when-checklist-shown {
-    display: none;
-}
+    .show-when-checklist-shown {
+        display: none;
+    }
 
-.checklist-shown .hide-when-checklist-shown {
-    display: none;
-}
+    .checklist-shown .hide-when-checklist-shown {
+        display: none;
+    }
 
-.checklist-shown .show-when-checklist-shown {
-    display: block;
-    border-top-right-radius: 10px !important;
-    border-bottom-right-radius: 10px !important;
-}
+    .checklist-shown .show-when-checklist-shown {
+        display: block;
+        border-top-right-radius: 10px !important;
+        border-bottom-right-radius: 10px !important;
+    }
 
-/* Tambahan CSS untuk tampilan Checklist yang normal */
-.checklist-checkbox-label {
-    display: flex;
-    align-items: center;
-}
+    .checklist-checkbox-label {
+        display: flex;
+        align-items: center;
+    }
 
-.checklist-checkbox {
-    margin-right: 8px;
-}
+    .checklist-checkbox {
+        margin-right: 8px;
+    }
 </style>
 
-<div class="d-none d-flex justify-content-end mb-3">
+<div class="d-flex justify-content-end mb-3">
     @if(Auth::user()->level != 'pic')
-    <a href="{{route('peralatan.create')}}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+    <a href="{{route('peralatan.create')}}" class="btn btn-primary shadow-sm">
         <i class="fas fa-plus fa-sm text-white-50"></i> Tambahkan Data</a>
     @endif
-
-    <a href="/peralatan-cetak-pdf" target="_blank" class="mx-2 d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+    <a href="/peralatan-cetak-pdf" target="_blank" class="mx-2 btn btn-primary shadow-sm">
         <i class="fas fa-file fa-sm text-white-50"></i> cetak pdf</a>
-
-    <a data-toggle="modal" data-target="#importAlat" data-target="#importAlat"
-        class="d-sm-inline-block btn btn-sm btn-success shadow-sm">
+    <a data-toggle="modal" data-target="#importAlat" class="btn btn-success shadow-sm">
         <i class="fas fa-file-import fa-sm text-white-50"></i> Import File alat</a>
 </div>
 
-<!-- Logout Modal-->
-<div class="modal fade" id="importAlat" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="importAlat" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -72,19 +65,19 @@
     </div>
 </div>
 
-
-<div class="card shadow my-4 border-left-primary">
+@if(Auth::user()->departement || Auth::user()->level != 'pic')
+<div class="card my-4 border-left-primary">
     <div class="p-3">
         <label for="kategori-select col-md-3">Shortby Kateg:</label>
-        <select id="kategori-select" class="">
+        <select id="kategori-select">
             <option value="">Semua Kategori</option>
             @foreach($kategori as $item)
             <option value="{{ $item->nama_kategori }}">{{ $item->nama_kategori }}</option>
             @endforeach
         </select>
         @if(Auth::user()->level == 'pic' && (Auth::user()->departement->nama_departement == 'Purchasing' || Auth::user()->departement->nama_departement == 'IPS-RS') || Auth::user()->level == 'admin' ||  Auth::user()->level == 'surveyor')
-        <label for="departemen-select col-md-3">Shortby Department:</label>
-        <select id="departemen-select" class="">
+        <label for="col-md-3">Shortby Department:</label>
+        <select id="departemen-select">
             <option value="">Semua departement</option>
             @foreach($depart as $item)
             <option value="{{ $item->nama_departement }}">{{ $item->nama_departement }}</option>
@@ -112,24 +105,23 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Menampilkan data peralatan di reverse agar data yang baru di tambah muncul di atas -->
-                    @foreach($peralatan->reverse() as $peralatans)
+                    @foreach($peralatan as $peralatans)
                     <tr>
                         <td>{{ $peralatans->instansi->nama_instansi }}</td>
                         <td>{{ $peralatans->kategori->nama_kategori }}</td>
                         <td style="display:none;">{{ $peralatans->kategori->departement ? $peralatans->kategori->departement->nama_departement : 'Belum ada departement'}}</td>
                         <td>{{ $peralatans->merek->nama_merek }}</td>
                         <td>{{ $peralatans->produk->nama_produk}}</td>
-                        <!-- menuju ke detail barang menggunakan a herf -->
-                        <td><a
-                                href="{{ route('peralatan.show', $peralatans->slug) }}">{{ $peralatans->serial_number }}</a>
+                        <td>
+                            <a href="{{ route('peralatan.show', $peralatans->slug) }}">{{ $peralatans->serial_number }}</a>
                         </td>
                         <td>{{ $peralatans->tahun_pemasangan }}</td>
+
                         <td>
                             <span id="selisih-tahun-{{ $peralatans->id }}"></span>
                         </td>
-
                         <td>{{$peralatans->produk_dalam_kondisi}}</td>
+
                         <td>
                             <div class="progress">
                                 <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
@@ -160,64 +152,90 @@
         </div>
     </div>
 </div>
+@else
+Kamu Belum Memiliki Departemen. Hubungi Admin kami untuk mendapatkan acces
+@endif
+@endsection
 
+@section('custom-js')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const kategoriSelect = document.getElementById('kategori-select');
-    const departemenSelect = document.getElementById('departemen-select'); // Tambahkan ini
+    const departemenSelect = document.getElementById('departemen-select'); 
     const rows = document.querySelectorAll('#dataTable tbody tr');
 
-    kategoriSelect.addEventListener('change', function() {
-        filterData();
-    });
+    kategoriSelect.addEventListener('change', filterKategori);
+    departemenSelect.addEventListener('change', filterDepartemen);
 
-    departemenSelect.addEventListener('change', function() { // Tambahkan ini
-        filterData();
-    });
-
-    function filterData() {
+    function filterKategori() {
         const selectedKategoriId = kategoriSelect.value;
-        const selectedDepartemen = departemenSelect.value; // Tambahkan ini
+        const userLevel = "{{ Auth::user()->level }}";
 
         rows.forEach(row => {
             const kategoriCell = row.querySelector('td:nth-child(2)');
-            const departemenCell = row.querySelector('td:nth-child(3)'); // Tambahkan ini
-            if ((selectedKategoriId === '' || kategoriCell.textContent === selectedKategoriId) &&
-                (selectedDepartemen === '' || departemenCell.textContent === selectedDepartemen)) { // Tambahkan ini
-                row.style.display = 'table-row';
+
+            if (userLevel === 'admin' || userLevel === 'pic') {
+                if (selectedKategoriId === '' || kategoriCell.textContent === selectedKategoriId) {
+                    row.style.display = 'table-row';
+                } else {
+                    row.style.display = 'none';
+                }
             } else {
-                row.style.display = 'none';
+                row.style.display = 'table-row';
             }
         });
     }
 
+    function filterDepartemen() {
+        const selectedDepartemen = departemenSelect.value;
+        const userLevel = "{{ Auth::user()->level }}";
+        const userDepartement = "{{ Auth::user()->departement ? Auth::user()->departement->nama_departement : '' }}";
 
-    // Panggil fungsi perbaruiSelisihTahunUntukSemuaPeralatan saat halaman dimuat
+        const isFilterDepartemenEnabled = (userLevel === 'admin' || 
+            (userLevel === 'pic' && (userDepartement === 'Purchasing' || userDepartement === 'IPS-RS')) ||
+            userLevel === 'surveyor' || userLevel === 'teknisi');
+
+        rows.forEach(row => {
+            const departemenCell = row.querySelector('td:nth-child(3)');
+
+            if (isFilterDepartemenEnabled) {
+                if (selectedDepartemen === '' || departemenCell.textContent === selectedDepartemen) {
+                    row.style.display = 'table-row';
+                } else {
+                    row.style.display = 'none';
+                }
+            } else {
+                row.style.display = 'table-row';
+            }
+        });
+    }
+
+    function hitungSelisihTahun(tahunPemasangan) {
+        const tahunSekarang = new Date().getFullYear();
+        return tahunSekarang - tahunPemasangan;
+    }
+
+    function perbaruiSelisihTahun(idPeralatan, tahunPemasangan) {
+        if (!isNaN(tahunPemasangan)) {
+            const selisihTahun = hitungSelisihTahun(tahunPemasangan);
+            const elemenSelisihTahun = document.getElementById(`selisih-tahun-${idPeralatan}`);
+            elemenSelisihTahun.innerText = `${selisihTahun} tahun`;
+        } else {
+            const elemenSelisihTahun = document.getElementById(`selisih-tahun-${idPeralatan}`);
+            elemenSelisihTahun.innerText = '0 tahun';
+        }
+    }
+
+    function perbaruiSelisihTahunUntukSemuaPeralatan() {
+        const peralatanData = @json($peralatan);
+
+        peralatanData.forEach(function (peralatan) {
+            perbaruiSelisihTahun(peralatan.id, peralatan.tahun_pemasangan);
+        });
+    }
+
     perbaruiSelisihTahunUntukSemuaPeralatan();
-
-    // Panggil fungsi perbaruiSelisihTahunUntukSemuaPeralatan setiap tahun (menggunakan setInterval)
-    setInterval(perbaruiSelisihTahunUntukSemuaPeralatan, 1000 * 60 * 60 * 24 *
-    365); // Setiap 1 tahun (dalam milidetik)
+    setInterval(perbaruiSelisihTahunUntukSemuaPeralatan, 1000 * 60 * 60 * 24 * 365); // Setiap 1 tahun (dalam milidetik)
 });
-
-function hitungSelisihTahun(tahunPemasangan) {
-    const tahunSekarang = new Date().getFullYear();
-    return tahunSekarang - tahunPemasangan;
-}
-
-function perbaruiSelisihTahun(idPeralatan, tahunPemasangan) {
-    const selisihTahun = hitungSelisihTahun(tahunPemasangan);
-    const elemenSelisihTahun = document.getElementById(`selisih-tahun-${idPeralatan}`);
-    elemenSelisihTahun.innerText = `${selisihTahun} tahun`;
-}
-
-function perbaruiSelisihTahunUntukSemuaPeralatan() {
-    @foreach($peralatan as $peralatans)
-    perbaruiSelisihTahun({{$peralatans -> id}}, {{$peralatans -> tahun_pemasangan}});
-    @endforeach
-}
-console.log(@json($peralatan));
-
 </script>
-
 @endsection

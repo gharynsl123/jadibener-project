@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Part;
 use App\Kategori;
+use Carbon\Carbon;
 use App\Pengajuan;
 use App\Peralatan;
 use Illuminate\Support\Facades\Auth;
@@ -42,7 +43,8 @@ class PartController extends Controller
         $part = Part::all(); // Get all data from table suku cadang
 
         // mengambil data peralatan yang dari detail yang di instanisnya di pilih dari detail
-        $dataApp = Peralatan::where('slug', $slug)->first();
+        $dataApp = Pengajuan::where('slug', $slug)->first();
+
         return view('pengajuan.estimasi_part', compact('part', 'kategori', 'dataApp')); // Redirect to the create suku cadang's page with the data from table kategori and suku cadang
     }
 
@@ -57,24 +59,6 @@ class PartController extends Controller
     {
         $partreq = Part::create($request->all());
         return response()->json($partreq);
-    }
-
-    public function estimasi() {
-        // jika level dari user itu pic maka tampilkan data yang sesui dengan barangnya saya jika selain dari pic maka tampikan semua data
-        if (auth()->user()->level == 'pic') {
-            $estimasiData = Estimate::where('id_instansi', Auth::user()->id_instansi)->get();
-        } else {
-            $estimasiData = Estimate::all();
-        }
-        return view('service.estimasi', compact('estimasiData'));
-    }
-
-    public function storePart(Request $request) {
-        $dataReq = $request->all();
-        $dataReq['id_peralatan'] = $request->id_peralatan;
-        $dataReq['id_instansi'] = $request->id_instansi;
-        Estimate::create($dataReq);
-        return redirect('/estimasi-biaya');
     }
 
     public function dataPart()
@@ -131,7 +115,6 @@ class PartController extends Controller
     
         return response()->json($part);
     }
-    
 
     /**
      * Remove the specified resource from storage.
@@ -149,6 +132,41 @@ class PartController extends Controller
 
         $part->delete();
         return response()->json(['message' => 'Data berhasil dihapus.']);
+    }
+
+
+
+    public function storePart(Request $request) {
+        $dataReq = $request->all();
+        $dataReq['id_peralatan'] = $request->id_peralatan;
+        $dataReq['id_instansi'] = $request->id_instansi;
+        $dataEstimate = Estimate::create($dataReq);
+
+
+        $today = Carbon::now();
+        $formatedDate = $today->format('y-m-d');
+        $history = [
+            'id_peralatan' => $request->id_peralatan,
+            'status_history' => 'Estimasi Biaya Alat',
+            'deskripsi' => 'Diajukan Biaya Oleh ' . Auth::user()->nama_user,
+            'id_estimasibiaya' => $dataEstimate->id,
+            'tanggal' => $formatedDate,
+        ];
+        $history['id_user'] = Auth::user()->id;
+
+        History::create($history);
+
+        return redirect('/estimasi-biaya');
+    }
+
+    public function estimasi() {
+        // jika level dari user itu pic maka tampilkan data yang sesui dengan barangnya saya jika selain dari pic maka tampikan semua data
+        if (auth()->user()->level == 'pic') {
+            $estimasiData = Estimate::where('id_instansi', Auth::user()->id_instansi)->get();
+        } else {
+            $estimasiData = Estimate::all();
+        }
+        return view('service.estimasi', compact('estimasiData'));
     }
 
     public function destroyPart($id) {

@@ -49,12 +49,15 @@
                         </tbody>
                     </table>
                 </div>
-                <div id="pagination" class="m-2"></div>
+                <div id="pagination" class="m-2 text-center">
+                    <button class="btn" onclick="changePage('prev')">Previous</button>
+                    <!-- Daftar tombol halaman akan ditambahkan di sini -->
+                    <button class="btn" onclick="changePage('next')">Next</button>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
 <!-- CRUD AJAX Script -->
 <script>
 const itemsPerPage = 5; // Jumlah item per halaman
@@ -149,9 +152,21 @@ function updatePagination(data) {
     const totalPages = Math.ceil(data.length / itemsPerPage);
     let paginationButtons = '';
 
+    if (currentPage > 1) {
+        paginationButtons += `
+            <button class="btn" onclick="changePage('prev')">Previous</button>
+        `;
+    }
+
     for (let i = 1; i <= totalPages; i++) {
         paginationButtons += `
-            <button class="btn" onclick="changePage(${i})">${i}</button>
+            <button class="btn ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</button>
+        `;
+    }
+
+    if (currentPage < totalPages) {
+        paginationButtons += `
+            <button class="btn" onclick="changePage('next')">Next</button>
         `;
     }
 
@@ -159,10 +174,19 @@ function updatePagination(data) {
 }
 
 function changePage(page) {
-    currentPage = page;
-    displayData(data);
-}
+    const totalPages = Math.ceil(data.length / itemsPerPage);
 
+    if (page === 'prev' && currentPage > 1) {
+        currentPage--;
+    } else if (page === 'next' && currentPage < totalPages) {
+        currentPage++;
+    } else if (typeof page === 'number' && page >= 1 && page <= totalPages) {
+        currentPage = page;
+    }
+
+    displayData(data);
+    updatePagination(data);
+}
 
 function getAllData() {
     $.ajax({
