@@ -15,9 +15,9 @@ class CreateKategoriTable extends Migration
     {
         Schema::create('kategori', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_departement')->unsigned()->nullable();
+            $table->enum('departement', ['Hospital Kitchen', 'CSSD'])->nullable()->default(null);
+
             $table->string('nama_kategori');
-            $table->foreign('id_departement')->references('id')->on('departement')->onDelete('cascade');
             $table->timestamps();
         });
     }

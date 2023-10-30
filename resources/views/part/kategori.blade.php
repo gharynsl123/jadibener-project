@@ -20,11 +20,12 @@
             <div class="card-header mb-2" id="title-card">Add New kategori</div>
             <div class="card-body p-3">
                 <form>
-                    <select name="id_departement" id="id_departement" class="mb-4 form-control">
-                        <option value="">Pilih Departement</option>
-                        <!-- Data departement akan dimuat melalui AJAX -->
+                    <select name="departement" id="departement" class="mb-4 form-control">
+                        <option value="">Pilih Departemen</option>
+                        <option value="Hospital Kitchen">Hospital Kitchen</option>
+                        <option value="CSSD">CSSD</option>
                     </select>
-
+                    
                     <input type="text" name="nama_kategori" id="nama_kategori" class="mb-4 form-control"
                         autocomplete="off" placeholder="Nama kategori">
                     <button class="btn btn-primary" id="addDataBtn" type="button" onclick="addData()">Input</button>
@@ -68,24 +69,19 @@
     </div>
 </div>
 <script>
-
-
-const itemsPerPage = 5; // Jumlah item per halaman
-let currentPage = 1; // Halaman saat ini
-let editingCategoryId = null; // ID kategori yang sedang diedit
-
+const itemsPerPage = 5;
+let currentPage = 1;
+let editingCategoryId = null;
 
 function updatePagination(data) {
     const totalPages = Math.ceil(data.length / itemsPerPage);
-    let paginationButtons = '';
+    const paginationButtons = Array.from({ length: totalPages }, (_, index) => index + 1);
 
-    for (let i = 1; i <= totalPages; i++) {
-        paginationButtons += `
-            <button class="btn pagination-btn" onclick="changePage(${i})">${i}</button>
-        `;
-    }
+    const paginationHTML = paginationButtons.map(page => `
+        <button class="btn pagination-btn" onclick="changePage(${page})">${page}</button>
+    `).join('');
 
-    $('#pagination').html(paginationButtons);
+    $('#pagination').html(paginationHTML);
 }
 
 function changePage(page) {
@@ -100,37 +96,6 @@ function changePage(page) {
     displayData(data);
 }
 
-function fillDepartementDropdown() {
-    $.ajax({
-        type: "GET",
-        dataType: 'json',
-        url: "/get-data/departement", // Sesuaikan dengan route yang benar
-        success: function(response) {
-            const dropdown = $('#id_departement');
-            dropdown.empty(); // Kosongkan dropdown
-
-            // Tambahkan opsi default
-            dropdown.append('<option value="">Pilih Departement</option>');
-
-            // Tambahkan data departement ke dalam dropdown
-            $.each(response, function(key, entry) {
-                dropdown.append($('<option></option>').attr('value', entry.id).text(entry.nama_departement));
-            });
-        }
-    });
-}
-
-// Panggil fungsi fillDepartementDropdown() untuk mengisi dropdown saat halaman dimuat
-fillDepartementDropdown();
-
-$('#searchInput').on('input', function() {
-    const searchTerm = $(this).val().toLowerCase();
-    const filteredData = data.filter(item => item.nama_kategori.toLowerCase().includes(searchTerm));
-
-    displayData(filteredData);
-    updatePagination(filteredData);
-});
-
 function updateNomorUrut() {
     const rows = document.querySelectorAll('tr[data-nomor]');
     rows.forEach((row, index) => {
@@ -138,86 +103,50 @@ function updateNomorUrut() {
     });
 }
 
-$('#updateDataBtn').hide();
-$('#cancelBtn').hide();
+$('#updateDataBtn, #cancelBtn').hide();
 
 document.addEventListener('DOMContentLoaded', () => {
     updateNomorUrut();
+    getAllData();
 });
 
 function displayData(data) {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-
     const dataToDisplay = data.slice(startIndex, endIndex);
 
-    let tableRows = '';
-    dataToDisplay.forEach((value, key) => {
-        tableRows += `
-                    <tr>
-                        <td>${key + 1}</td>
-                        <td>${value.nama_kategori}</td>
-                        <td>
-                            ${value.nama_departement ? value.nama_departement : 'Belum ada departemen'}
-                        </td>
-                        <td>
-                            <button onclick="editData(${value.id})" class="btn btn-primary">
-                                <i class="fa fa-pen-to-square text-white"></i>
-                            </button>
-                            <button onclick="deleteData(${value.id})" class="btn btn-danger">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
-    });
+    const tableHTML = dataToDisplay.map((value, key) => `
+        <tr>
+            <td>${key + 1}</td>
+            <td>${value.nama_kategori}</td>
+            <td>${value.departement || 'Belum ada departemen'}</td>
+            <td>
+                <button onclick="editData(${value.id})" class="btn btn-primary">
+                    <i class="fa fa-pen-to-square text-white"></i>
+                </button>
+                <button onclick="deleteData(${value.id})" class="btn btn-danger">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+    `).join('');
 
-    $('.data_kategori').html(tableRows);
+    $('.data_kategori').html(tableHTML);
     updateNomorUrut();
+    updatePagination(data);
 }
 
-
-function updatePagination(data) {
-    const totalPages = Math.ceil(data.length / itemsPerPage);
-    let paginationButtons = '';
-
-    for (let i = 1; i <= totalPages; i++) {
-        paginationButtons += `
-            <button class="btn" onclick="changePage(${i})">${i}</button>
-        `;
-    }
-
-    $('#pagination').html(paginationButtons);
-}
-
-function updateData(id) {
-    var namakategori = $('#nama_kategori').val();
-    var idDepartement = $('#id_departement').val(); // Ambil nilai dari dropdown
-
-    $.ajax({
-        type: "PUT",
-        url: "/update-kategori/" + id,
-        data: {
-            "_token": "{{ csrf_token() }}",
-            "nama_kategori": namakategori,
-            "id_departement": idDepartement // Kirim nilai id_departement
-        },
-        success: function(response) {
-            getAllData();
-            $('#nama_kategori').val('');
-            $('#id_departement').val('');
-            cancelEdit();
-            $('#updateDataBtn').hide();
-            $('#addDataBtn').show();
-        }
-    });
-}
+$('#searchInput').on('input', function() {
+    const searchTerm = $(this).val().toLowerCase();
+    const filteredData = data.filter(item => item.nama_kategori.toLowerCase().includes(searchTerm));
+    displayData(filteredData);
+    updatePagination(filteredData);
+});
 
 function cancelEdit() {
     editingCategoryId = null;
     $('#nama_kategori').val('');
-    $('#updateDataBtn').hide();
-    $('#cancelBtn').hide();
+    $('#updateDataBtn, #cancelBtn').hide();
     $('#title-card').html('Add New kategori');
     $('#addDataBtn').show();
 }
@@ -226,7 +155,7 @@ function deleteData(id) {
     if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
         $.ajax({
             type: "DELETE",
-            url: "/delete-kategori/" + id,
+            url: `/delete-kategori/${id}`,
             data: {
                 "_token": "{{ csrf_token() }}"
             },
@@ -237,66 +166,75 @@ function deleteData(id) {
     }
 }
 
-function changePage(page) {
-    currentPage = page;
-    displayData(data);
-}
-
-getAllData();
-
 function getAllData() {
     $.ajax({
         type: "GET",
         dataType: 'json',
         url: "/get-data/kategori",
         success: function(response) {
-            data = response; // Simpan data di variabel global
+            data = response;
             displayData(data);
-            updatePagination(data);
         }
     });
 }
 
 function addData() {
-    var namakategori = $('#nama_kategori').val();
-    var idDepartement = $('#id_departement').val(); // Ambil nilai dari dropdown
+    const namaKategori = $('#nama_kategori').val();
+    const idDepartement = $('#departement').val();
 
     $.ajax({
         type: "POST",
         url: "{{ route('kategori.store') }}",
         data: {
             "_token": "{{ csrf_token() }}",
-            "nama_kategori": namakategori,
-            "id_departement": idDepartement // Kirim nilai id_departement
+            "nama_kategori": namaKategori,
+            "departement": idDepartement
         },
         success: function(response) {
-            // Panggil fungsi getAllData() untuk mereload data
             getAllData();
-            // Kosongkan input setelah data berhasil ditambahkan
-            $('#nama_kategori').val('');
+            $('#nama_kategori, #departement').val('');
         }
     });
 }
 
 function editData(id) {
+    console.log(`/edit-kategori/${id}`)
     $.ajax({
         type: "GET",
         dataType: 'json',
-        url: "/edit-kategori/" + id,
+        url: `/edit-kategori/${id}`,
         success: function(response) {
             $('#nama_kategori').val(response.nama_kategori);
-            
-            // Set nilai dropdown ke departement yang sesuai
-            $('#id_departement').val(response.id_departement);
+            $('#departement').val(response.departement);
 
             $('#updateDataBtn').click(function() {
-                updateData(response.id); // Berikan parameter id dari response
+                updateData(response.id); // Sebaiknya ganti dengan 'id' yang diteruskan
             });
 
-            $('#updateDataBtn').show();
-            $('#cancelBtn').show();
+            $('#updateDataBtn, #cancelBtn').show();
             $('#title-card').html('Edit kategori');
             $('#addDataBtn').hide();
+        }
+    });
+}
+
+function updateData(id) {
+    const namaKategori = $('#nama_kategori').val();
+    const idDepartement = $('#departement').val();
+    console.log(`/update-kategori/${id}`);
+
+    $.ajax({
+        type: "PUT",
+        url: `/update-kategori/${id}`,
+        data: {
+            "_token": "{{ csrf_token() }}",
+            "nama_kategori": namaKategori,
+            "departement": idDepartement
+        },
+        success: function(response) {
+            getAllData();
+            $('#nama_kategori, #departement').val('');
+            cancelEdit();
         }
     });
 }

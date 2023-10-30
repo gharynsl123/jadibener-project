@@ -76,16 +76,33 @@ class InstansiController extends Controller
     public function show($id)
     {
         $instansi = Instansi::find($id);
-        $alat = Peralatan::all();
+        $departements = ['Hospital Kitchen', 'CSSD', 'Purcashing', 'IPS-RS'];
+
         $user = User::where('id_instansi', $instansi->id)
-        ->with(['departement.peralatan' => function ($query) use ($instansi) {
-            $query->where('id_instansi', $instansi->id);
-        }])
-        ->get();
+            ->whereIn('departement', $departements)
+            ->get();
 
+        // Mengambil data peralatan yang terkait dengan pengguna yang sesuai
+        $alat = Peralatan::whereIn('departement', $departements)
+            ->where('id_instansi', $instansi->id)
+            ->get();
 
-        return view('instansi.detail_instansi', compact('user','alat', 'instansi'));
+            
+        $jumlahPeralatanPerDepartemen = [];
+        
+        foreach ($user as $users) {
+            $departemen = $users->departement;
+        
+            // Count the equipment for the specific institution and department
+            $jumlahPeralatanPerDepartemen[$departemen] = $alat
+                ->where('id_instansi', $instansi->id)
+                ->where('departement', $departemen)
+                ->count();
+        }
+    
+        return view('instansi.detail_instansi', compact('user', 'alat', 'instansi', 'jumlahPeralatanPerDepartemen'));
     }
+    
 
     /**
      * Show the form for editing the specified resource.

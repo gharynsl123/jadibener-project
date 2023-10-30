@@ -43,12 +43,12 @@
                 <!-- Other form fields here -->
                 <div class="form-group col-md-6 " id="roleField" style="display: none;">
                     <label for="role">{{ __('Departement') }}</label>
-                    <select id="role" class="form-control @error('role') is-invalid @enderror" name="id_departement">
+                    <select id="role" class="form-control @error('role') is-invalid @enderror" name="departement">
                         <option value="">-- Select Role --</option>
-                        @foreach($departement as $dep)
-                        <option value="{{$dep->id}}" {{ $user->id_departement == $dep->id ? 'selected' : '' }}>
-                            {{$dep->nama_departement}}</option>
-                        @endforeach
+                        <option value="Hospital Kitchen" {{$user->departement == 'Hospital Kitchen' ? 'selected' : ''}}>Hospital Kitchen</option>
+                        <option value="CSSD" {{$user->departement == 'CSSD' ? 'selected' : ''}} >CSSD</option>
+                        <option value="Purcashing" {{$user->departement == 'Purcashing' ? 'selected' : ''}} >Purcashing</option>
+                        <option value="IPS-RS" {{$user->departement == 'IPS-RS' ? 'selected' : ''}} >IPS-RS</option>
                     </select>
                 </div>
 

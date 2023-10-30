@@ -16,8 +16,8 @@ class CreateInstansiTable extends Migration
         Schema::create('instansi', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nama_instansi');
+            $table->string('provinsi')->nullable();
             $table->string('alamat_instansi');
-
             $table->bigInteger('jumlah_kasur')->nullable();
             $table->string('jenis_instansi')->nullable();
 

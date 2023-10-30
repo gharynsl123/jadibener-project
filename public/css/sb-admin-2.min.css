@@ -55,6 +55,30 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
     display: block
 }
 
+/* Mengatur lebar Select2 agar responsif */
+.select2 {
+    width: 100% !important;
+}
+
+/* Menyesuaikan teks yang tidak sesuai dalam kotak Select2 */
+.select2-selection__rendered {
+    white-space: normal !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* Menyesuaikan panjang minimum untuk elemen dropdown Select2 */
+.select2-dropdown {
+    min-width: 100% !important;
+}
+
+/* Mencegah pemotongan opsi dropdown */
+.select2-results__option {
+    white-space: normal !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+    
 body {
     margin: 0;
     font-family: Nunito, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";

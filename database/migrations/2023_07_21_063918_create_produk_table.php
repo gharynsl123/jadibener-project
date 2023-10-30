@@ -17,13 +17,12 @@ class CreateProdukTable extends Migration
             $table->increments('id');
             $table->integer('id_merek')->unsigned();
             $table->integer('id_kategori')->unsigned();
-            $table->integer('id_departement')->unsigned()->nullable();
+            $table->enum('departement', ['Hospital Kitchen', 'CSSD'])->nullable()->default(null);
 
             $table->string('kode_produk');
             $table->string('nama_produk');
             $table->string('photo_produk')->nullable();
             
-            $table->foreign('id_departement')->references('id')->on('departement')->onDelete('cascade');
             $table->foreign('id_merek')->references('id')->on('merek')->onDelete('cascade');
             $table->foreign('id_kategori')->references('id')->on('kategori')->onDelete('cascade');
             $table->timestamps();

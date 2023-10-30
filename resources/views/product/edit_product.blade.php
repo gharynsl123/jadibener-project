@@ -29,11 +29,10 @@
             </div>
             <div class="form-group col-md-6">
                 <label for="kategori">departement</label>
-                <select class="form-control" id="departemen" name="id_departement">
-                    <option>-- PILIH --</option>
-                    @foreach($departement as $dep)
-                    <option value="{{ $dep->id }}" {{ $produk->kategori->id_departement == $dep->id ? 'selected' : '' }}>{{ $dep->nama_departement }}</option>
-                    @endforeach
+                <select name="departement" id="departement" class="mb-4 form-control">
+                        <option value="">Pilih Departemen</option>
+                        <option value="Hospital Kitchen">Hospital Kitchen</option>
+                        <option value="CSSD">CSSD</option>
                 </select>
             </div>
             <div class="form-group col-md-6">

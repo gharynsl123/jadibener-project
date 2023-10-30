@@ -5,7 +5,7 @@
     <title>Estimasi Biaya Service Dan Penukaran Part</title>
 
     <!-- Custom styles for this template -->
-    <link href="{{ public_path('css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
 </head>
 
 <body>
@@ -13,7 +13,7 @@
     <table>
         <tr>
             <td>
-                <img src="{{ public_path('image/mdh_logo.png') }}" class="image-thumbnail" style="width: 180px;"
+                <img src="{{ asset('image/mdh_logo.png') }}" class="image-thumbnail" style="width: 180px;"
                     alt="Gambar">
             </td>
             <td>

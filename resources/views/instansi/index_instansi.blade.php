@@ -61,6 +61,7 @@
                 <thead class="bg-dark text-white">
                     <tr>
                         <th class="th-start">Nama Instansi</th>
+                        <th>province</th>
                         <th>Alamat</th>
                         <th>Jenis</th>
                         <th>Jumlah kasur</th>
@@ -68,11 +69,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($instansi->reverse() as $items)
+                    @foreach($instansi as $items)
                         @if(Auth::user()->level == 'surveyor')
                             @if($items->jumlah_kasur)
                                 <tr>
                                     <td>{{$items->nama_instansi}}</td>
+                                    <td>{{$items->provinsi}}</td>
                                     <td class="single-line">{!!$items->alamat_instansi!!}</td>
                                     <td>{{$items->jenis_instansi}}</td>
                                     <td>{{$items->jumlah_kasur}}</td>
@@ -98,6 +100,7 @@
                         @else
                             <tr>
                                 <td>{{$items->nama_instansi}}</td>
+                                 <td>{{$items->provinsi}}</td>
                                 <td class="single-line">{!!$items->alamat_instansi!!}</td>
                                 <td>{{$items->jenis_instansi}}</td>
                                 <td>{{ !empty($items->jumlah_kasur) ? $items->jumlah_kasur : 0 }}</td>
@@ -126,5 +129,15 @@
         </div>
     </div>
 </div>
+
+<script>
+$(document).ready(function () {
+    $('#dataTable').DataTable({
+        "language": {
+            "search": "Search by Provinsi / Name:" // Mengganti label pencarian
+        }
+    });
+});
+</script>
 
 @endsection

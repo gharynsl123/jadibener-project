@@ -17,7 +17,8 @@ class InstansiImport implements ToCollection
             Instansi::create([
                 'nama_instansi' => $row[0], // Sesuaikan dengan indeks kolom yang sesuai di dalam koleksi
                 'alamat_instansi' => $row[1],
-                'jenis_instansi' => $row[2],
+                'provinsi' => $row[2],
+                'jenis_instansi' => $row[3],
             ]);
         }
     }

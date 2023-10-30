@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Instansi;
-use App\Departement;
 use App\Imports\UserImport;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -32,17 +31,30 @@ class UserController extends Controller
     public function create()
     {
         $instansi = Instansi::all();
-        $departement = Departement::all();
-        return view('user.create_user', compact('instansi', 'departement'));
+        return view('user.create_user', compact('instansi'));
     }
 
     public function edit($id)
     {
         $user = User::find($id);
-        $departement = Departement::all();
         $instansi = Instansi::all();
-        return view('user.edit_user', compact('user', 'instansi', 'departement'));
+        return view('user.edit_user', compact('user', 'instansi'));
     }
+
+    public function getUserDetails($id) {
+        // Ambil informasi tambahan dari database berdasarkan ID user
+        $user = User::find($id);
+    
+        // Misalnya, Anda dapat mengembalikan informasi dalam format HTML
+        $details = '<p>Nama: <strong>' . $user->nama_user . '</strong></p>' .
+                    '<p>Jenis Kelamin: <strong>' . $user->jenis_kelamin . '</strong></p>' .
+                    '<p>Alamat: <strong>' . $user->alamat_user . '</strong></p>' .
+                   '<p>Nomor Telepon: <strong>' . $user->nomor_telepon . '</strong></p>' .
+                   '<p>Departement: <strong>' . $user->departement . '</strong></p>' ;
+    
+        return $details;
+    }
+    
 
     public function update(Request $request, $id)
     {

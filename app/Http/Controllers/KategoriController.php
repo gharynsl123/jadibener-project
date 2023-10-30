@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Kategori;
-use App\Departement;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\KategoriImport;
 use Illuminate\Http\Request;
@@ -23,17 +22,20 @@ class KategoriController extends Controller
 
     public function dataKategori()
     {
-        $kategori = Kategori::select('kategori.*', 'departement.nama_departement')
-    ->leftJoin('departement', 'kategori.id_departement', '=', 'departement.id')
-    ->get();
+        $kategori = Kategori::all();
         return response()->json($kategori);
     }
 
     public function store(Request $request)
     {
+        $request->validate([
+            'nama_kategori' => 'required',
+            'departement' => 'required|in:Hospital Kitchen,CSSD',
+        ]);
+
         $kategori = Kategori::create([
             'nama_kategori' => $request->nama_kategori,
-            'id_departement' => $request->id_departement,
+            'departement' => $request->departement,
         ]);
         return response()->json($kategori);
     }
@@ -46,10 +48,15 @@ class KategoriController extends Controller
 
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'nama_kategori' => 'required',
+            'departement' => 'required|in:Hospital Kitchen,CSSD',
+        ]);
+
         $kategori = Kategori::find($id);
 
         $kategori->nama_kategori = $request->nama_kategori;
-        $kategori->id_departement = $request->id_departement;
+        $kategori->departement = $request->departement;
         
         $kategori->save();
 

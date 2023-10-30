@@ -14,10 +14,13 @@
 
     <!-- image icon web -->
     <link rel="shortcut icon" href="{{ asset('image/mdh.png') }}">
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
     
+    
+    
+    
+    <!-- seacrh input -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
     <!-- Custom fonts for this template -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
@@ -162,16 +165,6 @@
                     <i class="fas fa-box"></i>
                     <span>Product</span></a>
             </li>
-
-            <!-- Nav Item informasi -->
-            <li class="nav-item">
-                <div class="slide-right"></div>
-                <a class="nav-link" href="{{route('dep.index')}}">
-                    <i class="fas fa-sitemap"></i>
-                    <span>Departement</span></a>
-            </li>
-
-
             @endif
 
             <!-- Divider -->
@@ -287,6 +280,9 @@
 <!-- Bootstrap core JavaScript-->
 <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
 <script src="{{asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"></script>
 
 <!-- Core plugin JavaScript-->
 <script src="{{asset('vendor/jquery-easing/jquery.easing.min.js')}}"></script>

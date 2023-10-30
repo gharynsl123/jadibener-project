@@ -23,16 +23,16 @@ class PrintController extends Controller
         $instansi = null;
         $user = Auth::user();
     
-        $departemenUser = Auth::user()->id_departement;
+        $departemenUser = Auth::user()->departement;
         $userAuth = Auth::user()->id_instansi;
         
-        if (Auth::user()->level == 'pic' && (Auth::user()->departement->nama_departement == 'Purchasing' || Auth::user()->departement->nama_departement == 'IPS-RS')) {
+        if (Auth::user()->level == 'pic' && (Auth::user()->departement == 'Purchasing' || Auth::user()->departement == 'IPS-RS')) {
             $peralatan = Peralatan::where('id_instansi', $userAuth)->get();
             $instansi = Instansi::where('id', Auth::user()->id_instansi)->first();
             
-        } else if (Auth::user()->level == 'pic' && Auth::user()->departement->nama_departement) {
+        } else if (Auth::user()->level == 'pic' && Auth::user()->departement) {
             $peralatan = Peralatan::where('id_instansi', $userAuth)
-            ->where('id_departement', $departemenUser)
+            ->where('departement', $departemenUser)
             ->get();
             $instansi = Instansi::where('id', Auth::user()->id_instansi)->first();
 

@@ -11,6 +11,7 @@ use App\Instansi;
 use App\Kategori;
 use App\Produk;
 use App\Merek;
+use App\Provinsi;
 use App\History;
 use App\User;
 use Illuminate\Support\Str;
@@ -33,9 +34,17 @@ class SurveyorController extends Controller
         $produk = Produk::all();
         $merek = Merek::all();
         $user = User::all();
-        $departement = Departement::all();
 
-        return view('surveyor-form.create_data_surveyor', compact('peralatan', 'instansi', 'kategori','produk','merek','user','departement'));
+        return view('surveyor-form.create_data_surveyor', compact('peralatan', 'instansi', 'kategori','produk','merek','user'));
+    }
+
+    public function getAjaxInstansi(Request $request) {
+        $query = $request->input('q');
+
+        $instansi = Instansi::whereNull('jumlah_kasur')
+        ->where('nama_instansi', 'LIKE', '%'.$query.'%')
+        ->get();
+        return response()->json($instansi);
     }
 
 
@@ -53,7 +62,7 @@ class SurveyorController extends Controller
         $picRules = [
             'nama_user' => 'required|string|max:255',
             'email' => 'nullable|email|max:255',
-            'user_departement' => 'sometimes|integer|exists:departement,id',
+            'user_departement' => 'nullable|in:Hospital Kitchen,CSSD,Purcashing,IPS-RS',
             'alamat_user' => 'nullable|string|max:255',
             'nomor_telepon' => 'nullable|string|max:20',
             'jenis_kelamin' => 'nullable|in:laki-laki,perempuan',
@@ -111,7 +120,7 @@ class SurveyorController extends Controller
 
         $dataUser = [
             'id_instansi' => $instansi->id,
-            'id_departement' => $request->user_departement,
+            'departement' => $request->user_departement,
             'nama_user' => $request->nama_user,
             'email' => $request->email,
             'alamat_user' => $request->alamat_user,
@@ -134,9 +143,8 @@ class SurveyorController extends Controller
         $produk = Produk::all();
         $merek = Merek::all();
         $user = User::all();
-        $departement = Departement::all();
 
-        return view('surveyor-form.existing_data_suveyor', compact('peralatan', 'instansi', 'kategori','produk','merek','user','departement'));
+        return view('surveyor-form.existing_data_suveyor', compact('peralatan', 'instansi', 'kategori','produk','merek','user'));
     }
 
     public function existStore(Request $request, $id) {
@@ -145,7 +153,7 @@ class SurveyorController extends Controller
         $picRules = [
             'nama_user' => 'required|string|max:255',
             'email' => 'nullable|email|max:255',
-            'user_departement' => 'sometimes|integer|exists:departement,id',
+            'departement' => 'nullable|in:Hospital Kitchen,CSSD,Purcashing,IPS-RS',
             'alamat_user' => 'nullable|string|max:255',
             'nomor_telepon' => 'nullable|string|max:20',
             'jenis_kelamin' => 'nullable|in:laki-laki,perempuan',
@@ -172,7 +180,7 @@ class SurveyorController extends Controller
 
         $dataUser = [
             'id_instansi' => $instansi->id,
-            'id_departement' => $request->user_departement,
+            'departement' => $request->departement,
             'nama_user' => $request->nama_user,
             'email' => $request->email,
             'alamat_user' => $request->alamat_user,
@@ -206,7 +214,7 @@ class SurveyorController extends Controller
             'id_instansi.*' => 'required|integer|exists:instansi,id',
             'id_user.*' => 'required|integer|exists:users,id',
             'id_product.*' => 'required|integer|exists:produk,id',
-            'id_departement.*' => 'sometimes|integer|exists:departement,id',
+            'id_departement.*' => 'nullable|in:Hospital Kitchen,CSSD,Purcashing,IPS-RS',
             'serial_number.*' => 'required|string|max:255',
             'tahun_pemasangan.*' => 'nullable|string|max:255',
             'usia_barang.*' => 'nullable|integer|min:5|max:10',
@@ -236,7 +244,7 @@ class SurveyorController extends Controller
 
             $alatData[] = [
                 'id_instansi' => $validatedData['id_instansi'][$key]?? null,
-                'id_departement' => $validatedData['id_departement'][$key] ?? null,
+                'departement' => $validatedData['id_departement'][$key] ?? null,
                 'id_user' => $validatedData['id_user'][$key] ?? null,
                 'id_merek' => $idMerek,
                 'id_kategori' => $validatedData['id_kategori'][$key] ?? null,

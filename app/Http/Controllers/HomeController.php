@@ -9,7 +9,6 @@ use App\Progress;
 use App\Kategori;
 use App\User;
 use App\ReqSurveyor;
-use App\Departement;
 use App\Pengajuan;
 use App\Peralatan;
 
@@ -35,7 +34,6 @@ class HomeController extends Controller
         $dataReq = ReqSurveyor::where('state', 'pending')->get();
         $user = Auth::user();
         $kategori = Kategori::all();
-        $depart = Departement::all();
         $peralatan = Peralatan::all();
         $instansi = Auth::user()->instansi;
         // Inisialisasi variabel untuk data pengajuan dan progress
@@ -57,7 +55,7 @@ class HomeController extends Controller
         }
 
     
-        return view('home.admin', compact('instansi','dataReq', 'peralatan','kategori','user', 'depart', 'progress', 'pengajuan'));
+        return view('home.admin', compact('instansi','dataReq', 'peralatan','kategori','user', 'progress', 'pengajuan'));
     }
 
     public function getProcessTicketCount()

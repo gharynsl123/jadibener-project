@@ -18,7 +18,7 @@
                 <div class="text-capitalize">
                     <strong>PIC:</strong> {{$user->nama_user}} <br>
                     <!-- jika divisi belumm ada maka muncul kan text belum ada -->
-                    <strong>Divisi:</strong> {{$user->departement ? $user->departement->nama_departement : 'Belum ada'}}
+                    <strong>Divisi:</strong> {{$user->departement ? $user->departement : 'Belum ada'}}
                 </div>
                 <div class="contact-info">
                     <strong>HP:</strong> {{$user->nomor_telepon}}<br>

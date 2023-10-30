@@ -7,7 +7,6 @@ use App\Kategori;
 use App\History;
 use App\Pengajuan;
 use App\Instansi;
-use App\Departement;
 use App\Produk;
 use App\Peralatan;
 use Carbon\Carbon;
@@ -34,28 +33,27 @@ class PeralatanController extends Controller
         $peralatan = null;
         
         $kategori = Kategori::all();
-        $depart = Departement::all();
 
-        $departemenUser = Auth::user()->id_departement;
+        $departemenUser = Auth::user()->departement;
         $userAuth = Auth::user()->id_instansi;
         
         if (Auth::user()->level == 'pic'){
             $peralatan = Peralatan::where('id_instansi', $userAuth)->get();
 
-        } else if (Auth::user()->level == 'pic' && Auth::user()->departement->nama_departement) {
+        } else if (Auth::user()->level == 'pic' && Auth::user()->departement) {
             $peralatan = Peralatan::where('id_instansi', $userAuth)
-            ->where('id_departement', $departemenUser)
+            ->where('departement', $departemenUser)
             ->get();
 
             
-        } else if (Auth::user()->level == 'pic' && (Auth::user()->departement->nama_departement == 'Purchasing' || Auth::user()->departement->nama_departement == 'IPS-RS')) {
-            return view('peralatan.index_peralatan', compact(  'kategori', 'depart', 'peralatan'));
+        } else if (Auth::user()->level == 'pic' && (Auth::user()->departement == 'Purcashing' || Auth::user()->departement == 'IPS-RS')) {
+            return view('peralatan.index_peralatan', compact(  'kategori', 'peralatan'));
         }
         else {
             $peralatan = Peralatan::all();
         }
 
-        return view('peralatan.index_peralatan', compact(  'kategori', 'depart', 'peralatan'));
+        return view('peralatan.index_peralatan', compact(  'kategori', 'peralatan'));
     }
 
 
@@ -144,6 +142,15 @@ class PeralatanController extends Controller
 
         // Mengirim data peralatan ke view
         return view('peralatan.edit_peralatan', compact('peralatan', 'merek', 'kategori', 'instansi', 'product'));
+    }
+
+    public function getAjaxInstansi(Request $request) {
+        $query = $request->input('q');
+
+        $instansi = Instansi::whereNotNull('jumlah_kasur')
+        ->where('nama_instansi', 'LIKE', '%'.$query.'%')
+        ->get();
+        return response()->json($instansi);
     }
 
     /**

@@ -9,7 +9,7 @@
     <div class="peralatan-form">
         <div class="card p-3 mt-3 shadow border-left-primary">
             <h2 class="m-0 p-0">Input Data Peralatan</h2>
-            <input type="text" class="departemenInput" name="id_departement[]" hidden value="{{$user->departement->id}}" >
+            <input type="text" class="departemenInput" name="id_departement[]" hidden value="{{$user->departement}}" >
             <input type="text" name="id_instansi[]"hidden value="{{$user->instansi->id}}" >
             <input type="text" name="id_user[]"hidden value="{{ Auth::user()->id }}">
     
@@ -34,7 +34,7 @@
 
                 <div class="form-group col-md-6 produk-group" style="display: none;">
                     <label for="merk">Nama Product</label>
-                    <select class="form-control product-select" name="id_product[]">
+                    <select class="form-control product-select" id="id-product-select" name="id_product[]">
                         <!-- Opsi produk akan diisi melalui JavaScript -->
                     </select>
                 </div>
@@ -65,6 +65,8 @@
 
 @section('custom-js')
 <script>
+
+
     // Fungsi untuk membatasi nilai input usia produk antara 5 dan 10
     function limitAgeInput() {
         const pertahunProductInputs = document.querySelectorAll('.pertahun-product');
@@ -86,7 +88,7 @@
         var datamultipleinputalat = `
         <div class="card p-3 mt-3 shadow border-left-primary">
             <h2 class="m-0 p-0">Input Data Peralatan</h2>
-            <input type="text" class="departemenInput" name="id_departement[]" hidden value="{{$user->departement->id}}" >
+            <input type="text" class="departemenInput" name="id_departement[]" hidden value="{{$user->departement}}" >
             <input type="text" name="id_instansi[]" hidden value="{{$user->instansi->id}}" >
             <input type="text" name="id_user[]" hidden value="{{ Auth::user()->id }}">
     
@@ -179,7 +181,7 @@
 
             // Filter kategori sesuai dengan departemen yang dipilih
             kategori.forEach(function(kat) {
-                if (kat.id_departement == selectedDepartemenId) {
+                if (kat.departement == selectedDepartemenId) {
                     const option = document.createElement('option');
                     option.value = kat.id;
                     option.text = kat.nama_kategori;
@@ -209,7 +211,7 @@
                     products.forEach(function(products) {
                         if (
                             products.id_kategori == selectedCategoryId &&
-                            products.id_departement == selectedDepartemenId
+                            products.departement == selectedDepartemenId
                         ) {
                             const option = document.createElement('option');
                             option.value = products.id;
@@ -229,6 +231,8 @@
         $('.addmultiplealat').click(function() {
             addPeralatan();
         });
+
+        $('#id-product-select').select2();
 
         $('.peralatan-form').on('click', '.remove-alat', function() {
             $(this).parent().remove();

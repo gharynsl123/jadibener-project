@@ -14,10 +14,11 @@
             <input type="text" name="id_user" value="{{ Auth::user()->id }}" hidden readonly>
             <div class="form-group col-md-6">
                 <label for="merk">Nama Instansi</label>
-                <select class="form-control" name="id_instansi">
+                <select class="form-control" id="instansi-select" name="id_instansi">
                     @foreach($instansi as $items)
-                    <option value="{{ $items->id }}" @if($peralatan->id_instansi === $items->id) selected
-                        @endif>{{ $items->nama_instansi }}</option>
+                    @if($items->jumlah_kasur)
+                    <option value="{{ $items->id }}" {{ $peralatan->id_instansi == $items->id ? 'selected' : '' }}>{{ $items->nama_instansi }}</option>
+                    @endif
                     @endforeach
                 </select>
             </div>
@@ -25,8 +26,7 @@
                 <label for="merk">Nama Merk</label>
                 <select class="form-control" name="id_merek">
                     @foreach($merek as $merks)
-                    <option value="{{ $merks->id }}" @if($peralatan->id_merek === $merks->id) selected
-                        @endif>{{ $merks->nama_merek }}</option>
+                    <option value="{{ $merks->id }}" {{$peralatan->id_merek == $merks->id ?'selected' : ''}}>{{ $merks->nama_merek }}</option>
                     @endforeach
                 </select>
             </div>
@@ -34,20 +34,18 @@
                 <label for="kategori">Nama Kategori</label>
                 <select class="form-control" id="kategori-select" name="id_kategori">
                     @foreach($kategori as $kategoris)
-                    <option value="{{ $kategoris->id }}" @if($peralatan->id_kategori === $kategoris->id) selected
-                        @endif>{{ $kategoris->nama_kategori }}</option>
+                    <option value="{{ $kategoris->id }}" {{$peralatan->id_kategori == $kategoris->id ? 'selected' : ''}}>{{ $kategoris->nama_kategori }}</option>
                     @endforeach
                 </select>
             </div>
-            <input type="text" id="departemenInput" name="id_departement" hidden readonly
-                value="{{$peralatan->kategori->departement->id}}">
+            <input type="text" id="departemenInput" name="departement" hidden readonly
+                value="{{$peralatan->departement}}">
 
             <div class="form-group col-md-6">
                 <label for="merk">Nama Product</label>
                 <select class="form-control" name="id_product" id="product-select">
                     @foreach($product as $item)
-                    <option value="{{ $item->id }}" @if($peralatan->id_product === $item->id) selected
-                        @endif>{{ $item->nama_produk }}</option>
+                    <option value="{{ $item->id }}" {{$peralatan->id_product == $item->id ? 'selected' : ''}}>{{ $item->nama_produk }}</option>
                     @endforeach
                 </select>
             </div>
@@ -103,10 +101,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const kondisiProductInput = document.getElementById('kondisi-product');
     const pertahunProductInput = document.getElementById('pertahun-product');
 
-    const productSelect = document.getElementById('product-select');
+    $('#instansi-select').select2();
+    $('#product-select').select2();
+
     const products = @json($product); // Data produk dari controller
     const kategori = @json($kategori); // Data produk dari controller
-
+    
+    const productSelect = document.getElementById('product-select');
     const kategoriSelect = document.getElementById('kategori-select');
 
     // Add an event listener to the kategori select
@@ -116,10 +117,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Clear existing options
         productSelect.innerHTML = '<option>-- PILIH --</option>';
 
-        // Di sini, kita akan mengambil ID departemen yang terkait dengan kategori yang dipilih.
-        const selectedCategory = kategori.find(departement => departement.id == selectedCategoryId);
+        const selectedCategory = kategori.find(category => category.id == selectedCategoryId);
         console.log(selectedCategory)
-        departemenInput.value = selectedCategory.id_departement;
+        departemenInput.value = selectedCategory.departement;
 
         // Filter products based on selected category
         const filteredProducts = products.filter(product => product.id_kategori == selectedCategoryId);

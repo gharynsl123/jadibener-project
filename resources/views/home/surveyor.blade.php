@@ -25,7 +25,7 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                            Buat Data Baru unntuk instansi</div>
+                            Buat Data Baru untuk instansi</div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">Input Data Baru</div>
                     </div>
                     <div class="col-auto">
@@ -38,28 +38,8 @@
 </div>
 
 <!-- table history untuk setiap updata dan creating yang di lakukan oleh surveyor dan yang di setujui oleh andmin -->
-
 <div class="card shadow border-left-primary p-3 mt-4">
-    <div class="table-responsive">
-        <h4 class="mb-3 text-dark">History Table</h4>
-        <table class="table" id="dataTable">
-            <thead>
-                <tr>
-                    <th>node</th>
-                    <th>node</th>
-                    <th>node</th>
-                    <th>node</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>body</td>
-                    <td>body</td>
-                    <td>body</td>
-                    <td>body</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <h2>History Table</h2><hr>
+    <h4>under maintemance please pe pation</h4>
 </div>
 @endsection

@@ -16,10 +16,11 @@ class ProdukImport implements ToCollection
     {
         foreach ($collection as $row) {
             Produk::create([
-                'id_merek' => '2', // Sesuaikan dengan indeks kolom yang sesuai di dalam koleksi
-                'id_kategori' => '2',
                 'kode_produk' => $row[0],
                 'nama_produk' => $row[1],
+                'id_merek' =>  $row[2], // Sesuaikan dengan indeks kolom yang sesuai di dalam koleksi
+                'id_kategori' =>  $row[3],
+                'departement' =>  $row[4],
             ]);
         }
     }

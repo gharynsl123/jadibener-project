@@ -58,17 +58,12 @@
                 <tr>
                     <td>{{$items->nama_user}}</td>
                     <td>:</td>
-                    <td>{{$items->departement->nama_departement}}</td>
+                    <td>{{$items->departement}}</td>
                     <td>:</td>
                     <td>
-                        @php
-                            // Mengambil semua peralatan yang terkait dengan departemen pengguna
-                            $peralatanDepartemen = $items->departement->peralatan->count();
-                            echo $peralatanDepartemen;
-                        @endphp
+                        {{$jumlahPeralatanPerDepartemen[$items->departement]}} peralatan
                     </td>
                     <td>
-                        <button class="show-peralatan-btn btn btn-primary" data-departemen-id="{{ $items->departement->id }}">Lihat Barang</button>
                         <a href="{{route('survey.create-alat', $items->id)}}" class="btn btn-secondary">
                             <i class="fas fa-plus"></i>
                             Add Barang
@@ -78,70 +73,6 @@
             </tbody>
             @endforeach
         </table>
-
-        @foreach($user as $items)
-        <div class="table-responsive" style="display:none;" data-departemen-id="{{ $items->departement->id }}">
-            <table class="table" id="dataTable" width="100%" cellspacing="0">
-        <thead class="bg-dark text-white">
-            <tr>
-                <th class="th-start">Instansi</th>
-                <th>Kategori</th>
-                <th style="display:none;">Departement</th>
-                <th>Merk</th>
-                <th>Product</th>
-                <th>Serial Number</th>
-                <th>Instalasi</th>
-                <th>Durasi Pemakaian</th>
-                <th>Keterangan</th>
-                <th class="@if (Auth::user()->level == 'pic') th-end @endif">Kondisi Product</th>
-                @if (Auth::user()->level != 'pic')
-                <th class="th-end">Action</th>
-                @endif
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Menampilkan data peralatan di reverse agar data yang baru di tambah muncul di atas -->
-            @foreach($items->departement->peralatan->reverse() as $peralatans)
-            <tr>
-                <td>{{ $peralatans->instansi->nama_instansi }}</td>
-                <td>{{ $peralatans->kategori->nama_kategori }}</td>
-                <td style="display:none;">{{ $peralatans->kategori->departement ? $peralatans->kategori->departement->nama_departement : 'Belum ada departement'}}</td>
-                <td>{{ $peralatans->merek->nama_merek }}</td>
-                <td>{{ $peralatans->produk->nama_produk}}</td>
-                <!-- menuju ke detail barang menggunakan a href -->
-                <td><a href="{{ route('peralatan.show', $peralatans->slug) }}">{{ $peralatans->serial_number }}</a></td>
-                <td>{{ $peralatans->tahun_pemasangan }}</td>
-                <td>
-                    <span id="selisih-tahun-{{ $peralatans->id }}"></span>
-                </td>
-                <td>{{$peralatans->produk_dalam_kondisi}}</td>
-                <td>
-                    <div class="progress">
-                        <div class="progress-bar bg-success" role="progressbar"
-                            style="width: {{$peralatans->kondisi_product}}%">{{ $peralatans->kondisi_product }}%</div>
-                    </div>
-                </td>
-                @if (Auth::user()->level == 'admin' || Auth::user()->level == 'teknisi' || Auth::user()->level == 'surveyor')
-                <td class="hide-when-checklist-shown">
-                    <a href="{{ route('peralatan.edit', $peralatans->slug) }}" class="btn btn-warning btn-sm"><i
-                            class="fa fa-pen-to-square text-white"></i></a>
-                    <form action="{{ route('peralatan.destroy', $peralatans->id) }}" method="POST" class="d-inline">
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn btn-danger btn-sm"
-                            onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"> <i
-                                class="fa fa-trash text-white"></i></button>
-                    </form>
-                </td>
-                @endif
-            </tr>
-            @endforeach
-        </tbody>
-            </table>
-        </div>
-
-        @endforeach
-
         @else
         <p>Belum ada PIC</p>
         @endif

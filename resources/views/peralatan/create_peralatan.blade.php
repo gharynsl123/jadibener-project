@@ -11,12 +11,13 @@
         @csrf
         <div class="form-group">
             <label for="merk">Nama Instansi</label>
-            <select class="form-control" name="id_instansi">
+            <select class="form-control" id="instansi-select" name="id_instansi">
                 <option>-- PILIH --</option>
                 @foreach($instansi as $items)
+                @if($items->jumlah_kasur)
                 <option value="{{ $items->id }}">{{ $items->nama_instansi }}</option>
+                @endif
                 @endforeach
-                <!-- Tambahkan opsi merk lainnya sesuai kebutuhan -->
             </select>
         </div>
         <div class="form-group">
@@ -26,12 +27,11 @@
                 @foreach($merek as $merks)
                 <option value="{{ $merks->id }}">{{ $merks->nama_merek }}</option>
                 @endforeach
-                <!-- Tambahkan opsi merk lainnya sesuai kebutuhan -->
             </select>
         </div>
 
-        <!-- pengisian id user dengan user yang sedang login-->
         <input type="text" name="id_user" value="{{ Auth::user()->id }}" hidden readonly>
+        <input type="text" id="departemenInput" name="departement" hidden readonly>
 
         <div class="form-group">
             <label for="kategori">Nama Kategori</label>
@@ -43,7 +43,6 @@
             </select>
         </div>
 
-        <input type="text" id="departemenInput" name="id_departement" hidden readonly>
 
         <div class="form-group" id="produk-group" style="display: none;">
             <label for="merk">Nama Product</label>
@@ -75,21 +74,22 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const pertahunProductInput = document.getElementById('pertahun-product');
-
-    const kategoriSelect = document.getElementById('kategori-select');
     const productSelect = document.getElementById('product-select');
     const formGroupInput = document.getElementById('produk-group');
-    const products = @json($product); // Data produk dari controller
-    const kategori = @json($kategori); // Data produk dari controller
+    const kategoriSelect = document.getElementById('kategori-select');
     var departemenInput = document.getElementById('departemenInput');
 
+    
+    const products = @json($product); // Data produk dari controller
+    const kategori = @json($kategori); // Data produk dari controller
+    
     // Add an event listener to the kategori select
     kategoriSelect.addEventListener('change', function() {
         const selectedCategoryId = kategoriSelect.value;
-
+        
         // Clear existing options
         productSelect.innerHTML = '<option>-- PILIH --</option>';
-
+        
         // jika kategori tidak dipilih mmaka hilangkan opsi produk. jika di pilih maka muncul kan opsi produk
         if (selectedCategoryId === '-- PILIH --') {
             formGroupInput.style.display = 'none';
@@ -97,15 +97,14 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             formGroupInput.style.display = 'block';
         }
-
-        // Di sini, kita akan mengambil ID departemen yang terkait dengan kategori yang dipilih.
-        const selectedCategory = kategori.find(departement => departement.id == selectedCategoryId);
+        
+        const selectedCategory = kategori.find(category => category.id == selectedCategoryId);
         console.log(selectedCategory)
-        departemenInput.value = selectedCategory.id_departement;
-
+        departemenInput.value = selectedCategory.departement;
+        
         // Filter products based on selected category
         const filteredProducts = products.filter(product => product.id_kategori == selectedCategoryId);
-
+        
         // Add filtered products as options
         filteredProducts.forEach(product => {
             const option = document.createElement('option');
@@ -114,11 +113,11 @@ document.addEventListener('DOMContentLoaded', function() {
             productSelect.appendChild(option);
         });
     });
-
+    
     pertahunProductInput.addEventListener('input', function() {
         // Get the entered value and convert it to a number
         let value = parseFloat(pertahunProductInput.value);
-
+        
         // Check if the entered value is greater than 100
         if (value > 10) {
             // If it's greater, set the input value to 100
@@ -128,7 +127,11 @@ document.addEventListener('DOMContentLoaded', function() {
             pertahunProductInput.value = 5;
         }
     });
-
+    
+    
+    // Initialize Select2 for the product select element
+    $('#product-select').select2();
+    $('#instansi-select').select2();
 });
 </script>
 @endsection

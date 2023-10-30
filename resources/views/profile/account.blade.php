@@ -87,7 +87,7 @@
                     <tr>
                         <th>Departement</th>
                         <td>:</td>
-                        <td>{{$user->departement->nama_departement}}</td>
+                        <td>{{$user->departement}}</td>
                     </tr>
                 </table>
             </div>
@@ -112,4 +112,4 @@
         @endif
     @endif
 </div>
-@endsection
+@endsection 

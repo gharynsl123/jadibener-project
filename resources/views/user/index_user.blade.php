@@ -53,13 +53,11 @@
             <table class="table table-hover table-borderless" id="dataTable" cellspacing="0">
                 <thead class="bg-dark text-white">
                     <tr>
-                        <th class="th-start">Nama</th>
+                        <th class="th-start">detail</th>
+                        <th>Nama</th>
                         <th>Level</th>
                         <th>Role/Departemen</th>
-                        <th>Alamat</th>
                         <th>Email</th>
-                        <th>Jenis Kelamin</th>
-                        <th>No Telp</th>
                         <th>Instansi</th>
                         <th class="th-end">Action</th>
                     </tr>
@@ -67,23 +65,28 @@
                 <tbody>
                     @foreach($user->reverse() as $users)
                     <tr>
-                        <td>{{ $users->nama_user }}</td>
+                        <td>
+                        <a class="btn-de" data-id="{{ $users->id }}">
+                            <i class="fas fa-angle-right"></i>
+                        </a>
+                        </td>
+                        
+                        <td>
+                            {{ $users->nama_user }}
+                        </td>
                         <td>{{ $users->level }}</td>
                         <td>
                             @if($users->role)
                                 {{ $users->role }}
-                            @elseif($users->id_departement)
-                                {{ $users->departement->nama_departement }}
+                            @elseif($users->departement)
+                                {{ $users->departement }}
                             @elseif(in_array($users->level, ['pic', 'teknisi']))
                                 Belum ada
                             @else
                                 <p class="text-danger">Default user tidak memiliki role</p>
                             @endif
                         </td>
-                        <td class="single-line">{!! $users->alamat_user !!}</td>
                         <td>{{ $users->email }}</td>
-                        <td>{{ $users->jenis_kelamin }}</td>
-                        <td>{{ $users->nomor_telepon }}</td>
                         <td>
                             @if($users->instansi)
                                 {{ $users->instansi->nama_instansi }}
@@ -112,4 +115,36 @@
         </div>
     </div>
 </div>
+<script>
+$(document).ready(function () {
+    var table = $('#dataTable').DataTable({
+        "columnDefs": [
+            { "orderable": false, "targets": -1 } // Menonaktifkan pengurutan pada kolom terakhir (tombol lihat)
+        ],
+    });
+
+    $('#dataTable tbody').on('click', 'a.btn-de', function () {
+        var row = table.row($(this).parents('tr'));
+        var userId = $(this).data('id');
+
+        if (row.child.isShown()) {
+            // Tutup child row jika sudah terbuka
+            row.child.hide();
+            $(this).find('i').removeClass('fa-angle-down').addClass('fa-angle-right');
+        } else {
+            // Ambil informasi tambahan dari server (misalnya, dengan AJAX)
+            $.ajax({
+                url: '/user/' + userId + '/details', // Ganti dengan URL yang sesuai
+                method: 'GET',
+                success: function (data) {
+                    // Tampilkan informasi tambahan dalam child row
+                    row.child(data).show();
+                },
+            });
+            $(this).find('i').removeClass('fa-angle-right').addClass('fa-angle-down');
+        }
+    });
+});
+</script>
+
 @endsection

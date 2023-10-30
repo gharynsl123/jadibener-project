@@ -153,8 +153,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-
-            <table class="table  table-borderless">
+            <table id="historyTable" class="table table-borderless">
                 <thead>
                     <tr>
                         <th>NO</th>
@@ -181,9 +180,8 @@
                         @elseif($items->estimasibiaya)
                         <td>
                             <!-- Tambahkan tombol aksi sesuai kebutuhan -->
-                            <a href="{{route('estimasi.cetak_pdf', $items->estimasibiaya->id)}}" target="_blank"
-                                class="btn btn-sm btn-primary"><i class="fa fa-file"></i></a>   
-                        </td>                         
+                            <a href="{{route('estimasi.cetak_pdf', $items->estimasibiaya->id)}}" target="_blank" class="btn btn-sm btn-primary"><i class="fa fa-file"></i></a>
+                        </td>
                         <td>-</td>
                         @else
                         <td>-</td>
@@ -193,12 +191,52 @@
                     @endforeach
                 </tbody>
             </table>
+            <div id="pagination" class="mt-3">
+                <ul id="pagination-list" class="pagination"></ul>
+            </div>
         </div>
     </div>
 </div>
+@endsection
 
+
+@section('custom-js')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    const table = document.getElementById("historyTable");
+    const itemsPerPage = 5; // Number of items to display per page
+    let currentPage = 1; // Current page
+    let totalItems = table.tBodies[0].rows.length;
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+    function displayPage(page) {
+        const start = (page - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+
+        for (let i = 0; i < totalItems; i++) {
+            if (i >= start && i < end) {
+                table.tBodies[0].rows[i].style.display = "";
+            } else {
+                table.tBodies[0].rows[i].style.display = "none";
+            }
+        }
+    }
+
+    function updatePagination() {
+        $('#pagination-list').twbsPagination({
+            totalPages: totalPages,
+            visiblePages: 5,
+            onPageClick: function(event, page) {
+                currentPage = page;
+                displayPage(currentPage);
+            }
+        });
+    }
+
+    displayPage(currentPage);
+    updatePagination();
+
+
     // Panggil fungsi perbaruiSelisihTahun saat halaman dimuat
     perbaruiSelisihTahun();
 
@@ -233,5 +271,4 @@ function perbaruiSelisihTahun() {
 }
 
 </script>
-
 @endsection

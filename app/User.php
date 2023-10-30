@@ -25,11 +25,7 @@ class User extends Authenticatable
 
     public function peralatan()
     {
-        return $this->hasMany(Peralatan::class, 'id_user');
-    }
-
-    function departement() {
-        return $this->belongsTo(Departement::class, 'id_departement');
+        return $this->hasMany(Peralatan::class, 'id_instansi');
     }
 
     /**

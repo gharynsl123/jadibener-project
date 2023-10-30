@@ -22,38 +22,25 @@
 <div class="alert alert-danger">
     <ul>
         @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
+        <li>{{ $error }}</li>
         @endforeach
     </ul>
-</div>
-@endif
-
-@if (session('success'))
-<div class="alert alert-success">
-    {{ session('success') }}
 </div>
 @endif
 
 <form action="{{route('survey.store-data')}}" method="post" enctype="multipart/form-data">
     @csrf
 
-    
+
     <div class="instansi-form">
         <div class="card shadow mt-3 p-3 border-left-primary">
             <h2 class="m-0 p-0">Input Data Rumah Sakit / Institusi</h2>
             <div class="row">
-                <div class="form-group col-md-6 ">
+                <div class="form-group col-md-6">
                     <label for="role">{{ __('Nama Rumah Sakit / Institusi') }}</label>
-                    <select class="form-control" name="id_instansi">
-                        <option value="">-- Select Rs --</option>
-                        @foreach($instansi as $insta)
-                        @if($insta->jumlah_kasur == null)
-                        <option value="{{$insta->id}}">{{$insta->nama_instansi}}</option>
-                        @endif
-                        @endforeach
+                    <select class="form-control" name="id_instansi" id="instansi-select">
                     </select>
                 </div>
-
                 <div class="form-group col-md-6">
                     <label for="jumlah-bed">Jumlah Bed</label>
                     <input type="number" class="form-control" name="jumlah_kasur" placeholder="0">
@@ -71,8 +58,8 @@
 
                 <div class="form-group col-md-12">
                     <label for="alamat">Alamat</label>
-                    <textarea class="form-control" id="editor" name="alamat_instansi" rows="3"
-                        placeholder="your alamat in here"></textarea>
+                    <textarea class="form-control alamat-auto-form" readonly name="alamat_instansi" rows="3"
+                        placeholder="auto"></textarea>
                 </div>
             </div>
         </div>
@@ -84,15 +71,15 @@
             <div class="row">
 
                 <div class="form-group col-md-6">
-                    <label >{{ __('Name User') }}</label>
-                    <input type="text" class="form-control @error('name') is-invalid @enderror"
-                        name="nama_user" required autocomplete="off" autofocus>
+                    <label>{{ __('Name User') }}</label>
+                    <input type="text" class="form-control @error('name') is-invalid @enderror" name="nama_user"
+                        required autocomplete="off" autofocus>
                 </div>
 
                 <div class="form-group col-md-6">
                     <label class="">{{ __('Email') }}</label>
-                    <input type="email" class="form-control @error('email') is-invalid @enderror"
-                        name="email" required autocomplete="off">
+                    <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" required
+                        autocomplete="off">
                 </div>
 
 
@@ -108,28 +95,27 @@
                     <select id="departemen-select" class="form-control @error('role') is-invalid @enderror"
                         name="user_departement">
                         <option value="">-- Select Role --</option>
-                        @foreach($departement as $dep)
-                        <option value="{{$dep->id}}">{{$dep->nama_departement}}</option>
-                        @endforeach
+                        <option value="Hospital Kitchen">Hospital Kitchen</option>
+                        <option value="CSSD">CSSD</option>
+                        <option value="Purcashing">Purcashing</option>
+                        <option value="IPS-RS">IPS-RS</option>
                     </select>
                 </div>
 
-                
+
                 <div class="form-group col-md-6">
                     <label>{{ __('Jenis Kelamin') }}</label>
-                    <select class="form-control @error('role') is-invalid @enderror"
-                    name="jenis_kelamin">
-                    <option value="">-- Select Gender --</option>
-                    <option value="laki-laki">Laki-Laki</option>
-                    <option value="perempuan">Perempuan</option>
-                </select>
+                    <select class="form-control @error('role') is-invalid @enderror" name="jenis_kelamin">
+                        <option value="">-- Select Gender --</option>
+                        <option value="laki-laki">Laki-Laki</option>
+                        <option value="perempuan">Perempuan</option>
+                    </select>
                 </div>
 
                 <div class="form-group col-md-6">
                     <label for="password">{{ __('Password') }}</label>
-                    <input id="password" type="password"
-                        class="form-control @error('password') is-invalid @enderror" name="password" required
-                        autocomplete="new-password">
+                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
+                        name="password" required autocomplete="new-password">
 
                     @error('password')
                     <span class="invalid-feedback" role="alert">
@@ -137,7 +123,7 @@
                     </span>
                     @enderror
                 </div>
-            
+
                 <div class="form-group mt-3 col-md-12">
                     <label for="alamat">Alamat</label>
                     <textarea class="form-control" id="editor" name="alamat_user"
@@ -152,14 +138,12 @@
 
 @section('custom-js')
 <script>
-// Initialize currentPage and totalPages
 var currentPage = 1;
-var totalPages = 2; // Update this with the total number of pages
+var totalPages = 2;
 
 // Function to show the current page
 function showPage(pageNumber) {
     // Hide all form sections
-    $('.peralatan-form').hide();
     $('.pic-form').hide();
     $('#btn-submit').hide();
 
@@ -171,7 +155,6 @@ function showPage(pageNumber) {
     } else if (pageNumber === 2) {
         $('.pic-form').show();
         $('.instansi-form').hide();
-        $('.peralatan-form').hide();
         $('#btn-submit').show();
     }
 
@@ -194,181 +177,48 @@ $('#prevPage').click(function() {
     }
 });
 
+document.addEventListener('DOMContentLoaded', function() {
 
-// Gabungkan logika pengaturan opsi produk dan kategori dalam satu fungsi
-function setOptions(selectElement, options, idField, textField, filterField, filterValue) {
-    selectElement.innerHTML = '<option>-- PILIH --</option>';
+    // Inisialisasi Select2
+    var instansiSelect = $('#instansi-select');
 
-    options.forEach(option => {
-        if (!filterField || option[filterField] == filterValue) {
-            const optionElement = document.createElement('option');
-            optionElement.value = option[idField];
-            optionElement.textContent = option[textField];
-            selectElement.appendChild(optionElement);
+    instansiSelect.select2({
+        placeholder: '-- Select Rs --',
+        allowClear: true,
+        ajax: {
+            url: function(params) {
+                return '/get-data/instansi';
+            },
+            dataType: 'json',
+            processResults: function(data) {
+                return {
+                    results: data.map(function(instansi) {
+                        return {
+                            id: instansi.id,
+                            text: instansi.nama_instansi,
+                            alamat: instansi.alamat_instansi // Sertakan alamat dalam hasil
+                        };
+                    })
+                };
+            },
+            cache: true
         }
     });
-}
 
+    // Event listener untuk memanggil fillAlamat ketika instansi dipilih
+    instansiSelect.on('select2:select', function(e) {
+        var selectedInstansiData = e.params.data;
 
-function setProductAndCategoryOptions() {
-    const departemenSelect = document.getElementById('departemen-select');
-    const kategoriSelects = document.querySelectorAll('select.kategori-select');
-    const productSelects = document.querySelectorAll('select.product-select');
-    const formGroupInputs = document.querySelectorAll('.produk-group');
-    const departemenInputs = document.querySelectorAll('.departemenInput');
-    const products = @json($produk);
-    const kategori = @json($kategori);
-
-    console.log('Data Produk:', @json($produk));
-    console.log('Data Kategori:', @json($kategori));
-
-    // Event listener saat departemen dipilih
-    departemenSelect.addEventListener('change', function() {
-        const selectedDepartemenId = departemenSelect.value;
-        console.log(selectedDepartemenId);
-
-        // Kosongkan opsi kategori saat ini di semua select dengan kelas kategori-select
-        kategoriSelects.forEach((kategoriSelect, index) => {
-            kategoriSelect.innerHTML = '';
-
-            // Tambahkan opsi pertama
-            const defaultOption = document.createElement('option');
-            defaultOption.text = '-- PILIH --';
-            kategoriSelect.add(defaultOption);
-
-            // Filter kategori sesuai dengan departemen yang dipilih
-            kategori.forEach(function(kat) {
-                if (kat.id_departement == selectedDepartemenId) {
-                    const option = document.createElement('option');
-                    option.value = kat.id;
-                    option.text = kat.nama_kategori;
-                    kategoriSelect.add(option);
-                }
-            });
-
-            // Panggil event listener untuk mengatur opsi produk dan departemen
-            kategoriSelect.dispatchEvent(new Event('change'));
-        });
+        // Cari textarea dengan kelas 'alamat-auto-form' dan isi dengan alamat yang sesuai
+        var alamatTextarea = $('.alamat-auto-form');
+        alamatTextarea.val(selectedInstansiData.alamat); // Isi dengan alamat yang sesuai
     });
 
-    // Event listener saat kategori dipilih (dalam loop)
-    kategoriSelects.forEach((kategoriSelect, index) => {
-        kategoriSelect.addEventListener('change', function() {
-            const selectedCategoryId = kategoriSelect.value;
-
-            // Clear existing options di semua select dengan kelas product-select
-            productSelects[index].innerHTML = '<option>-- PILIH --</option>';
-
-            if (selectedCategoryId === '-- PILIH --') {
-                formGroupInputs[index].style.display = 'none';
-            } else {
-                formGroupInputs[index].style.display = 'block';
-
-                // Sekarang kita bisa mendapatkan selectedCategory
-                const selectedCategory = kategori.find(departement => departement.id == selectedCategoryId);
-
-                // Panggil setOptions untuk opsi produk
-                setOptions(productSelects[index], products, 'id', 'nama_produk', 'id_kategori', selectedCategoryId);
-
-                departemenInputs[index].value = selectedCategory.id_departement;
-            }
-        });
+    // Event listener untuk menghapus isi alamat saat instansi dibatalkan
+    instansiSelect.on('select2:unselect', function() {
+        var alamatTextarea = $('.alamat-auto-form');
+        alamatTextarea.val(''); // Kosongkan alamat
     });
-}
-
-
-// Fungsi untuk membatasi nilai input usia produk antara 5 dan 10
-function limitAgeInput() {
-    const pertahunProductInputs = document.querySelectorAll('.pertahun-product');
-
-    pertahunProductInputs.forEach(pertahunProductInput => {
-        pertahunProductInput.addEventListener('input', function() {
-            let value = parseFloat(pertahunProductInput.value);
-
-            if (value > 10) {
-                pertahunProductInput.value = 10;
-            } else if (value < 5) {
-                pertahunProductInput.value = 5;
-            }
-        });
-    });
-}
-
-function addPelaratan() {
-    var datamultipleinputalat = `
-    <div class="card p-3 mt-3 shadow border-left-primary">
-            <h2 class="m-0 p-0">Input Data Peralatan</h2>
-            
-            <div class="row gap-2">
-                <div class="form-group col-md-6">
-                    <label for="kategori">Nama Kategori</label>
-                    <select class="form-control kategori-select" name="id_kategori[]" >
-                        <option>-- PILIH --</option>
-                    </select>
-                </div>
-
-                <div class="form-group col-md-6">
-                    <label for="merk">Nama Merk</label>
-                    <select class="form-control" name="id_merek[]">
-                        <option>-- PILIH --</option>
-                        @foreach($merek as $merks)
-                        <option value="{{ $merks->id }}">{{ $merks->nama_merek }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <input type="text" class="departemenInput" name="id_departement[]" value="" hidden>
-                <input type="text" name="id_user[]" value="{{ Auth::user()->id }}" hidden>
-
-                <div class="form-group col-md-6 produk-group" style="display: none;">
-                    <label for="merk">Nama Product</label>
-                    <select class="form-control product-select" name="id_product[]">
-                        <!-- Opsi produk akan diisi melalui JavaScript -->
-                    </select>
-                </div>
-
-                <div class="form-group col-md-6">
-                    <label>Usia Barang</label>
-                    <input type="number" class="form-control pertahun-product" name="usia_barang[]"
-                        placeholder="patokan nnilai ini akan berkurang sasuia tahun nya">
-                    <small class="text-muted">Hanya bisa 5 sampai 10 tahun</small>
-                </div>
-                <div class="form-group col-md-6">
-                    <label>Serial Number</label>
-                    <input type="text" class="form-control" name="serial_number[]"
-                        placeholder="Serial Number">
-                </div>
-
-                <div class="form-group col-md-6">
-                    <label>Tahun Pemasangan</label>
-                    <input type="text" class="form-control" name="tahun_pemasangan[]" id="tahun-pemasangan"
-                        placeholder="Tahun Pemasangan">
-                </div>
-            </div>
-            <a class="remove-alat btn ml-auto btn-primary"><i class="fa fa-trash"></i></a>
-        </div>`;
-    $('.peralatan-form').append(datamultipleinputalat); 
-    // Set ulang opsi produk dan kategori untuk elemen yang baru ditambahkan
-
-
-    setProductAndCategoryOptions();
-    limitAgeInput();
-}
-
-
-// Panggil fungsi-fungsi ini saat dokumen sudah dimuat sepenuhnya
-document.addEventListener('DOMContentLoaded', function() {
-    $('.addmultiplealat').click(function() {
-        addPelaratan(); // Menggunakan "addPelaratan()" yang benar 
-    });
-
-    $('.peralatan-form').on('click', '.remove-alat', function() {
-        $(this).parent().remove();
-    });
-    
-    // Inisialisasi ketika dokumen dimuat pertama kali
-    setProductAndCategoryOptions();
-    limitAgeInput();
 });
 </script>
 @endsection

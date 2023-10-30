@@ -11,10 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    // guest only
-    return view('auth.login');
-});
+Route::get('/', 'HomeController@index');
 
 Auth::routes(['register' => false]);
 Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
@@ -42,6 +39,8 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::delete('delete-estimasi-biaya/{id}', 'PartController@destroyPart')->name('estimate.delete');
     Route::put('/update-users/{id}', 'UserController@update')->name('users.update');
     Route::delete('/delete-users/{id}', 'UserController@destroy')->name('users.destroy');
+    Route::get('/user/{id}/details', 'UserController@getUserDetails');
+
 });
 
 // surveyor route
@@ -59,16 +58,8 @@ Route::get('/get-pending-count', 'HomeController@getPendingCount');
 Route::get('/get-proses-count', 'HomeController@getProsesCount');
 Route::get('/get-selesai-count', 'HomeController@getSolvedCount');
 
-
 // status Route
 Route::resource('status', 'StatusController');
-
-// departement Route
-Route::get('departement', 'DepartemenController@index')->name('dep.index');
-Route::get('edit-departement/{id}', 'DepartemenController@edit')->name('dep.edit');
-Route::post('submit-data/departement', 'DepartemenController@store')->name('dep.store');
-Route::put('update-departement/{id}', 'DepartemenController@update')->name('dep.update');
-Route::delete('delete-departement/{id}', 'DepartemenController@destroy')->name('dep.destroy');
 
 
 // Ajax Route Get Data
@@ -76,6 +67,8 @@ Route::get('/get-data/merek', 'MerekController@dataMerek')->name('merek.data');
 Route::get('/get-data/kondisi', 'KondisiController@dataKondisi')->name('kondisi.data');
 Route::get('/get-data/kategori', 'KategoriController@dataKategori')->name('kategori.data');
 Route::get('/get-data/part', 'PartController@dataPart')->name('part.data');
+Route::get('/get-data/instansi', 'SurveyorController@getAjaxInstansi')->name('instan.data');
+Route::get('/get-data/peralatan/instansi', 'PeralatanController@getAjaxInstansi')->name('instan-alat.data');
 Route::get('/get-data/departement', 'DepartemenController@getDepartement')->name('departement.get');
 
 

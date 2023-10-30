@@ -63,7 +63,7 @@
                     <td>{{ $item->merek->nama_merek }}</td>
                     <td>{{ $item->kategori->nama_kategori }}</td>
                     <td>{{ $item->kode_produk }}</td>
-                    <td>{{ $item->departement->nama_departement ?? 'belum ada'}}</td>
+                    <td>{{ $item->departement ?? 'belum ada'}}</td>
                     <td>{{ $item->nama_produk }}</td>
                     <td>
                         @if($item->photo_produk)

@@ -67,11 +67,12 @@
                 <div class="form-group col-md-6 " id="roleField">
                     <label for="role">{{ __('Departement') }}</label>
                     <select id="departemen-select" class="form-control @error('role') is-invalid @enderror"
-                        name="user_departement">
+                        name="departement">
                         <option value="">-- Select Role --</option>
-                        @foreach($departement as $dep)
-                        <option value="{{$dep->id}}">{{$dep->nama_departement}}</option>
-                        @endforeach
+                        <option value="Hospital Kitchen">Hospital Kitchen</option>
+                        <option value="CSSD">CSSD</option>
+                        <option value="Purcashing">Purcashing</option>
+                        <option value="IPS-RS">IPS-RS</option>
                     </select>
                 </div>
 

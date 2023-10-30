@@ -7,7 +7,7 @@
     <title>Profil Rumah Sakit</title>
 
     <!-- Custom styles for this template -->
-    <link href="{{ public_path('css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
 </head>
 
 <body>
@@ -15,7 +15,9 @@
     <div class="card shadow">
         <div class="row">
             <div class="col-md-9 my-4 px-4">
-                <img src="{{ public_path('storage/rumahsakit/'.$instansi->photo_instansi) }}" style="width:250px;">
+                @if($instansi->photo_instansi)
+                <img src="{{ asset('storage/rumahsakit/'.$instansi->photo_instansi) }}" style="width:250px;">
+                @endif
                 <h4 class="mb-3">{{ $instansi->nama_instansi }}</h4>
                 <p>
                     <strong>Alamat:</strong>
@@ -24,7 +26,7 @@
                 <div class="text-capitalize">
                     <strong>PIC:</strong> {{ $user->nama_user }} <br>
                     <strong>Divisi:</strong>
-                    {{ $user->departement ? $user->departement->nama_departement : 'Belum ada' }}
+                    {{ $user->departement ? $user->departement : 'Belum ada' }}
                 </div>
                 <div class="contact-info">
                     <strong>HP:</strong> {{ $user->nomor_telepon }}<br>

@@ -68,20 +68,19 @@
 @if(Auth::user()->departement || Auth::user()->level != 'pic')
 <div class="card my-4 border-left-primary">
     <div class="p-3">
-        <label for="kategori-select col-md-3">Shortby Kateg:</label>
+        <label for="col-md-3">Shortby Kateg:</label>
         <select id="kategori-select">
             <option value="">Semua Kategori</option>
             @foreach($kategori as $item)
             <option value="{{ $item->nama_kategori }}">{{ $item->nama_kategori }}</option>
             @endforeach
         </select>
-        @if(Auth::user()->level == 'pic' && (Auth::user()->departement->nama_departement == 'Purchasing' || Auth::user()->departement->nama_departement == 'IPS-RS') || Auth::user()->level == 'admin' ||  Auth::user()->level == 'surveyor')
+        @if(Auth::user()->level == 'pic' && (Auth::user()->departement == 'Purcashing' || Auth::user()->departement == 'IPS-RS') || Auth::user()->level == 'admin' ||  Auth::user()->level == 'surveyor')
         <label for="col-md-3">Shortby Department:</label>
         <select id="departemen-select">
             <option value="">Semua departement</option>
-            @foreach($depart as $item)
-            <option value="{{ $item->nama_departement }}">{{ $item->nama_departement }}</option>
-            @endforeach
+            <option value="Hospital Kitchen">Hospital Kitchen</option>
+            <option value="CSSD">CSSD</option>
         </select>
         @endif
 
@@ -91,7 +90,7 @@
                     <tr>
                         <th class="th-start">Instansi</th>
                         <th>Kategori</th>
-                        <th style="display:none;">Departement</th>
+                        <th >Departement</th>
                         <th>Merk</th>
                         <th>Product</th>
                         <th>Serial Number</th>
@@ -109,7 +108,7 @@
                     <tr>
                         <td>{{ $peralatans->instansi->nama_instansi }}</td>
                         <td>{{ $peralatans->kategori->nama_kategori }}</td>
-                        <td style="display:none;">{{ $peralatans->kategori->departement ? $peralatans->kategori->departement->nama_departement : 'Belum ada departement'}}</td>
+                        <td >{{ $peralatans->kategori->departement ? $peralatans->kategori->departement : 'Belum ada departement'}}</td>
                         <td>{{ $peralatans->merek->nama_merek }}</td>
                         <td>{{ $peralatans->produk->nama_produk}}</td>
                         <td>
@@ -164,51 +163,28 @@ document.addEventListener('DOMContentLoaded', function() {
     const departemenSelect = document.getElementById('departemen-select'); 
     const rows = document.querySelectorAll('#dataTable tbody tr');
 
-    kategoriSelect.addEventListener('change', filterKategori);
-    departemenSelect.addEventListener('change', filterDepartemen);
+    kategoriSelect.addEventListener('change', filterData);
+    departemenSelect.addEventListener('change', filterData);
 
-    function filterKategori() {
-        const selectedKategoriId = kategoriSelect.value;
-        const userLevel = "{{ Auth::user()->level }}";
+    function filterData() {
+        const selectedKategori = kategoriSelect.value;
+        const selectedDepartemen = departemenSelect.value;
 
         rows.forEach(row => {
             const kategoriCell = row.querySelector('td:nth-child(2)');
-
-            if (userLevel === 'admin' || userLevel === 'pic') {
-                if (selectedKategoriId === '' || kategoriCell.textContent === selectedKategoriId) {
-                    row.style.display = 'table-row';
-                } else {
-                    row.style.display = 'none';
-                }
-            } else {
-                row.style.display = 'table-row';
-            }
-        });
-    }
-
-    function filterDepartemen() {
-        const selectedDepartemen = departemenSelect.value;
-        const userLevel = "{{ Auth::user()->level }}";
-        const userDepartement = "{{ Auth::user()->departement ? Auth::user()->departement->nama_departement : '' }}";
-
-        const isFilterDepartemenEnabled = (userLevel === 'admin' || 
-            (userLevel === 'pic' && (userDepartement === 'Purchasing' || userDepartement === 'IPS-RS')) ||
-            userLevel === 'surveyor' || userLevel === 'teknisi');
-
-        rows.forEach(row => {
             const departemenCell = row.querySelector('td:nth-child(3)');
 
-            if (isFilterDepartemenEnabled) {
-                if (selectedDepartemen === '' || departemenCell.textContent === selectedDepartemen) {
-                    row.style.display = 'table-row';
-                } else {
-                    row.style.display = 'none';
-                }
-            } else {
+            const isKategoriMatch = selectedKategori === '' || kategoriCell.textContent === selectedKategori;
+            const isDepartemenMatch = selectedDepartemen === '' || departemenCell.textContent === selectedDepartemen;
+
+            if (isKategoriMatch && isDepartemenMatch) {
                 row.style.display = 'table-row';
+            } else {
+                row.style.display = 'none';
             }
         });
     }
+
 
     function hitungSelisihTahun(tahunPemasangan) {
         const tahunSekarang = new Date().getFullYear();

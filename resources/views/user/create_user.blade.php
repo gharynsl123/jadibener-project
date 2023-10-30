@@ -44,11 +44,12 @@
 
                 <div class="form-group col-md-6 " id="roleField" style="display: none;">
                     <label for="role">{{ __('Departement') }}</label>
-                    <select id="role" class="form-control @error('role') is-invalid @enderror" name="id_departement">
+                    <select id="role" class="form-control @error('role') is-invalid @enderror" name="departement">
                         <option value="">-- Select Role --</option>
-                        @foreach($departement as $dep)
-                        <option value="{{$dep->id}}">{{$dep->nama_departement}}</option>
-                        @endforeach
+                        <option value="Hospital Kitchen">Hospital Kitchen</option>
+                        <option value="CSSD">CSSD</option>
+                        <option value="Purcashing">Purcashing</option>
+                        <option value="IPS-RS">IPS-RS</option>
                     </select>
                 </div>
 
@@ -56,15 +57,15 @@
                     <label for="role">{{ __('Departement') }}</label>
                     <select id="role" class="form-control @error('role') is-invalid @enderror" name="role">
                         <option value="">-- Select Role --</option>
-                        <option id="roleTeknisi" value="kap_teknisi">Kepala Teknisi</option>
+                        <option value="kap_teknisi">Kepala Teknisi</option>
                     </select>
                     <small class="text-muted">jika user hanya teknisi biasa maka kosong kan role ini</small>
                 </div>
 
                 <div class=" form-group col-md-6 " id="instansiField" style="display: none;">
                     <label for="pic">PIC INSTANSI</label>
-                    <select id="level" class="form-control" name="id_instansi">
-                        <option value="">select the level</option>
+                    <select class="form-control" id="instansi-select"name="id_instansi">
+                        <option value="">pilih instansi</option>
                         <!-- mengambil data dari instansi -->
                         @foreach($instansi as $instansis)
                         <option value="{{$instansis->id}}">{{$instansis->nama_instansi}}</option>
@@ -85,7 +86,7 @@
                 </div>
 
 
-                <div class="form-group col-md-6 " id="roleField">
+                <div class="form-group col-md-6 ">
                     <label for="role">{{ __('Jenis Kelamin') }}</label>
                     <select id="role" class="form-control @error('role') is-invalid @enderror"
                         name="jenis_kelamin">
@@ -122,29 +123,29 @@ document.addEventListener('DOMContentLoaded', function() {
     var levelSelect = document.getElementById('level');
     var roleField = document.getElementById('roleField');
     var teknisiField = document.getElementById('teknisiField');
-    var roleTeknisi = document.getElementById('roleTeknisi');
     var instansiField = document.getElementById('instansiField');
 
     levelSelect.addEventListener('change', function() {
             var selectedLevel = levelSelect.value;
 
             if (selectedLevel === 'teknisi') {
-                teknisiField.style.display = 'block';
+                roleField.style.display = 'none';
                 instansiField.style.display = 'none';
-                roleTeknisi.style.display = 'block';
+                teknisiField.style.display = 'block';
 
             } else if (selectedLevel === 'pic') {
                 roleField.style.display = 'block';
                 instansiField.style.display = 'block';
-                roleTeknisi.style.display = 'none';
+                teknisiField.style.display = 'none';
 
             } else {
                 roleField.style.display = 'none';
                 instansiField.style.display = 'none';
-                roleTeknisi.style.display = 'none';
+                teknisiField.style.display = 'none';
             }
     });
 
+    $('#instansi-select').select2();
 
 });
 </script>

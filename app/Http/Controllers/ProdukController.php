@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Produk;
 use App\Merek;
 use App\Kategori;
-use App\Departement;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ProdukImport;
 use Illuminate\Http\Request;
@@ -42,12 +41,10 @@ class ProdukController extends Controller
     {
         $mereks = Merek::all();
         $kategoris = Kategori::all();
-        $departement = Departement::all();
-
         // Ambil data kategori berdasarkan departemen
 
 
-        return view('product.create_product', compact('mereks', 'departement', 'kategoris'));
+        return view('product.create_product', compact('mereks', 'kategoris'));
     }
     
     public function store(Request $request)
@@ -97,9 +94,8 @@ class ProdukController extends Controller
 
         $produk = Produk::find($id);
         $mereks = Merek::all();
-        $departement = Departement::all();
         $kategoris = Kategori::all();
-        return view('product.edit_product', compact('produk', 'departement','mereks', 'kategoris'));
+        return view('product.edit_product', compact('produk','mereks', 'kategoris'));
     }
 
     /**
@@ -114,6 +110,7 @@ class ProdukController extends Controller
         // update data yang telah di isi
         $product = Produk::find($id);
         $product->id_merek = $request->input('id_merek');
+        $product->departement = $request->input('departement');
         $product->id_kategori = $request->input('id_kategori');
         $product->kode_produk = $request->input('kode_produk');
         $product->nama_produk = $request->input('nama_produk');

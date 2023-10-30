@@ -8,7 +8,7 @@ date_default_timezone_set('Asia/Jakarta');
     <title>Laporan Peralatan</title>
 
     <!-- Custom styles for this template -->
-    <link href="{{ public_path('css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
 </head>
 
 <style>
@@ -20,7 +20,7 @@ date_default_timezone_set('Asia/Jakarta');
     <table>
         <tr>
             <td>
-                <img src="{{ public_path('image/mdh_logo.png') }}" class="image-thumbnail" style="width: 180px;"
+                <img src="{{ asset('image/mdh_logo.png') }}" class="image-thumbnail" style="width: 180px;"
                     alt="Gambar">
             </td>
             <td>
@@ -53,7 +53,7 @@ date_default_timezone_set('Asia/Jakarta');
 
     <p>
         @if(Auth::user()->level == 'pic')
-        Departement:{{$user->departement->nama_departement}}
+        Departement:{{$user->departement}}
         @endif
     </p>
 
@@ -70,7 +70,7 @@ date_default_timezone_set('Asia/Jakarta');
                 <tr>
                     @if($item->photo_produk)
                     <td>
-                        <img src="{{ public_path('storage/produk/' . $item->produk->photo_produk) }}"
+                        <img src="{{ asset('storage/produk/' . $item->produk->photo_produk) }}"
                             style="width:100px;">
                     </td>
                     @endif
