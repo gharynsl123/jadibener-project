@@ -52,7 +52,7 @@
                         <label for="ugently">Ugently / Kondisi</label>
                         <select class="form-control" name="kondisi" id="ugently">
                             <option selected disabled>-- PILIH --</option>
-                            <option value="ctok">pelayanan ctok</option>
+                            <option value="ctok">pelayanan emergensi</option>
                             <option value="reguler">pelayanan reguler</option>
                             <option value="berkala">pelayanan berkala</option>
                             <option value="lain-lain">pelayanan lain</option>

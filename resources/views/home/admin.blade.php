@@ -32,7 +32,7 @@
     <div class="row gap-2">
         <!-- Earnings (Annual) Card Example -->
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-success shadow h-100 py-2">
+            <a href="{{route('status.index')}}" class="text-decoration-none card border-left-success shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
@@ -45,11 +45,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
         <!-- Tasks Card Example -->
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-info shadow h-100 py-2">
+            <a href="{{route('progres.index')}}" class="text-decoration-none card border-left-info shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
@@ -66,12 +66,12 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
 
         <!-- Pending Requests Card Example -->
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-warning shadow h-100 py-2">
+            <a href="#table-request" class="text-decoration-none card border-left-warning shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
@@ -84,7 +84,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
 
         <div class="col-xl-3 col-md-6 mb-4">
@@ -125,7 +125,7 @@
 </div>
 
 <!-- table untuk mengabil data pengajuan -->
-<div class="card shadow mb-4">
+<div class="card shadow mb-4" id="table-request">
     <div class="p-3">
         <div class="table-responsive">
             <table class="table table-hover table-borderless" id="dataTable" width="100%" cellspacing="0">
@@ -166,7 +166,7 @@
                                     @csrf
                                     {{ method_field('POST') }}
                                     <input type="text" name="status_pengajuan" value="approved" hidden>
-                                    <button type="submit" class="btn btn-success">
+                                    <button type="submit" class="btn btn-sm btn-success">
                                         <i class="fa fa-thumbs-up text-white"></i>
                                     </button>
                                 </form>
@@ -175,7 +175,7 @@
                                     @csrf
                                     {{ method_field('POST') }}
                                     <input type="text" name="status_pengajuan" value="rejected" hidden>
-                                    <button type="submit" class="btn btn-danger">
+                                    <button type="submit" class="btn btn-sm  btn-danger">
                                         <i class="fa fa-thumbs-down text-white"></i>
                                     </button>
                                 </form>

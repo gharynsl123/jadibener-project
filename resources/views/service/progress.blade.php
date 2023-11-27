@@ -37,7 +37,7 @@
                     <tr>
                         <td>
                             <!-- for go to detail use resouce route-->
-                            <a href="/pengajuan/{{$items->slug}}" class="btn btn-primary">
+                            <a href="/pengajuan/{{$items->slug}}" class="btn btn-sm btn-primary">
                                 <i class="fa fa-eye"></i>
                             </a>
                         </td>

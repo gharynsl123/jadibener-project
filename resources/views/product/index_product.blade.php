@@ -77,21 +77,22 @@
                         @endif
                     </td>
                     <td>
-
-                        <a href="{{ route('produk.show', $item->id) }}" class="btn btn-primary">
-                            <i class="fa fa-eye text-white"></i>
-                        </a>
-                        <a href="{{ route('produk.edit', $item->id) }}" class="btn btn-warning">
-                            <i class="fa fa-pen-to-square text-white"></i>
-                        </a>
-                        <!-- form edit dan hapus dan detail -->
-                        <form action="{{ route('produk.destroy', $item->id) }}" method="POST">
-                            @csrf
-                            {{method_field('DELETE')}}
-                            <button type="submit" class="btn btn-danger">
-                                <i class="fa fa-trash text-white"></i>
-                            </button>
-                        </form>
+                        <div style="display: flex; gap: 5px;">
+                            <a href="{{ route('produk.show', $item->id) }}" class="btn btn-sm btn-primary">
+                                <i class="fa fa-eye text-white"></i>
+                            </a>
+                            <a href="{{ route('produk.edit', $item->id) }}" class="btn btn-sm btn-warning">
+                                <i class="fa fa-pen-to-square text-white"></i>
+                            </a>
+                            <!-- form edit dan hapus dan detail -->
+                            <form action="{{ route('produk.destroy', $item->id) }}" method="POST">
+                                @csrf
+                                {{method_field('DELETE')}}
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    <i class="fa fa-trash text-white"></i>
+                                </button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
                 @endforeach

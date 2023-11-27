@@ -12,9 +12,9 @@
             <div class="card-body p-3">
                 <form>
                     <input type="text" name="nama_merek" id="nama_merek" class="mb-4 form-control" autocomplete="off" placeholder="Nama Merek">
-                    <button class="btn btn-primary" id="addDataBtn" type="button" onclick="addData()">Input</button>
-                    <button class="btn btn-success" id="updateDataBtn" type="button" onclick="updateData()">Edit</button>
-                    <button class="btn btn-secondary" id="cancelBtn" type="button" onclick="cancelEdit()">Cancel</button>
+                    <button class="btn btn-primary btn-sm" id="addDataBtn" type="button" onclick="addData()">Input</button>
+                    <button class="btn btn-success btn-sm" id="updateDataBtn" type="button" onclick="updateData()">Edit</button>
+                    <button class="btn btn-secondary btn-sm" id="cancelBtn" type="button" onclick="cancelEdit()">Cancel</button>
                 </form>
             </div>
         </div>
@@ -104,10 +104,10 @@ function displayData(data) {
                         <td>${key + 1}</td>
                         <td>${value.nama_merek}</td>
                         <td>
-                            <button onclick="editData(${value.id})" class="btn btn-primary">
+                            <button onclick="editData(${value.id})" class="btn btn-sm btn-primary">
                                 <i class="fa fa-pen-to-square text-white"></i>
                             </button>
-                            <button onclick="deleteData(${value.id})" class="btn btn-danger">
+                            <button onclick="deleteData(${value.id})" class="btn btn-sm btn-danger">
                                 <i class="fa fa-trash"></i>
                             </button>
                         </td>

@@ -40,10 +40,19 @@ class ProfileController extends Controller
 
 
     public function reqStore(Request $req, $id) {
-        ReqSurveyor::create([
-            'id_user' => Auth::user()->id,
-            'state' => 'pending',
-        ]);
+        $user = Auth::user();
+        // Pastikan pengguna hanya dapat mengajukan permintaan jika mereka adalah teknisi
+        if ($user->level === 'teknisi') {
+            ReqSurveyor::create([
+                'id_user' => $user->id,
+                'state' => 'pending',
+            ]);
+
+            // Tambahkan timestamp permintaan terakhir ke kolom requested_at
+            $user->update([
+                'created_at' => now(),
+            ]);
+        }
 
         return redirect()->route('profile.index');
     }

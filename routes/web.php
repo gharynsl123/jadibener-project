@@ -11,7 +11,32 @@
 |
 */
 
-Route::get('/', 'HomeController@index');
+Route::get('/', function () {
+    return view('zone-non-auth.welcom_content');
+});
+
+Route::get('/spare-part', function () {
+    return view('zone-non-auth.spare_part_guest');
+});
+
+Route::get('/about', function () {
+    return view('zone-non-auth.about');
+});
+
+Route::get('/contact-us', function () {
+    return view('zone-non-auth.contact_us');
+});
+
+Route::get('/approve/{id}', 'ReqMemberContrroller@approve')->name('approve');
+Route::get('/reject/{id}', 'ReqMemberContrroller@reject')->name('reject');
+Route::get('/detail-member/{id}', 'ReqMemberContrroller@detail')->name('detail.member');
+
+
+
+Route::get('/request-as-member', 'StoreReqController@create');
+Route::post('/request-member', 'StoreReqController@store');
+Route::get('/member-request', 'ReqMemberContrroller@index')->name('service.member_req');
+
 
 Auth::routes(['register' => false]);
 Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
@@ -161,6 +186,7 @@ Route::get('peralatan/{slug}', 'PeralatanController@show')->name('peralatan.show
 Route::get('/edit/peralatan/{slug}', 'PeralatanController@edit')->name('peralatan.edit');
 Route::put('peralatan/{id}', 'PeralatanController@update')->name('peralatan.update');
 Route::delete('peralatan/{id}', 'PeralatanController@destroy')->name('peralatan.destroy');
+Route::get('/peralatan/{id}/details', 'PeralatanController@getAlatDetails');
 
 
 Route::get('profile', 'ProfileController@index')->name('profile.index');

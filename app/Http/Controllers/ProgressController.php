@@ -58,9 +58,9 @@ class ProgressController extends Controller
     {
         
         $progress = $request->all();
+        $timezone = 'Asia/Jakarta';
         
-        
-        $today = Carbon::now();
+        $today = Carbon::now($timezone);
         $formatedDate = $today->format('y-m-d');
         $formattedSV = $today->format('sv');
         $slugvalue = "P" . $formattedSV;
@@ -71,7 +71,7 @@ class ProgressController extends Controller
         // Simpan data riwayat
         $history = [
             'id_user' => Auth::user()->id,
-            'tanggal' => Carbon::now(),
+            'tanggal' => Carbon::now($timezone),
             'status_history' => 'progress',
             // mengambil data teknisi yang di berikan di progress
             'deskripsi' => 'progress di ajukan oleh ' . Auth::user()->nama_user . ' kepada ' . $dataProgress->users->nama_user,
@@ -100,12 +100,13 @@ class ProgressController extends Controller
     
             if ($progress->jadwal == null) {
                 $progress->jadwal = $request->jadwal;
+                $timezone = 'Asia/Jakarta';
                 $progress->save();
     
                 // Simpan data riwayat
                 $historyTime = [
                     'id_user' => Auth::user()->id,
-                    'tanggal' => Carbon::now(),
+                    'tanggal' => Carbon::now($timezone),
                     'status_history' => 'progress update',
                     'deskripsi' => 'waktu di ajukan oleh ' . Auth::user()->nama_user . ' dengan waktu ' . $progress->jadwal,
                     'id_progress' => $progress->id,
@@ -115,11 +116,12 @@ class ProgressController extends Controller
                 History::create($historyTime);
             } else {
                 // Jika jadwal sudah terisi sebelumnya, tidak perlu merubah jadwal
+                $timezone = 'Asia/Jakarta';
                 $progress->save();
                 // Simpan data riwayat
                 $history = [
                     'id_user' => Auth::user()->id,
-                    'tanggal' => Carbon::now(),
+                    'tanggal' => Carbon::now($timezone),
                     'status_history' => 'progress update',
                     'deskripsi' => 'progress di update oleh ' . Auth::user()->nama_user . ' dengan nilai pengerjaan ' . $progress->nilai_pengerjaan . ' dan keterangan ' . $progress->keterangan,
                     'id_progress' => $progress->id,

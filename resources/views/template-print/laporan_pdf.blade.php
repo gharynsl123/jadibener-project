@@ -1,3 +1,7 @@
+<?php
+date_default_timezone_set('Asia/Jakarta');
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -17,9 +21,7 @@
                     alt="Gambar">
             </td>
             <td>
-                <p class="small mt-4">Komplek Indra Sentra blok V <br> Jl. Letjen Suprapto, RT.8/RW.3, Cemp. Putih Bar.,
-                    <br> Kec. Cemp. Putih, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10520
-                </p>
+                <p class="small mt-4">data di ambil dari www.jadibener.com</p>
             </td>
         </tr>
 

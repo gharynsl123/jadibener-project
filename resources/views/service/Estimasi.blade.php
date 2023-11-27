@@ -18,7 +18,7 @@
                     <th>Quantity</th>
                     <th>Total Harga</th>
                     <th>keterangan</th>
-                    <th>Aksi</th>
+                    <th>Download Berkas</th>
                 </tr>
             </thead>
             <tbody>
@@ -37,9 +37,10 @@
                     </td>
                     <td>{{ $estimasi->keterangan }}</td>
                     <td>
-                        <!-- Tambahkan tombol aksi sesuai kebutuhan -->
-                        <a href="{{route('estimasi.cetak_pdf', $estimasi->id)}}" target="_blank"
-                            class="btn btn-sm btn-primary"><i class="fa fa-file"></i></a>
+                        <a href="{{ asset('storage/produk/' . $estimasi->berkas_photo) }}" class="btn btn-sm btn-primary" download>
+                            <i class="fa fa-download" aria-hidden="true"></i>
+                        </a>
+                        
                         @if(Auth::user()->level == 'admin')
                         <form action="{{ route('estimate.delete', ['id' => $estimasi->id]) }}" method="POST">
                             @csrf

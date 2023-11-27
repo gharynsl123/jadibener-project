@@ -43,7 +43,7 @@ class PartController extends Controller
         $part = Part::all(); // Get all data from table suku cadang
 
         // mengambil data peralatan yang dari detail yang di instanisnya di pilih dari detail
-        $dataApp = Pengajuan::where('slug', $slug)->first();
+        $dataApp = Peralatan::where('slug', $slug)->first();
 
         return view('pengajuan.estimasi_part', compact('part', 'kategori', 'dataApp')); // Redirect to the create suku cadang's page with the data from table kategori and suku cadang
     }
@@ -137,10 +137,22 @@ class PartController extends Controller
 
 
     public function storePart(Request $request) {
-        $dataReq = $request->all();
-        $dataReq['id_peralatan'] = $request->id_peralatan;
-        $dataReq['id_instansi'] = $request->id_instansi;
-        $dataEstimate = Estimate::create($dataReq);
+    
+        $data = $request->all();
+    
+        // Check if 'berkas_photo' file is present in the request
+        if ($request->hasFile('berkas_photo')) {
+            $destination_path = 'public/produk';
+            $image = $request->file('berkas_photo');
+            $image_name = $image->getClientOriginalName();
+            $path = $image->storeAs($destination_path, $image_name);
+            $data['berkas_photo'] = $image_name;
+        }        
+    
+        // Create a new estimate with the uploaded image
+        $data['id_peralatan'] = $request->id_peralatan;
+        $data['id_instansi'] = $request->id_instansi;
+        $dataEstimate = Estimate::create($data);
 
 
         $today = Carbon::now();

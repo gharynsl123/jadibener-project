@@ -85,62 +85,67 @@
 
     <div class="col-md-12">
         <div class="card shado mt-2">
-                <div class="card-header bg-info">
-                    <p class="m-0 text-white font-weight-bolder">KONDISI PRODUK</p>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table  table-borderless">
-                            <tr>
-                                <th>KONDISI</th>
-                                <td>:</td>
-                                <td>
-                                    <div class="progress vw-90">
-                                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-                                            aria-valuenow="{{$peralatan->kondisi_product}}" aria-valuemin="0"
-                                            aria-valuemax="100" style="width: {{$peralatan->kondisi_product}}%">
-                                            {{$peralatan->kondisi_product}}</div>
+            <div class="card-header bg-info">
+                <p class="m-0 text-white font-weight-bolder">KONDISI PRODUK</p>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table  table-borderless">
+                        <tr>
+                            <th>KONDISI</th>
+                            <td>:</td>
+                            <td>
+                                <div class="progress vw-90">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                                        aria-valuenow="{{$peralatan->kondisi_product}}" aria-valuemin="0"
+                                        aria-valuemax="100" style="width: {{$peralatan->kondisi_product}}%">
+                                        {{$peralatan->kondisi_product}}</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Request tahun pergantian</th>
+                            <td>:</td>
+                            <td>{{$peralatan->usia_barang}} tahun</td>
+                        </tr>
+                        <tr>
+                            <th>Penurunan nilai barang</th>
+                            <td>:</td>
+                            <td>
+                                <div class="progress">
+                                <div  id="progress-bar-{{$peralatan->id}}" class="progress-bar progress-bar-striped progress-bar-animated"
+                                        role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: {{round($peralatan->kondisi_product)}}%">
                                     </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Request tahun pergantian</th>
-                                <td>:</td>
-                                <td>{{$peralatan->usia_barang}} tahun</td>
-                            </tr>
-                            <tr>
-                                <th>Penurunan nilai barang</th>
-                                <td>:</td>
-                                <td>
-                                    <div class="progress">
-                                    <div  id="progress-bar-{{$peralatan->id}}" class="progress-bar progress-bar-striped progress-bar-animated"
-                                            role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: {{$peralatan->kondisi_product}}%">
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>TANGGAL pendataan</th>
-                                <td>:</td>
-                                @if($peralatan->update_at != null)
-                                <td>{{ $peralatan->update_at->format('Y-m-d') }}</td>
-                                @else
-                                <td>{{ $peralatan->created_at->format('Y-m-d') }}</td>
-                                @endif
-                            </tr>
-                            <tr>
-                                <th>SURVEYOR</th>
-                                <td>:</td>
-                                <td>{{$peralatan->user->nama_user}}</td>
-                            </tr>
-                            <tr>
-                                <th>Saran Perbaikan</th>
-                                <td>:</td>
-                                <td>{{$peralatan->saran_perbaikan}}</td>
-                            </tr>
-                        </table>
-                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>TANGGAL pendataan</th>
+                            <td>:</td>
+                            @if($peralatan->update_at != null)
+                            <td>{{ $peralatan->update_at->format('Y-m-d') }}</td>
+                            @else
+                            <td>{{ $peralatan->created_at->format('Y-m-d') }}</td>
+                            @endif
+                        </tr>
+                        <tr>
+                            <th>SURVEYOR</th>
+                            <td>:</td>
+                            <td>{{$peralatan->user->nama_user}}</td>
+                        </tr>
+                    </table>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="card shado mt-2">
+            <div class="card-header bg-info">
+                <p class="m-0 text-white font-weight-bolder">Saran perawatan dan perbaikan</p>
+            </div>
+            <div class="card-body">
+                <p>{{ $peralatan->saran_perbaikan ?? 'belum ada saran' }}</p>
+            </div>
         </div>
     </div>
    
@@ -149,7 +154,7 @@
 <!-- history table -->
 <div class="card shadow mt-3">
     <div class="card-header bg-info">
-        <p class="m-0 text-white font-weight-bolder">HISTORY PERALATAN</p>
+        <p class="m-0 text-white font-weight-bolder">Riwayat Peralatan</p>
     </div>
     <div class="card-body">
         <div class="table-responsive">

@@ -35,13 +35,13 @@
             <tr>
                 <th>Status Alat</th>
                 <td>:</td>
-                <td>{{$dataApp->keterangan}}</td>
+                <td>{{$dataApp->produk_dalam_kondisi}}</td>
             </tr>
         </table>
     </div>
 </div>
 <div class="card shadow p-4">
-    <form action="{{route('estimate.store')}}" method="post">
+    <form action="{{route('estimate.store')}}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="row">
             <input name="id_instansi" value="{{$dataApp->instansi->id}}" hidden>
@@ -63,19 +63,24 @@
             </div>
             <div class="form-group col-md-6">
                 <label for="level">Harga</label>
-                <input type="number" name="harga" class="form-control">
+                <input required type="number" name="harga" class="form-control">
             </div>
             <div class="form-group col-md-6">
                 <label for="level">Quantity</label>
-                <input type="number" name="quantity" class="form-control">
+                <input required type="number" name="quantity" class="form-control">
             </div>
             <div class="form-group col-md-6">
                 <label for="level">keterangan</label>
-                <input type="text" name="keterangan" class="form-control">
+                <input required type="text" name="keterangan" class="form-control">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="level">Upload surat penawaran harga</label>
+                <input required type="file" name="berkas_photo" class="p-0 form-control">
+                <small>file format : pdf, png, jpg, jpeg</small>
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Tambahkan</button>
-        <a href="{{route('peralatan.index')}}" class="btn btn-secondary">cencel</a>
+        <a href="{{route('peralatan.index')}}" class="btn btn-secondary">cancel</a>
     </form>
 </div>
 

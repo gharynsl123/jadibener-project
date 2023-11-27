@@ -1,3 +1,7 @@
+<?php
+date_default_timezone_set('Asia/Jakarta');
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -8,8 +12,6 @@
 </head>
 
 <body>
-
-
     <table>
         <tr>
             <td>
@@ -17,24 +19,25 @@
                     alt="Gambar">
             </td>
             <td>
-                <p class="small mt-4">Komplek Indra Sentra blok V <br> Jl. Letjen Suprapto, RT.8/RW.3, Cemp. Putih
-                    Bar.,
-                    <br> Kec. Cemp. Putih, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10520
-                </p>
+                <h4 class="small mt-4">data diambil dari www.jadibener.com</h4>
             </td>
         </tr>
-
     </table>
-
     <hr>
-    
-    <p>Tanggal Print:
 
+    <p>Tanggal Print:
         <strong>
             <?php echo date("l"); ?>
         </strong>
         <?php echo date("d-m-Y H:i"); ?>
     </p>
+
+    <p>Foto Produk</p>
+    @if($peralatan->produk->photo_produk)
+    <img src="{{ asset('storage/produk/' . $peralatan->produk->photo_produk) }}" style="width:250px;">
+    @else
+    belum ada gambar untuk produk
+    @endif
 
     <!-- Keterangan Produk -->
     <div class="card shadow mb-3">
@@ -58,36 +61,43 @@
                 </tr>
                 <tr>
                     <td>Durasi Pemakaian : <strong> <span>{{ date('Y') - $peralatan->tahun_pemasangan }}
-                                tahun</span> </strong> </td>
+                            tahun</span> </strong> </td>
                     <td>Status Alat : <strong> {{$peralatan->produk_dalam_kondisi}} </strong> </td>
                 </tr>
                 <tr>
-                    <td>Kondisi : <strong> {{$peralatan->kondisi_product}} % </strong> </td>
+                    <td>Kondisi saat di survey: <strong> {{$peralatan->kondisi_product}} % </strong> </td>
                     <td>Request tahun pergantian : <strong> {{$peralatan->usia_barang}} tahun </strong> </td>
                 </tr>
                 <tr>
-                    <td>Penurunan nilai barang : <strong> {{ 100 - ($peralatan->usia_barang % date('Y')) }}%
+                    <td>Penurunan nilai barang : <strong> {{ round(100 - ((date('Y') - $peralatan->tahun_pemasangan) / $peralatan->usia_barang * 100)) }}%
                         </strong> </td>
                     <td>Tanggal pendataan : <strong> @if($peralatan->update_at != null)
                             {{ $peralatan->update_at->format('Y-m-d') }} @else
-                            {{ $peralatan->created_at->format('Y-m-d') }} @endif </strong> </td>
-                </tr>
-                <tr>
-                    <td>Surveyor : <strong> {{$peralatan->user->nama_user}} </strong> </td>
-                    <td>Saran Perbaikan : <strong> {{$peralatan->saran_perbaikan}} </strong> </td>
+                            {{ $peralatan->created_at->format('Y-m-d') }} @endif </strong> 
+                    </td>
                 </tr>
             </table>
+        </div>
+    </div>
+
+    <!-- Keterangan Produk -->
+    <div class="card shadow mb-3">
+        <div class="card-header bg-info">
+            <p class="m-0 text-white font-weight-bolder">Saran perawatan dan perbaikan</p>
+        </div>
+        <div class="card-body">
+            <p class="mb-3 font-weight-bolder">Nama Surveyor : <strong> {{$peralatan->user->nama_user}}</p>
+            <p> {{$peralatan->saran_perbaikan ?? 'belum ada saran' }} </p>
         </div>
     </div>
 
     <!-- history table -->
     <div class="card shadow mt-3">
         <div class="card-header bg-info">
-            <p class="m-0 text-white font-weight-bolder">HISTORY PERALATAN</p>
+            <p class="m-0 text-white font-weight-bolder">5 riwayat peralatan terakhir</p>
         </div>
         <div class="card-body">
             <div class="table-responsive">
-
                 <table class="table  table-borderless">
                     <thead>
                         <tr>
@@ -100,7 +110,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($history as $items)
+                        @php
+                        // Hitung jumlah item dalam $history
+                        $totalItems = count($history);
+                        @endphp
+                        @foreach($history->slice(-5) as $items)
                         <tr>
                             <td>{{$loop->iteration}}</td>
                             <td>{{$items->status_history}}</td>
@@ -123,6 +137,7 @@
             </div>
         </div>
     </div>
+
 </body>
 
 </html>

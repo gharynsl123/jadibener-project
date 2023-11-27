@@ -1,6 +1,15 @@
 @extends('layouts.main-view')
+
 @section('title', 'Tambahkan Alat')
+
 @section('content')
+
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
 <div class="card border-left-success p-3">
 
     <div class="d-flex">

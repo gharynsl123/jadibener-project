@@ -75,10 +75,10 @@
             <option value="{{ $item->nama_kategori }}">{{ $item->nama_kategori }}</option>
             @endforeach
         </select>
-        @if(Auth::user()->level == 'pic' && (Auth::user()->departement == 'Purcashing' || Auth::user()->departement == 'IPS-RS') || Auth::user()->level == 'admin' ||  Auth::user()->level == 'surveyor')
+        @if(Auth::user()->level == 'pic' && (Auth::user()->departement == 'Purcashing' || Auth::user()->departement == 'IPS-RS') || Auth::user()->level == 'admin' ||  Auth::user()->level == 'surveyor' ||  Auth::user()->level == 'teknisi')
         <label for="col-md-3">Shortby Department:</label>
         <select id="departemen-select">
-            <option value="">Semua departement</option>
+            <option value="">Semua departemen</option>
             <option value="Hospital Kitchen">Hospital Kitchen</option>
             <option value="CSSD">CSSD</option>
         </select>
@@ -88,10 +88,11 @@
             <table class="table table-hover table-borderless" id="dataTable" width="100%" cellspacing="0">
                 <thead class="bg-dark text-white">
                     <tr>
-                        <th class="th-start">Instansi</th>
-                        <th>Kategori</th>
-                        <th >Departement</th>
-                        <th>Merk</th>
+                        <th class="th-start">detail</th>
+                        <th>Instansi</th>
+                        <th class="d-none">Kategori</th>
+                        <th class="d-none">Departement</th>
+                        <th class="d-none">Merk</th>
                         <th>Product</th>
                         <th>Serial Number</th>
                         <th>Instalasi</th>
@@ -106,25 +107,28 @@
                 <tbody>
                     @foreach($peralatan as $peralatans)
                     <tr>
+                        <td>
+                            <a class="btn-de" data-id="{{ $peralatans->id }}">
+                                <i class="fas fa-angle-right"></i>
+                            </a>
+                        </td>
                         <td>{{ $peralatans->instansi->nama_instansi }}</td>
-                        <td>{{ $peralatans->kategori->nama_kategori }}</td>
-                        <td >{{ $peralatans->kategori->departement ? $peralatans->kategori->departement : 'Belum ada departement'}}</td>
-                        <td>{{ $peralatans->merek->nama_merek }}</td>
+                        <td class="d-none">{{ $peralatans->kategori->nama_kategori }}</td>
+                        <td class="d-none">{{ $peralatans->kategori->departement ? $peralatans->kategori->departement : 'Belum ada departement'}}</td>
+                        <td class="d-none">{{ $peralatans->merek->nama_merek }}</td>
                         <td>{{ $peralatans->produk->nama_produk}}</td>
                         <td>
                             <a href="{{ route('peralatan.show', $peralatans->slug) }}">{{ $peralatans->serial_number }}</a>
                         </td>
                         <td>{{ $peralatans->tahun_pemasangan }}</td>
-
                         <td>
                             <span id="selisih-tahun-{{ $peralatans->id }}"></span>
                         </td>
                         <td>{{$peralatans->produk_dalam_kondisi}}</td>
-
                         <td>
                             <div class="progress">
-                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-                                    aria-valuenow="{{$peralatans->kondisi_product}}" aria-valuemin="0"
+                                <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                    role="progressbar" aria-valuenow="{{$peralatans->kondisi_product}}" aria-valuemin="0"
                                     aria-valuemax="100" style="width: {{$peralatans->kondisi_product}}%">
                                     {{$peralatans->kondisi_product}}</div>
                             </div>
@@ -132,16 +136,18 @@
                         @if (Auth::user()->level == 'admin' || Auth::user()->level == 'teknisi' || Auth::user()->level
                         == 'surveyor')
                         <td class="hide-when-checklist-shown">
-                            <a href="{{ route('peralatan.edit', $peralatans->slug) }}" class="btn btn-warning btn-sm"><i
-                                    class="fa fa-pen-to-square text-white"></i></a>
-                            <form action="{{ route('peralatan.destroy', $peralatans->id) }}" method="POST"
-                                class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button class="btn btn-danger btn-sm"
-                                    onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"> <i
-                                        class="fa fa-trash text-white"></i></button>
-                            </form>
+                            <div style="display: flex; gap: 5px;">
+                                <a href="{{ route('peralatan.edit', $peralatans->slug) }}"
+                                    class="btn btn-warning btn-sm"><i class="fa fa-pen-to-square text-white"></i></a>
+                                <form action="{{ route('peralatan.destroy', $peralatans->id) }}" method="POST"
+                                    class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"> <i
+                                            class="fa fa-trash text-white"></i></button>
+                                </form>
+                            </div>
                         </td>
                         @endif
                     </tr>
@@ -152,13 +158,41 @@
     </div>
 </div>
 @else
-Kamu Belum Memiliki Departemen. Hubungi Admin kami untuk mendapatkan acces
+Kamu Belum Memiliki Departemen. Hubungi Admin kami untuk mendapatkan akses.
 @endif
 @endsection
 
 @section('custom-js')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    var table = $('#dataTable').DataTable({
+        "columnDefs": [
+            { "orderable": false, "targets": -1 } // Menonaktifkan pengurutan pada kolom terakhir (tombol lihat)
+        ],
+    });
+
+    $('#dataTable tbody').on('click', 'a.btn-de', function () {
+        var row = table.row($(this).parents('tr'));
+        var peralatanID = $(this).data('id');
+
+        if (row.child.isShown()) {
+            // Tutup child row jika sudah terbuka
+            row.child.hide();
+            $(this).find('i').removeClass('fa-angle-down').addClass('fa-angle-right');
+        } else {
+            // Ambil informasi tambahan dari server (misalnya, dengan AJAX)
+            $.ajax({
+                url: '/peralatan/' + peralatanID + '/details', // Ganti dengan URL yang sesuai
+                method: 'GET',
+                success: function (data) {
+                    // Tampilkan informasi tambahan dalam child row
+                    row.child(data).show();
+                },
+            });
+            $(this).find('i').removeClass('fa-angle-right').addClass('fa-angle-down');
+        }
+    });
+
     const kategoriSelect = document.getElementById('kategori-select');
     const departemenSelect = document.getElementById('departemen-select'); 
     const rows = document.querySelectorAll('#dataTable tbody tr');
@@ -171,8 +205,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const selectedDepartemen = departemenSelect.value;
 
         rows.forEach(row => {
-            const kategoriCell = row.querySelector('td:nth-child(2)');
-            const departemenCell = row.querySelector('td:nth-child(3)');
+            const kategoriCell = row.querySelector('td:nth-child(3)'); // Mengganti indeks kolom sesuai urutan kolom pada tabel
+            const departemenCell = row.querySelector('td:nth-child(4)'); // Mengganti indeks kolom sesuai urutan kolom pada tabel
 
             const isKategoriMatch = selectedKategori === '' || kategoriCell.textContent === selectedKategori;
             const isDepartemenMatch = selectedDepartemen === '' || departemenCell.textContent === selectedDepartemen;
@@ -184,7 +218,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-
 
     function hitungSelisihTahun(tahunPemasangan) {
         const tahunSekarang = new Date().getFullYear();

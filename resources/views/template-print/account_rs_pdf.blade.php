@@ -1,3 +1,7 @@
+<?php
+date_default_timezone_set('Asia/Jakarta');
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,6 +15,29 @@
 </head>
 
 <body>
+    <table>
+        <tr>
+            <td>
+                <img src="{{ asset('image/mdh_logo.png') }}" class="image-thumbnail" style="width: 180px;"
+                    alt="Gambar">
+            </td>
+            <td>
+                <h4 class="small mt-4">data di ambil dari www.jadibener.com</h4>
+            </td>
+        </tr>
+
+    </table>
+
+    <hr>
+    
+    <p>Tanggal Print:
+
+        <strong>
+            <?php echo date("l"); ?>
+        </strong>
+        <?php echo date("d-m-Y H:i"); ?>
+    </p>
+
     <h1 class="h3 mb-4">Profile Rumah Sakit</h1>
     <div class="card shadow">
         <div class="row">

@@ -40,7 +40,7 @@
                         <td>{{$instansi->jumlah_kasur}}</td>
                     </tr>
                     <tr>
-                        <td>Jenis Instansi</td>
+                        <td>JENIS INSTANSI</td>
                         <td>:</td>
                         <td>{{$instansi->jenis_instansi}}</td>
                     </tr>
@@ -48,6 +48,12 @@
                         <td>NO. MEMBER</td>
                         <td>:</td>
                         <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>JUMLAH PERALATAN</td>
+                        <td>:</td>
+                        <td><a href="{{route('peralatan.index')}}">{{$alatPeralatan}} Peralatan</a></td>
                     </tr>
                 </tbody>
             </table>

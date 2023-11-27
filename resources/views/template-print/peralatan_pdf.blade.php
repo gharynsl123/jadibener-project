@@ -1,6 +1,7 @@
 <?php
 date_default_timezone_set('Asia/Jakarta');
 ?>
+
 <!DOCTYPE html>
 <html>
 
@@ -12,10 +13,11 @@ date_default_timezone_set('Asia/Jakarta');
 </head>
 
 <style>
-    .text-cotummen{
-        font-size : 12px;
+    .text-cotummen {
+        font-size: 12px;
     }
 </style>
+
 <body>
     <table>
         <tr>
@@ -24,56 +26,33 @@ date_default_timezone_set('Asia/Jakarta');
                     alt="Gambar">
             </td>
             <td>
-                <p class="small mt-4">Komplek Indra Sentra blok V <br> Jl. Letjen Suprapto, RT.8/RW.3, Cemp. Putih Bar.,
-                    <br> Kec. Cemp. Putih, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10520
-                </p>
+                <p class="small mt-4">data di ambil dari www.jadibener.com</p>
             </td>
         </tr>
-
     </table>
 
     <hr>
 
-
     <h3 class="text-dark">
-        List Peralatan @if(Auth::user()->level != 'pic')
-        Rumah Sakit @else <br> 
-        {{ $instansi->nama_instansi }} @endif
+        @if(Auth::user()->level != 'pic') Rumah Sakit @else <br> {{ $instansi->nama_instansi }} @endif List Peralatan
     </h3>
 
-
     <p>Tanggal Print:
-
         <strong>
             <?php echo date("l"); ?>
         </strong><br>
         <?php echo date("d-m-Y H:i"); ?>
     </p>
 
-
     <p>
-        @if(Auth::user()->level == 'pic')
-        Departement:{{$user->departement}}
-        @endif
+        @if(Auth::user()->level == 'pic') Departement:{{$user->departement}} @endif
     </p>
-
-
 
     <div class="table-resposive">
         <table class="table table-borderless">
             @foreach($peralatan as $item)
-            <thead>
-                <tr>
-                </tr>
-            </thead>
             <tbody>
                 <tr>
-                    @if($item->photo_produk)
-                    <td>
-                        <img src="{{ asset('storage/produk/' . $item->produk->photo_produk) }}"
-                            style="width:100px;">
-                    </td>
-                    @endif
                     <td>
                         <p class="text-dark ">
                             Nama : <strong> {{ $item->produk->nama_produk }} </strong> <br>
@@ -82,15 +61,22 @@ date_default_timezone_set('Asia/Jakarta');
                             Instansi: <strong>{{ $item->instansi->nama_instansi }}</strong><br>
                             @endif
                             Kategori: <strong>{{ $item->kategori->nama_kategori }}</strong><br>
-                            Kondisi Barang: <strong>{{ $item->kondisi_product}} %</strong><br>
-                            keterangan barang: <strong> {{ $item->keterangan }}</strong><br>
+                            request user barang: <strong>{{ $item->usia_barang }}</strong><br>
+                            Kondisi Barang: <strong> {{ max(0, round(100 - ((date('Y') - $item->tahun_pemasangan) / $item->usia_barang * 100))) }}%</strong><br>
+                            Keterangan barang: <strong> {{ $item->produk_dalam_kondisi }}</strong><br>
                             Instalasi: <strong>{{ $item->tahun_pemasangan }}</strong></span></p>
                     </td>
+                    @if($item->produk->photo_produk === null)
+                        <p>Tidak ada gambar untuk produk ini</p>
+                    @else
+                        <td>
+                            <img src="{{ asset('storage/produk/' . $item->produk->photo_produk) }}" style="width:100px;">
+                        </td>
+                    @endif
                 </tr>
             </tbody>
             @endforeach
         </table>
     </div>
 </body>
-
 </html>

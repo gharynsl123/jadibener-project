@@ -13,29 +13,23 @@ use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Imports\PeralatanImport;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
 class PeralatanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
-    public function index()
-    {
-        $peralatan = null;
-        
+    // authorization
+    public function __construct() { $this->middleware('auth'); }
+
+    // index page configuration
+    public function index() {
+        $peralatan = null;        
+
         $kategori = Kategori::all();
-
-        $departemenUser = Auth::user()->departement;
         $userAuth = Auth::user()->id_instansi;
+        $departemenUser = Auth::user()->departement;
         
         if (Auth::user()->level == 'pic'){
             $peralatan = Peralatan::where('id_instansi', $userAuth)->get();
@@ -56,94 +50,101 @@ class PeralatanController extends Controller
         return view('peralatan.index_peralatan', compact(  'kategori', 'peralatan'));
     }
 
-
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
+    // create page
+    public function create() {
         $merek = Merek::all();
+        $product = Produk::all();
         $kategori = Kategori::all();
         $instansi = Instansi::all();
-        $product = Produk::all();
+
         return view('peralatan.create_peralatan', compact('merek', 'kategori', 'instansi', 'product'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $peralatan = $request->all();
-        $today = Carbon::now();
-        $formatedDate = $today->format('y-m-d');
-        $peralatan['slug'] = strtoupper(Str::slug($peralatan['serial_number']) . '-' . $formatedDate);
-
-        $dataPeralatan = Peralatan::create($peralatan);
-        
-        $history = [
-            'status_history' => 'Pendataan Alat',
-            'deskripsi' => 'Disurvey pada oleh ' . Auth::user()->nama_user,
-            'tanggal' => $formatedDate,
-        ];
-        $history['id_peralatan'] = $dataPeralatan->id;
-        $history['id_user'] = $request->id_user;
-
-        History::create($history);
-
-        return redirect('/peralatan')->with('success', 'Data Peralatan Berhasil Ditambahkan');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-
-     public function import(Request $request)
-     {
-         $file = $request->file('file'); // Ambil file Excel dari formulir
-         Excel::import(new PeralatanImport, $file);
-         return redirect()->back()->with('success', 'Data berhasil diimpor.');
-     }
-
-    public function show($slug)
-    {
-        // Mengambil data peralatan berdasarkan ID
+    // detail page
+    public function show($slug) {
         $peralatan = Peralatan::where('slug', $slug)->first();
-        
-        // mengambil data history sesuai id peraltan yang di tuju
         $history = History::where('id_peralatan', $peralatan->id)->get();
-        // Mengirim data peralatan ke view
+
         return view('peralatan.detail_peralatan', compact('peralatan', 'history'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($slug)
-    {
-        // Mengambil data peralatan berdasarkan ID
-        $peralatan = Peralatan::where('slug', $slug)->first();
+
+    // edit page
+    public function edit($slug) {
         $merek = Merek::all();
+        $product = Produk::all();
         $kategori = Kategori::all();
         $instansi = Instansi::all();
-        $product = Produk::all();
+        $peralatan = Peralatan::where('slug', $slug)->first();
 
-        // Mengirim data peralatan ke view
         return view('peralatan.edit_peralatan', compact('peralatan', 'merek', 'kategori', 'instansi', 'product'));
     }
 
+    // function store action
+    public function store(Request $request) {
+
+        try {
+            $peralatan = $request->all();
+            $timezone = 'Asia/Jakarta';
+
+            $today = Carbon::now($timezone);
+            $formatedDate = $today->format('y-m-d');
+            $peralatan['slug'] = strtoupper(Str::slug($peralatan['serial_number']) . '-' . $formatedDate);
+
+            $dataPeralatan = Peralatan::create($peralatan);
+            
+            $history = [
+                'status_history' => 'Pendataan Alat',
+                'deskripsi' => 'Disurvey pada oleh ' . Auth::user()->nama_user,
+                'tanggal' => $formatedDate,
+            ];
+            $history['id_peralatan'] = $dataPeralatan->id;
+            $history['id_user'] = $request->id_user;
+
+            History::create($history);
+
+            return redirect('/peralatan')->with('success', 'Data Peralatan Berhasil Ditambahkan');
+        } catch (QueryException $e) {
+            return redirect()->back()->with('error', 'Error saving user data.')->withInput();
+        }
+        
+    }
+
+    // function update action
+    public function update(Request $request, $id) {
+
+        try {
+            $peralatan = Peralatan::find($id);
+            $peralatan->update($request->all());
+    
+            $timezone = 'Asia/Jakarta';
+            $today = Carbon::now($timezone);
+            $formatedDate = $today->format('y-m-d');
+    
+            $history = [
+                'status_history' => 'Alat di survey',
+                'deskripsi' => 'Disurvey oleh ' . Auth::user()->nama_user,
+                'tanggal' => $formatedDate,
+            ];
+            $history['id_peralatan'] = $peralatan->id;
+            $history['id_user'] = $request->id_user;
+    
+            History::create($history);
+    
+            return redirect('/peralatan')->with('success', 'Data Peralatan Berhasil Diupdate');
+        } catch (QueryException $e) {
+            return redirect()->back()->with('error', 'Error saving user data.')->withInput();
+        }
+    }
+
+    // function delete action
+    public function destroy($id) {
+        $peralatan = Peralatan::find($id);
+        $peralatan->delete();
+        return redirect('/peralatan')->with('success', 'Data Peralatan Berhasil Dihapus');
+    }
+
+    // function ajax data instansi
     public function getAjaxInstansi(Request $request) {
         $query = $request->input('q');
 
@@ -153,45 +154,25 @@ class PeralatanController extends Controller
         return response()->json($instansi);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        // Mengambil data peralatan berdasarkan ID
-        $peralatan = Peralatan::find($id);
-        $peralatan->update($request->all());
+    // function detail alat
+    public function getAlatDetails($id) {
+       // Ambil informasi tambahan dari database berdasarkan ID user
+       $peralatan = Peralatan::find($id);
 
-        $today = Carbon::now();
-        $formatedDate = $today->format('y-m-d');
+       // Misalnya, Anda dapat mengembalikan informasi dalam format HTML
+       $details = '<p>Nama Produk: <strong>' . $peralatan->produk->nama_produk . '</strong></p>' .
+                   '<p>Nama Instansi: <strong>' . $peralatan->instansi->nama_instansi . '</strong></p>' .
+                   '<p>Kategori Peralatan: <strong>' . $peralatan->kategori->nama_kategori . '</strong></p>' .
+                   '<p>Departemen: <strong>' . $peralatan->departement . '</strong></p>' .
+                   '<p>Merek Peralatan: <strong>' . $peralatan->merek->nama_merek . '</strong></p>' ;
 
-        $history = [
-            'status_history' => 'Alat di survey',
-            'deskripsi' => 'Disurvey oleh ' . Auth::user()->nama_user,
-            'tanggal' => $formatedDate,
-        ];
-        $history['id_peralatan'] = $peralatan->id;
-        $history['id_user'] = $request->id_user;
-
-        History::create($history);
-
-        return redirect('/peralatan')->with('success', 'Data Peralatan Berhasil Diupdate');
+       return $details;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $peralatan = Peralatan::find($id);
-        $peralatan->delete();
-        return redirect('/peralatan')->with('success', 'Data Peralatan Berhasil Dihapus');
+    // function import
+    public function import(Request $request) {
+        $file = $request->file('file'); // Ambil file Excel dari formulir
+        Excel::import(new PeralatanImport, $file);
+        return redirect()->back()->with('success', 'Data berhasil diimpor.');
     }
 }

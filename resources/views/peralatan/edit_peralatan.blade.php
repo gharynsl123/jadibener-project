@@ -1,5 +1,14 @@
 @extends('layouts.main-view')
+
+@section('title', 'Edit Peralatan')
+
 @section('content')
+
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
 
 <div class="card border-left-primary p-3">
 

@@ -12,7 +12,7 @@
                 <input type="file" required name="file">
                 <button class="btn btn-secondary" type="submit">Import Data</button>
             </div>
-            <small>format file Xsl, CSV</small>
+            <small>format file xlsx, CSV</small>
         </form>
 
         <input type="text" id="searchInput" class="form-control mb-4" placeholder="Search by Name">

@@ -25,6 +25,7 @@ class CreateEstimasibiayaTable extends Migration
             $table->foreign('id_peralatan')->references('id')->on('peralatan')->onDelete('cascade');
             $table->foreign('id_part')->references('id')->on('part')->onDelete('cascade');
             $table->string('keterangan');
+            $table->string('berkas_photo');
             $table->string('quantity');
             $table->timestamps();
         });

@@ -151,11 +151,13 @@ function showPage(pageNumber) {
     if (pageNumber === 1) {
         $('#btn-submit').hide();
         $('.pic-form').hide();
+        $('#nextPage').show();
         $('.instansi-form').show();
     } else if (pageNumber === 2) {
         $('.pic-form').show();
         $('.instansi-form').hide();
         $('#btn-submit').show();
+        $('#nextPage').hide();
     }
 
     // Update any other UI elements as needed

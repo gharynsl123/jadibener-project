@@ -83,14 +83,14 @@
                                         <form action="{{ route('instansi.destroy', $items->id) }}" method="POST">
                                             @csrf
                                             {{method_field('DELETE')}}
-                                            <a href="{{ route('instansi.show', $items->id) }}" class="btn btn-primary">
+                                            <a href="{{ route('instansi.show', $items->id) }}" class="btn btn-sm btn-primary">
                                                 <i class="fa fa-eye text-white"></i>
                                             </a>
                                             <!-- Edit -->
-                                            <a href="{{route('instansi.edit', $items->id)}}" class="btn btn-warning">
+                                            <a href="{{route('instansi.edit', $items->id)}}" class="btn btn-sm btn-warning">
                                                 <i class="fa fa-pen-to-square"></i>
                                             </a>
-                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus {{$items->nama_instansi}} ini?')">
+                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus {{$items->nama_instansi}} ini?')">
                                                 <i class="fa fa-trash text-white"></i>
                                             </button>
                                         </form>
@@ -105,21 +105,23 @@
                                 <td>{{$items->jenis_instansi}}</td>
                                 <td>{{ !empty($items->jumlah_kasur) ? $items->jumlah_kasur : 0 }}</td>
                                 <td>
-                                    <!-- Membuat form delete -->
-                                    <form action="{{ route('instansi.destroy', $items->id) }}" method="POST">
-                                        @csrf
-                                        {{method_field('DELETE')}}
-                                        <a href="{{ route('instansi.show', $items->id) }}" class="btn btn-primary">
+                                    <div style="display: flex; gap: 5px;">
+                                        <a href="{{ route('instansi.show', $items->id) }}" class="btn btn-sm btn-primary">
                                             <i class="fa fa-eye text-white"></i>
                                         </a>
                                         <!-- Edit -->
-                                        <a href="{{route('instansi.edit', $items->id)}}" class="btn btn-warning">
+                                        <a href="{{route('instansi.edit', $items->id)}}" class="btn btn-sm btn-warning">
                                             <i class="fa fa-pen-to-square text-white"></i>
                                         </a>
-                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus {{$items->nama_instansi}} ini?')">
-                                            <i class="fa fa-trash text-white"></i>
-                                        </button>
-                                    </form>
+                                        <!-- Membuat form delete -->
+                                        <form action="{{ route('instansi.destroy', $items->id) }}" method="POST">
+                                            @csrf
+                                            {{method_field('DELETE')}}
+                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus {{$items->nama_instansi}} ini?')">
+                                                <i class="fa fa-trash text-white"></i>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endif

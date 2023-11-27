@@ -39,7 +39,7 @@
                             <div class="p-5 ">
                                 <div class="text-center mb-4">
                                     <h1 class="h4 text-gray-900 p-0 m-0">Login to member</h1>
-                                    <small class=" text-gray-900 ">if You are Member Of Medtracos</small>
+                                    <img src="{{ asset('image/mdh_logo.png') }}" class="image-thumbnail" style="width: 200px;" alt="Gambar">
                                 </div>
                                 <form class="user" method="POST" action="{{route('login')}}">
                                     @csrf

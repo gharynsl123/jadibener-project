@@ -1,3 +1,7 @@
+<?php
+date_default_timezone_set('Asia/Jakarta');
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,8 +34,9 @@
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
-    <!-- Custom styles for this template -->
+    <!-- Custom styles for this template --> 
     <link href="{{asset('css/sb-admin-2.min.css')}}" rel="stylesheet">
+    <link href="{{asset('css/costume-style.css')}}" rel="stylesheet">
 
     <!-- Custom styles for this page -->
     <link href="{{asset('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
@@ -71,6 +76,17 @@
                     <span>Home</span></a>
             </li>
 
+            @if(Auth::user()->level == 'admin')
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <div class="slide-right"></div>
+                <a class="nav-link" href="{{url('/member-request')}}">
+                    <i class="fa fa-archive"></i>
+                    <span>Member Request</span></a>
+            </li>
+            @endif
+
+
             <!-- Nav Item - List Peralatan -->
             <li class="nav-item">
                 <div class="slide-right"></div>
@@ -99,14 +115,6 @@
                     <span>User Configuration</span></a>
             </li>
             @endif
-
-            <li class="nav-item">
-                <div class="slide-right"></div>
-                <a class="nav-link" href="{{route('profile.index')}}">
-                    <i class="fas fa-fw fa-user"></i>
-                    <span>Profile User</span></a>
-            </li>
-
 
             <!-- Nav Item Layanan Service-->
             <li class="nav-item">
@@ -183,16 +191,6 @@
                     <span>Informasi</span></a>
             </li>
 
-
-
-            <!-- Nav Item Logout-->
-            <li class="nav-item">
-                <a class="nav-link" href="" data-toggle="modal" data-target="#logoutModal" data-target="#logoutModal">
-                    <i class="fas fa-fw fa-sign-out"></i>
-                    <span>logout</span></a>
-            </li>
-
-
             <!-- Logout Modal-->
             <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
@@ -231,30 +229,45 @@
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
                     </button>
-
-                    <img src="{{ asset('image/mdh_logo.png') }}" class="image-thumbnail" style="width: 180px;"
-                        alt="Gambar">
-
+                    <a href="{{url('/')}}">
+                        <img src="{{ asset('image/mdh_logo.png') }}" class="image-thumbnail" style="width: 180px;"
+                            alt="Gambar">
+                    </a>
 
                     <!-- Topbar Navbar -->
-                    <ul class="navbar-nav ml-auto">
+                    <ul class="navbar-nav ml-auto ">
                         @guest
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                         </li>
                         @else
                         <div class="topbar-divider d-none d-sm-block"></div>
-                        <li class="nav-item">
-                            <a class="nav-link" id="userDropdown" role="button" data-toggle="dropdown"
+                        <li class="nav-item dropdown">
+                            <a class="nav-link  p-0 dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-4 d-lg-inline text-gray-600 small">{{ Auth::user()->nama_user }}</span>
                             </a>
+
+                            <div class="dropdown-menu p-0 m-0" aria-labelledby="userDropdown">
+                                <a class="dropdown-item m-0 p-2" href="{{route('profile.index')}}">Profile</a>
+                                <div class="dropdown-divider m-0 p-0"></div>
+                                <a class="dropdown-item m-0 p-2" href="" data-toggle="modal" data-target="#logoutModal" data-target="#logoutModal">
+                                    <i class="fas fa-fw fa-sign-out"></i>
+                                    <span>logout</span>
+                                </a>
+                            </div>
                         </li>
                         @endguest
                     </ul>
                 </nav>
 
                 <div class="container-fluid my-5">
+                    @if(session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
                     @yield('content')
                 </div>
 
@@ -298,5 +311,6 @@
 <script>
 CKEDITOR.replace('editor');
 </script>
+
 
 </html>

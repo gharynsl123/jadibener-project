@@ -19,7 +19,7 @@ class CreateProgressTable extends Migration
             $table->integer('id_pengajuan')->unsigned();
 
             $table->string('nilai_pengerjaan')->nullable();
-            $table->string('keterangan')->nullable();
+            $table->string('keterangan', 255)->nullable();
             $table->string('jadwal')->nullable();
             $table->string('slug');
             

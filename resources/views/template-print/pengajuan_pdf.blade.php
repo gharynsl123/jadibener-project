@@ -1,3 +1,7 @@
+<?php
+date_default_timezone_set('Asia/Jakarta');
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,9 +22,7 @@
                     alt="Gambar">
             </td>
             <td>
-                <p class="small mt-4">Komplek Indra Sentra blok V <br> Jl. Letjen Suprapto, RT.8/RW.3, Cemp. Putih Bar.,
-                    <br> Kec. Cemp. Putih, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10520
-                </p>
+                <p class="small mt-4">data di ambil dari www.jadibener.com</p>
             </td>
         </tr>
 
@@ -84,6 +86,7 @@
                 <p class="col-md-6"><strong>Nama Product :</strong> {{$pengajuan->peralatan->produk->nama_produk}}</p>
                 <p class="col-md-6"><strong>Kategori :</strong> {{$pengajuan->peralatan->kategori->nama_kategori}}</p>
                 <p class="col-md-6 text-danger"><strong>Masalah :</strong> {{$pengajuan->judul_masalah}}</p>
+                <p class="col-md-6 text-danger"><strong>Keterangan Tambahan :</strong> {{$pengajuan->deskripsi_masalah}}</p>
             </div>
         </div>
     </div>
@@ -163,30 +166,6 @@
                 @else
                 {{$progress->jadwal}}
                 @endif
-
-                @if(Auth::user()->level == 'teknisi')
-                <div class="col-md-6 @if($progress->nilai_pengerjaan == '100') d-none @endif">
-                    @if($progress->jadwal)
-                    @if(Auth::user()->id == $progress->id_user)
-                    <form action="{{ route('progress.update', $progress->id) }}" method="post">
-                        @csrf
-                        @method('PUT')
-                        <div class="form-group my-3">
-                            <label for="progress">progress</label>
-                            <input name="nilai_pengerjaan" type="number" class="form-control " required>
-                        </div>
-                        <input type="number" name="id_pengajuan" value="{{$pengajuan->id}}" class="d-none">
-                        <div class="form-group mb-3">
-                            <label for="keterangan">keterangan</label>
-                            <textarea name="keterangan" class="form-control " rows="2" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Update Progress</button>
-                        <a href="{{route('part.create', $pengajuan->slug)}}" class="btn btn-success">pergantian part</a>
-                    </form>
-                    @endif
-                    @endif
-                </div>
-                @endif
             </div>
             @endif
             @endif
@@ -227,5 +206,4 @@
 
     @endif
 </body>
-
 </html>

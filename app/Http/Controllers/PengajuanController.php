@@ -57,8 +57,10 @@ class PengajuanController extends Controller
         $pengajuan = $request->all();
         
         $peralatan = Peralatan::find($request->id_peralatan);
-        
-        $today = Carbon::now();
+        $timezone = 'Asia/Jakarta';
+
+
+        $today = Carbon::now($timezone);
         $formatedDate = $today->format('d-m-Y');
         $formattedSV = $today->format('ymdsv');
         $pengajuan['id_pengenal'] = "P" . $formattedSV;
@@ -120,7 +122,9 @@ class PengajuanController extends Controller
         $pengajuan->save();
     
         // Tambahkan history
-        $today = Carbon::now();
+        $timezone = 'Asia/Jakarta';
+        
+        $today = Carbon::now($timezone);
         $formattedDate = $today->format('y-m-d');
     
         $history = [

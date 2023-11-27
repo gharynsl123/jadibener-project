@@ -35,7 +35,10 @@ class HomeController extends Controller
         $user = Auth::user();
         $kategori = Kategori::all();
         $peralatan = Peralatan::all();
+
         $instansi = Auth::user()->instansi;
+        $userAuth = Auth::user()->id_instansi;
+        $alatPeralatan = Peralatan::where('id_instansi', $userAuth)->count();
         // Inisialisasi variabel untuk data pengajuan dan progress
         $pengajuan = null;
         $progress = null;
@@ -55,7 +58,7 @@ class HomeController extends Controller
         }
 
     
-        return view('home.admin', compact('instansi','dataReq', 'peralatan','kategori','user', 'progress', 'pengajuan'));
+        return view('home.admin', compact('instansi','dataReq', 'alatPeralatan', 'peralatan','kategori','user', 'progress', 'pengajuan'));
     }
 
     public function getProcessTicketCount()

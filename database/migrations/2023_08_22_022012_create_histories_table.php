@@ -24,7 +24,7 @@ class CreateHistoriesTable extends Migration
 
             $table->string('tanggal');
             $table->string('status_history');
-            $table->string('deskripsi')->nullable();
+            $table->text('deskripsi')->nullable();
             
             $table->foreign('id_estimasibiaya')->references('id')->on('estimasibiaya')->onDelete('cascade');
             $table->foreign('id_progress')->references('id')->on('progress')->onDelete('cascade');

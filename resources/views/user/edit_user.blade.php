@@ -1,6 +1,13 @@
 @extends('layouts.main-view')
 
 @section('content')
+
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
 <div class="card">
     <div class="card-header">{{ __('Edit User') }}</div>
 
@@ -63,7 +70,7 @@
 
                 <div class=" form-group col-md-6 " id="instansiField" style="display: none;">
                     <label for="pic">PIC INSTANSI</label>
-                    <select id="level" class="form-control" name="id_instansi">
+                    <select id="instansi-select" class="form-control" name="id_instansi">
                         <!-- jika data pic sebelumnya sudah ada maka tampilan datanya -->
                         <option value="">-- Select instansi --</option>
                         <!-- jika tidak ada maka tampilkan semua datanya -->
@@ -131,6 +138,8 @@ document.addEventListener('DOMContentLoaded', function() {
     var teknisiField = document.getElementById('teknisiField');
     var roleTeknisi = document.getElementById('roleTeknisi');
     var instansiField = document.getElementById('instansiField');
+
+    $('#instansi-select').select2();
 
     // ambil data dari level json
     var level = @json($user -> level);

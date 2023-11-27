@@ -68,6 +68,7 @@
             <p class="col-md-6"><strong>Nama Product :</strong> {{$pengajuan->peralatan->produk->nama_produk}}</p>
             <p class="col-md-6"><strong>Kategori :</strong> {{$pengajuan->peralatan->kategori->nama_kategori}}</p>
             <p class="col-md-6 text-danger"><strong>Masalah :</strong> {{$pengajuan->judul_masalah}}</p>
+            <p class="col-md-6 text-danger"><strong>Keterangan Tambahan :</strong> {{$pengajuan->deskripsi_masalah}}</p>
         </div>
     </div>
 </div>
@@ -165,7 +166,7 @@
                         <textarea name="keterangan" class="form-control " rows="2" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Update Progress</button>
-                    <a href="{{route('part.create', $peralatan->slug)}}" class="btn btn-success">pergantian part</a>
+                    <a href="{{route('part.create', $pengajuan->peralatan->slug)}}" class="btn btn-success">pergantian part</a>
                 </form>
                 @endif
                 @endif

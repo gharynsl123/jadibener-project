@@ -1,6 +1,13 @@
 @extends('layouts.main-view')
 
 @section('content')
+
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
 <div class="card shadow p-3 border-left-primary">
 
     <div class="d-flex">

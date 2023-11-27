@@ -3,18 +3,6 @@
 @section('title', 'User Configuration')
 
 @section('content')
-<style>
-.single-line {
-    max-width: 500px;
-    max-height: 1.9rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-</style>
-
 @if(Auth::user()->level != 'pic_rs')
 <a href="{{route('users.create')}}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">
     <i class="fas fa-plus fa-sm text-white-50"></i> Tambahkan Data User</a>
@@ -97,16 +85,18 @@
                             @endif
                         </td>
                         <td>
-                            <form action="{{ route('users.destroy', $users->id) }}" method="POST">
-                                @csrf
-                                {{ method_field('DELETE') }}
-                                <a href="{{ route('user.edit', $users->id) }}" class="btn btn-warning">
+                            <div style="display: flex; gap: 5px;">
+                                <a href="{{ route('user.edit', $users->id) }}" class="btn btn-warning btn-sm">
                                     <i class="fa fa-pen-to-square text-white"></i>
                                 </a>
-                                <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus {{$users->nama_user}} ini?')" class="btn btn-danger">
-                                    <i class="fa fa-trash text-white"></i>
-                                </button>
-                            </form>
+                                <form action="{{ route('users.destroy', $users->id) }}" method="POST">
+                                    @csrf
+                                    {{ method_field('DELETE') }}
+                                    <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus {{$users->nama_user}} ini?')" class="btn btn-sm btn-danger">
+                                        <i class="fa fa-trash text-white"></i>
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                     @endforeach
@@ -116,13 +106,13 @@
     </div>
 </div>
 <script>
+    
 $(document).ready(function () {
-    var table = $('#dataTable').DataTable({
-        "columnDefs": [
-            { "orderable": false, "targets": -1 } // Menonaktifkan pengurutan pada kolom terakhir (tombol lihat)
-        ],
-    });
-
+        var table = $('#dataTable').DataTable({
+            "columnDefs": [
+                { "orderable": false, "targets": -1 } // Menonaktifkan pengurutan pada kolom terakhir (tombol lihat)
+            ],
+        });
     $('#dataTable tbody').on('click', 'a.btn-de', function () {
         var row = table.row($(this).parents('tr'));
         var userId = $(this).data('id');
@@ -146,5 +136,6 @@ $(document).ready(function () {
     });
 });
 </script>
+
 
 @endsection
