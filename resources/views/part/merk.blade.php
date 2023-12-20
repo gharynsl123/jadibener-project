@@ -12,6 +12,12 @@
             <div class="card-body p-3">
                 <form>
                     <input type="text" name="nama_merek" id="nama_merek" class="mb-4 form-control" autocomplete="off" placeholder="Nama Merek">
+                    <select name="departement" id="departement" class="mb-4 form-control" autocomplete="off">
+                        <option value="">Select Departement</option>
+                        <option value="Hospital Kitchen">Hospital Kitchen</option>
+                        <option value="CSSD">CSSD</option>
+                    </select>
+
                     <button class="btn btn-primary btn-sm" id="addDataBtn" type="button" onclick="addData()">Input</button>
                     <button class="btn btn-success btn-sm" id="updateDataBtn" type="button" onclick="updateData()">Edit</button>
                     <button class="btn btn-secondary btn-sm" id="cancelBtn" type="button" onclick="cancelEdit()">Cancel</button>
@@ -28,6 +34,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Nama Merek</th>
+                                <th>Departement</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -51,14 +58,6 @@
 const itemsPerPage = 5; // Jumlah item per halaman
 let currentPage = 1; // Halaman saat ini
 
-// Event listener for the "Next" button
-$('#nextPageButton').click(function() {
-    console.log('Tombol "nect" ditekan');
-    if (currentPage < totalPages) {
-        currentPage++;
-        displayData(data);
-    }
-});
 
 $('#prevPageButton').click(function() {
     console.log('Tombol "Previous" ditekan');
@@ -103,6 +102,7 @@ function displayData(data) {
                     <tr>
                         <td>${key + 1}</td>
                         <td>${value.nama_merek}</td>
+                        <td>${value.departement}</td>
                         <td>
                             <button onclick="editData(${value.id})" class="btn btn-sm btn-primary">
                                 <i class="fa fa-pen-to-square text-white"></i>
@@ -149,6 +149,16 @@ function updatePagination(data) {
 }
 
 
+// Event listener for the "Next" button
+$('#nextPageButton').click(function() {
+    console.log('Tombol "nect" ditekan');
+    if (currentPage < totalPages) {
+        currentPage++;
+        displayData(data);
+    }
+});
+
+
 function changePage(page) {
     currentPage = page;
     displayData(data);
@@ -184,19 +194,22 @@ function getAllData() {
 
 function addData() {
     var namaMerek = $('#nama_merek').val();
+    var departement = $('#departement').val();
 
     $.ajax({
         type: "POST",
         url: "{{ route('merek.store') }}",
         data: {
             "_token": "{{ csrf_token() }}", // Pastikan token CSRF disertakan
-            "nama_merek": namaMerek
+            "nama_merek": namaMerek,
+            "departement": departement
         },
         success: function(response) {
             // Panggil fungsi getAllData() untuk mereload data
             getAllData();
             // Kosongkan input setelah data berhasil ditambahkan
             $('#nama_merek').val('');
+            $('#departement').val('');
         }
     });
 }
@@ -223,13 +236,15 @@ function editData(id) {
 
 function updateData(id) {
     var namaMerek = $('#nama_merek').val();
+    var departement = $('#departement').val();
 
     $.ajax({
         type: "PUT",
         url: "/update-merek/" + id,
         data: {
             "_token": "{{ csrf_token() }}",
-            "nama_merek": namaMerek
+            "nama_merek": namaMerek,
+            "departement": departement
         },
         success: function(response) {
             getAllData();
@@ -251,26 +266,6 @@ function cancelEdit() {
     $('#addDataBtn').show();
 }
 
-function updateData(id) {
-    var namaMerek = $('#nama_merek').val();
-
-    $.ajax({
-        type: "PUT",
-        url: "/update-merek/" + id,
-        data: {
-            "_token": "{{ csrf_token() }}",
-            "nama_merek": namaMerek
-        },
-        success: function(response) {
-            getAllData();
-            $('#nama_merek').val('');
-            $('#title-card').html('Add New Merek');
-
-            $('#updateDataBtn').hide();
-            $('#addDataBtn').show();
-        }
-    });
-}
 
 function deleteData(id) {
     if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {

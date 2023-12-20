@@ -13,7 +13,11 @@
 <div class="card border-left-primary p-3">
 
     <div class="d-flex">
+        @if (Auth::user()->level == 'pic')
         <a href="/peralatan" class="btn mr-3 btn-secondary">Cancel</a>
+        @else
+        <a href="/member-instansi" class="btn mr-3 btn-secondary">Cancel</a>
+        @endif
         <h3 class="m-0 p-0">Edit Daftar Peralatan RS</h3>
     </div>
     <form action="{{ route('peralatan.update', $peralatan->id) }}" class="mt-3"method="post">

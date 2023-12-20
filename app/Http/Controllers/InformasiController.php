@@ -89,8 +89,14 @@ class InformasiController extends Controller
      * @param  \App\Informasi  $informasi
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Informasi $informasi)
+    public function destroy($id)
     {
-        //
+        $informasi = Informasi::find($id);
+    
+        if ($informasi) {
+            $informasi->delete();
+        }
+    
+        return redirect()->back()->with('success', 'Informasi deleted successfully');    
     }
 }

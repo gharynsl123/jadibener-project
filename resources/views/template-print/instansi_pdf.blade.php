@@ -52,14 +52,14 @@ date_default_timezone_set('Asia/Jakarta');
 
                             <!-- Cari data PIC yang sesuai dengan instansi -->
                             @php
-                            $pic = App\User::where('id_instansi', $item->id)->get(); // Mencari data PIC berdasarkan
+                            $pic = App\User::where('id_instansi', $item->id)->get();
                             @endphp
 
                             @if($pic->isNotEmpty())
                             <!-- Periksa apakah ada data PIC -->
                             @foreach($pic as $picItem)
                             PIC : <strong> {{$picItem->nama_user}} </strong><br>
-                            role : <strong>{{$picItem->departement->nama_departement}} </strong><br>
+                            role : <strong>{{$picItem->nama_departement}} </strong><br>
                             @endforeach
                             @else
                             PIC: <strong>Belum ada PIC </strong><br>

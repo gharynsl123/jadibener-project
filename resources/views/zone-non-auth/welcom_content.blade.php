@@ -27,8 +27,8 @@
 
             <div class="container">
                 <div class="carousel-caption text-start">
-                    <h1>Pembersihan roda trolley secara rutin merupakan salah satu cara menjaga trolley lebih mudah dikendalikan</h1>
-                    <p>Roda trolley yang tersumbat rambut, debu dan kotoran dapat membuat laju trolley lebih lambat. Maka lakukanlah pembersihan rutin pada roda agar memudahkan akselerasi pada kemudi trolley.</p>
+                    <h1>Jadibener.com</h1>
+                    <p>Kami hadir untuk anda sebagai solusi pentingnya perawatan produk, agar tetap berfungsi secara optimal, kami membantu anda untuk tetap bisa melihat secara rutin kondisi produk yang Anda gunakan di Rumah sakit.</p>
                 </div>
             </div>
         </div>
@@ -45,8 +45,8 @@
 
             <div class="container">
                 <div class="carousel-caption">
-                    <h1>Pembersihan roda trolley secara rutin merupakan salah satu cara menjaga trolley lebih mudah dikendalikan</h1>
-                    <p>Roda trolley yang tersumbat rambut, debu dan kotoran dapat membuat laju trolley lebih lambat. Maka lakukanlah pembersihan rutin pada roda agar memudahkan akselerasi pada kemudi trolley.</p>
+                    <h1>Survey Berkala</h1>
+                    <p>Apa yang kami lakukan Dalam mewujudkan pencapaian optimal dalam kinerja produk anda adalah dengan mendata secara rinci identitas produk yang digunakan di Rumah Sakit.</p>
                 </div>
             </div>
         </div>
@@ -63,9 +63,8 @@
 
             <div class="container">
                 <div class="carousel-caption text-end">
-                    <h1>Instalasi Produk Medhigen</h1>
-                    <p>Some representative placeholder content for the third slide of this carousel.</p>
-                    <p><a class="btn btn-lg btn-primary" href="#">Browse gallery</a></p>
+                    <h1>Program service</h1>
+                    <p>Web database untuk melihat kondisi produk anda di Rumah Sakit, permintaan perbaikan dan kondisi update mesin yang Anda gunakan sepenuhnya dapat dilihat dari data yang tersimpan.</p>
                 </div>
             </div>
         </div>

@@ -16,6 +16,7 @@ date_default_timezone_set('Asia/Jakarta');
 
     <title>@yield('title')</title>
 
+    <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
     <!-- image icon web -->
     <link rel="shortcut icon" href="{{ asset('image/mdh.png') }}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -87,26 +88,48 @@ date_default_timezone_set('Asia/Jakarta');
             @endif
 
 
+            @if(Auth::user()->level == 'pic')
             <!-- Nav Item - List Peralatan -->
             <li class="nav-item">
                 <div class="slide-right"></div>
                 <a class="nav-link"
-                    href="@if (Auth::user()->level == 'pic_rs'){{route('peralatan.index')}}@else{{route('peralatan.index')}}@endif">
+                    href="{{route('peralatan.index')}}">
                     <i class="fas fa-fw fa-server"></i>
-                    <span>List Peralatan @if(Auth::user()->level == 'pic_rs')RS @endif</span></a>
+                    <span>List Peralatan RS </span></a>
             </li>
-
-
-            @if(Auth::user()->level == 'admin' || Auth::user()->level == 'surveyor' )
+            @endif
+            @if(Auth::user()->level == 'teknisi')
             <!-- Nav Item - List Peralatan -->
+            <li class="nav-item">
+                <div class="slide-right"></div>
+                <a class="nav-link"
+                    href="{{url('daftar-permohonan-ticket')}}">
+                    <i class="fas fa-fw fa-server"></i>
+                    <span>daftar permohonan ticket </span></a>
+            </li>
+            @endif
+
+
+
+            @if(Auth::user()->level == 'admin')
             <li class="nav-item">
                 <div class="slide-right"></div>
                 <a class="nav-link" href="{{route('instansi.index')}}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Data Instansi</span></a>
+                    <span>Data Instansi (general)</span></a>
             </li>
-
             @endif
+
+            @if(Auth::user()->level != 'pic')
+            <!-- Nav Item - List Peralatan -->
+            <li class="nav-item">
+                <div class="slide-right"></div>
+                <a class="nav-link" href="{{route('instansi.group')}}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Data Instansi (member)</span></a>
+            </li>
+            @endif
+
             @if(Auth::user()->level == 'admin' )
             <li class="nav-item">
                 <div class="slide-right"></div>
@@ -121,7 +144,13 @@ date_default_timezone_set('Asia/Jakarta');
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#layananCollapse"
                     aria-expanded="false" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-file"></i>
-                    <span>Layanan Service</span>
+                    <span>
+                        @if(Auth::user()->level != 'teknisi')
+                        Layanan Service
+                        @else
+                        Monitoring Service
+                        @endif
+                    </span>
                 </a>
                 <div id="layananCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
@@ -291,7 +320,6 @@ date_default_timezone_set('Asia/Jakarta');
 @yield('custom-js')
 
 <!-- Bootstrap core JavaScript-->
-<script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
 <script src="{{asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 

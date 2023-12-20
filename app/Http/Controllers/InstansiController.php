@@ -24,6 +24,17 @@ class InstansiController extends Controller
 
         return view('instansi.index_instansi', compact('instansi', 'user'));
     }
+
+    // index member onnly
+    public function group() {
+        $users = User::all();
+        $idpic = User::whereNotNull('id_instansi')->get();
+
+        // Ambil semua data instansi yang terkait dengan user yang memiliki id_instansi tidak null
+        $instansi = Instansi::whereIn('id', $idpic->pluck('id_instansi')->all())->get();
+
+        return view('instansi.index_instansi', compact('instansi', 'users', 'idpic'));
+    }
     
     // create page
     public function create() {
@@ -43,6 +54,7 @@ class InstansiController extends Controller
         // Mengambil data peralatan yang terkait dengan pengguna yang sesuai
         $alat = Peralatan::whereIn('departement', $departements)
             ->where('id_instansi', $instansi->id)
+            ->whereIn('departement', $departements)
             ->get();
 
             

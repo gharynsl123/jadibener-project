@@ -8,12 +8,12 @@
     <div class="card">
         <div class="card-body">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-auto d-flex justify-content-center ">
                     <img src="{{ asset('storage/produk/' . $produk->photo_produk) }}" alt="Image Produk"
                         class="img-fluid" style="height:250px;">
                 </div>
-                <div class="col-md-6">
-                    <table class="table">
+                <div class="col-md-auto">
+                    <table class="table table-borderless">
                         <tbody>
                             <tr>
                                 <th>Nama Merk</th>

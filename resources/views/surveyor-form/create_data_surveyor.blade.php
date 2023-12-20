@@ -45,15 +45,21 @@
                     <label for="jumlah-bed">Jumlah Bed</label>
                     <input type="number" class="form-control" name="jumlah_kasur" placeholder="0">
                 </div>
-
+                
                 <div class="form-group col-md-6">
                     <label for="pic">Jenis Instansi</label>
-                    <input type="text" class="form-control" name="jenis_instansi" placeholder="tulis jenisnya">
+                    <select class="form-control" name="jenis_instansi">
+                        <option value="-">Pilih Jenis</option>
+                        <option value="pemerintah">pemerintah</option>
+                        <option value="swasta">swasta</option>
+                        <option value="BUMN">BUMN</option>
+                        <option value="TNI/Polri">TNI/Polri</option>
+                    </select>
                 </div>
 
                 <div class="form-group col-md-6">
                     <label for="image">Image</label>
-                    <input type="file" class="form-control form-control-file p-0" id="image" name="photo_instansi">
+                    <input type="file" require class="form-control form-control-file p-0" id="image" name="photo_instansi">
                 </div>
 
                 <div class="form-group col-md-12">

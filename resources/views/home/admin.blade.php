@@ -10,7 +10,7 @@
 
 @elseif(Auth::user()->level == 'teknisi')
 
-@include('home.teknisi')
+@include('home.surveyor')
 
 @elseif(Auth::user()->level == 'surveyor')
 

@@ -18,8 +18,11 @@ class CreatePartTable extends Migration
             $table->integer('id_kategori')->unsigned();
 
             $table->string('nama_part');
-            $table->text('harga');
+            $table->string('harga');
+            $table->string('deskripsi');
+            $table->string('slug');
             $table->string('kode_part');
+            $table->string('photo');
 
             $table->foreign('id_kategori')->references('id')->on('kategori')->onDelete('cascade');
             $table->timestamps();

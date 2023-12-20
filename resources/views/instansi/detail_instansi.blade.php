@@ -5,7 +5,7 @@
 
 <div class="d-flex">
     <div>
-        <a href="{{ route('instansi.index') }}" class="btn mr-3 btn-secondary">Kembali</a>
+        <a href="{{ route('instansi.group') }}" class="btn mr-3 btn-secondary">Kembali</a>
     </div>
     <h2 class="my-0 p-0">Detail Data Rumah Sakit / Institusi</h2>
 </div>
@@ -91,7 +91,7 @@
                         <th>Instalasi</th>
                         <th>Keterangan</th>
                         <th>departement</th>
-                        <th class="th-end">Action</th>
+                        <th class="th-end">edit data</th>
                         <!-- Tambahkan kolom lain sesuai kebutuhan -->
                     </tr>
                 </thead>
@@ -123,7 +123,7 @@
             </table>
         </div>
 
-        @if(Auth::user()->level == 'surveyor')
+        @if(Auth::user()->level == 'surveyor' || Auth::user()->level == 'admin')
         <a href="{{ route('survey.exist-data', $instansi->id) }}" class="btn btn-primary">Create Data PIC</a>
         @endif
     </div>
@@ -132,12 +132,13 @@
 
 <script>
     const showPeralatanButtons = document.querySelectorAll('.show-peralatan-btn');
-
+    
+    
     showPeralatanButtons.forEach((button) => {
         button.addEventListener('click', () => {
             const departemen = button.getAttribute('data-departemen');
             const peralatanList = document.querySelector(`div.peralatan-list`);
-
+            
             if (peralatanList) {
                 if (peralatanList.style.display === 'none') {
                     // Jika tabel peralatan sedang disembunyikan, tampilkan
@@ -145,7 +146,7 @@
                     allPeralatanLists.forEach((list) => {
                         list.style.display = 'none';
                     });
-
+                    
                     peralatanList.style.display = 'block';
                     // Di sini, Anda perlu mengisi tabel peralatan berdasarkan departemen yang sesuai
                     const dataPeralatan = getDataPeralatanByDepartemen(departemen);
@@ -157,27 +158,51 @@
             }
         });
     });
-
-    // Fungsi untuk mengambil data peralatan sesuai dengan departemen (gantilah ini dengan logika yang sesuai)
+    
     function getDataPeralatanByDepartemen(departemen) {
-        // Misalnya, Anda bisa menggunakan AJAX untuk mengambil data peralatan berdasarkan departemen
-        // Atau jika data sudah ada dalam variabel, Anda bisa memfilternya
-        const dataPeralatan = peralatan.filter(peralatan => peralatan.departemen === departemen);
-        return dataPeralatan;
+        const dataPeralatan = @json($alat); // Mengambil data dari PHP dan mengonversikannya ke JSON
+        return dataPeralatan.filter(peralatan => peralatan.departement === departemen);
     }
+    
+    const peralatanEditRoute = "{{ route('peralatan.edit', ['slug' => ':slug']) }}";
+    const peralatanDestroyRoute = "{{ route('peralatan.destroy', ['id' => ':id']) }}";
+
     // Fungsi untuk menampilkan daftar peralatan di dalam peralatan-list (gantilah ini dengan kode HTML yang sesuai)
     function tampilkanPeralatanList(dataPeralatan, peralatanList) {
         const table = peralatanList.querySelector('table');
         const tbody = table.querySelector('tbody');
+        
         tbody.innerHTML = ''; // Kosongkan tbody sebelum menambahkan data baru
-
+        
         dataPeralatan.forEach(peralatan => {
             const row = tbody.insertRow();
             const cell1 = row.insertCell(0);
-            cell1.innerHTML = peralatan.nama; // Gantilah ini sesuai dengan data peralatan yang sesuai
-            // Lanjutkan untuk menambahkan kolom-kolom lain
-        });
-    }
+            const cell2 = row.insertCell(1);
+            const cell3 = row.insertCell(2);
+            const cell4 = row.insertCell(3);
+            const cell5 = row.insertCell(4);
+            const cell6 = row.insertCell(5);
+            cell1.innerHTML = peralatan.produk.nama_produk;
+            cell2.innerHTML = `<a href="/peralatan/${peralatan.slug}">${peralatan.serial_number}</a>`;
+            cell3.innerHTML = peralatan.tahun_pemasangan;
+            cell4.innerHTML = peralatan.produk_dalam_kondisi;
+            cell5.innerHTML = peralatan.departement;
+            cell6.innerHTML = `
+            <div style="display: flex; gap: 5px;">
+                        <a href="${peralatanEditRoute.replace(':slug', peralatan.slug)}" class="btn btn-warning btn-sm">
+                            <i class="fa fa-pen-to-square text-white"></i>
+                        </a>
+                        <form action="${peralatanDestroyRoute.replace(':id', peralatan.id)}"  method="POST" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-danger btn-sm"
+                                onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                <i class="fa fa-trash text-white"></i>
+                            </button>
+                        </form>
+                    </div>`; 
+            });
+        }
 </script>
 
 

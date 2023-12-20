@@ -41,7 +41,7 @@
                             placeholder="Judulnya">
                         <!-- text are untuk isi dari informasi -->
                         <textarea id="" require cols="30" rows="10" name="deskripsi_informasi"
-                            class="form-control mb-4">input your text here</textarea>
+                            class="form-control mb-4" placeholder="input your text here"></textarea>
                         <button class="btn btn-primary" type="submit">Input</button>
                         <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     </form>
@@ -63,8 +63,12 @@
                         title="Edit informasi">
                         <i class="fa fa-pen-to-square"></i>
                     </a>
-                    <a href="" class="btn m-1 btn-danger" class="btn m-1 btn-primary" data-bs-toggle="tooltip"
-                        data-bs-placement="top" title="Hapus Info"><i class="fa fa-trash"></i></a>
+                    <form action="{{ route('informasi.destroy', $items->id) }}" class="m-0 p-0" method="post">
+                        @csrf
+                        {{method_field('DELETE')}}
+                        <button type="submit" class="btn m-1 btn-danger" data-bs-toggle="tooltip"
+                            data-bs-placement="top" title="Hapus Info"><i class="fa fa-trash"></i></button>
+                    </form>
                 </div>
             </div>
         </a>

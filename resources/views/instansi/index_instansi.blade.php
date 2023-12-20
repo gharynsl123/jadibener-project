@@ -3,17 +3,6 @@
 @section('title', 'Instansi')
 
 @section('content')
-<style>
-.single-line {
-    max-width: 300px;
-    max-height: 1.09rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-</style>
 
 @if(Auth::user()->level == 'admin')
 <div class="d-sm-flex align-items-center justify-content-between my-4">
@@ -70,34 +59,6 @@
                 </thead>
                 <tbody>
                     @foreach($instansi as $items)
-                        @if(Auth::user()->level == 'surveyor')
-                            @if($items->jumlah_kasur)
-                                <tr>
-                                    <td>{{$items->nama_instansi}}</td>
-                                    <td>{{$items->provinsi}}</td>
-                                    <td class="single-line">{!!$items->alamat_instansi!!}</td>
-                                    <td>{{$items->jenis_instansi}}</td>
-                                    <td>{{$items->jumlah_kasur}}</td>
-                                    <td>
-                                        <!-- Membuat form delete -->
-                                        <form action="{{ route('instansi.destroy', $items->id) }}" method="POST">
-                                            @csrf
-                                            {{method_field('DELETE')}}
-                                            <a href="{{ route('instansi.show', $items->id) }}" class="btn btn-sm btn-primary">
-                                                <i class="fa fa-eye text-white"></i>
-                                            </a>
-                                            <!-- Edit -->
-                                            <a href="{{route('instansi.edit', $items->id)}}" class="btn btn-sm btn-warning">
-                                                <i class="fa fa-pen-to-square"></i>
-                                            </a>
-                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus {{$items->nama_instansi}} ini?')">
-                                                <i class="fa fa-trash text-white"></i>
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endif
-                        @else
                             <tr>
                                 <td>{{$items->nama_instansi}}</td>
                                  <td>{{$items->provinsi}}</td>
@@ -124,7 +85,6 @@
                                     </div>
                                 </td>
                             </tr>
-                        @endif
                     @endforeach
                 </tbody>
             </table>

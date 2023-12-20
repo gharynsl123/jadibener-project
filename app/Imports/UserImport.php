@@ -23,6 +23,7 @@ class UserImport implements ToCollection
                 'nomor_telepon' => $row[4],
                 'jenis_kelamin' => $row[5],
                 'password' => Hash::make($row[6]),
+                'id_instansi' => $row[7],
             ]);
         }
     }

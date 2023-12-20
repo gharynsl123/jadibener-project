@@ -52,6 +52,7 @@ class MerekController extends Controller
     
         $merek = Merek::Insert([
             'nama_merek' => $request->nama_merek,
+            'departement' => $request->departement,
         ]);
         return response()->json($merek);
     }

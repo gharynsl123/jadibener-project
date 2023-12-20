@@ -1,10 +1,9 @@
 /* Single line for table */
-
 .single-line {
     max-width: 500px;
-    max-height: 1.9rem;
+    max-height: 1rem;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;

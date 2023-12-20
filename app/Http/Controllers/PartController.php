@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Part;
+use App\History;
 use App\Kategori;
-use Carbon\Carbon;
 use App\Pengajuan;
 use App\Peralatan;
-use Illuminate\Support\Facades\Auth;
-use App\History;
 use App\Estimate;
+use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PartController extends Controller
 {
@@ -57,8 +58,23 @@ class PartController extends Controller
      */
     public function store(Request $request)
     {
-        $partreq = Part::create($request->all());
-        return response()->json($partreq);
+        $partreq = $request->all();
+        $partreq['slug'] = Str::slug($request->nama_part).'-'.($request->kode_part);
+
+        // Proses upload dan menyimpan gambar
+        if ($request->hasFile('photo')) {
+            $destination_path = 'public/part';
+            $image = $request->file('photo');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $path = $request->file('photo_produk')->storeAs($destination_path, $image_name); //mengirimkan foto ke folder store
+            // Simpan nama gambar ke dalam field 'photo' di database
+            $partreq['photo'] = $imageName;
+        }
+        
+
+
+        Part::create($partreq);
+        return redirect()->back();
     }
 
     public function dataPart()
@@ -74,9 +90,9 @@ class PartController extends Controller
      * @param  \App\SukuCadang  $sukuCadang
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        $part = Part::find($id);
+        $part = Part::where('slug', $slug)->first();
         return view('part.detail_part', compact('part'));
     }
 
@@ -86,10 +102,11 @@ class PartController extends Controller
      * @param  \App\SukuCadang  $sukuCadang
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($slug)
     {
-        $part = Part::find($id);
-        return response()->json($part);
+        $part = Part::where('slug', $slug)->first();
+        $kategori = Kategori::all();
+        return view('part.edit_part', compact('part', 'kategori'));
 
     }
 
@@ -103,17 +120,10 @@ class PartController extends Controller
     public function update(Request $request, $id)
     {
         $part = Part::find($id);
-    
-        if (!$part) {
-            return response()->json(['message' => 'Data tidak ditemukan.'], 404);
-        }
-    
-        $part->nama_part = $request->nama_part;
-        $part->kode_part = $request->kode_part; // Ubah ini dari $part->nama_part menjadi $part->kode_part
-        $part->id_kategori = $request->id_kategori;
+        $part = $request->all();
+
         $part->save();
-    
-        return response()->json($part);
+        return redirect('/part');
     }
 
     /**
@@ -126,12 +136,8 @@ class PartController extends Controller
     {
         $part = Part::find($id);
 
-        if (!$part) {
-            return response()->json(['message' => 'Data tidak ditemukan.'], 404);
-        }
-
         $part->delete();
-        return response()->json(['message' => 'Data berhasil dihapus.']);
+        return redirect()->back();
     }
 
 

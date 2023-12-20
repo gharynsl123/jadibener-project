@@ -15,10 +15,6 @@ Route::get('/', function () {
     return view('zone-non-auth.welcom_content');
 });
 
-Route::get('/spare-part', function () {
-    return view('zone-non-auth.spare_part_guest');
-});
-
 Route::get('/about', function () {
     return view('zone-non-auth.about');
 });
@@ -27,15 +23,7 @@ Route::get('/contact-us', function () {
     return view('zone-non-auth.contact_us');
 });
 
-Route::get('/approve/{id}', 'ReqMemberContrroller@approve')->name('approve');
-Route::get('/reject/{id}', 'ReqMemberContrroller@reject')->name('reject');
-Route::get('/detail-member/{id}', 'ReqMemberContrroller@detail')->name('detail.member');
 
-
-
-Route::get('/request-as-member', 'StoreReqController@create');
-Route::post('/request-member', 'StoreReqController@store');
-Route::get('/member-request', 'ReqMemberContrroller@index')->name('service.member_req');
 
 
 Auth::routes(['register' => false]);
@@ -47,6 +35,7 @@ Route::group(['middleware' => ['auth', 'role:admin,teknisi,surveyor,sub_service'
 
     // Instansi Route
     Route::get('/instansi', 'InstansiController@index')->name('instansi.index');
+    Route::get('/member-instansi', 'InstansiController@group')->name('instansi.group');
     Route::get('/make/instansi', 'InstansiController@create')->name('instansi.create');
     Route::get('/edit-instansi/{id}', 'InstansiController@edit')->name('instansi.edit');
     Route::put('/update-instansi/{id}', 'InstansiController@update')->name('instansi.update');
@@ -86,7 +75,7 @@ Route::get('/get-selesai-count', 'HomeController@getSolvedCount');
 // status Route
 Route::resource('status', 'StatusController');
 
-
+Route::get('/daftar-permohonan-ticket', 'HomeController@ticket');
 // Ajax Route Get Data
 Route::get('/get-data/merek', 'MerekController@dataMerek')->name('merek.data');
 Route::get('/get-data/kondisi', 'KondisiController@dataKondisi')->name('kondisi.data');
@@ -101,6 +90,8 @@ Route::get('/get-data/departement', 'DepartemenController@getDepartement')->name
 Route::get('/informasi', 'InformasiController@index')->name('informasi.index');
 Route::get('/detail-informasi/{id}', 'InformasiController@show')->name('informasi.show');
 Route::post('/add-informasi', 'InformasiController@store')->name('informasi.store');
+Route::get('/edit-informasi', 'InformasiController@edit')->name('informasi.edit');
+Route::delete('/delete-informasi/{id}', 'InformasiController@destroy')->name('informasi.destroy');
 
 // Merek Route
 Route::get('merek', 'MerekController@index')->name('merek.index');
@@ -158,9 +149,23 @@ Route::get('/pengajuan/{slug}', 'PengajuanController@show')->name('pengajuan.sho
 Route::get('/part', 'PartController@index')->name('part.index');
 Route::post('/add-part', 'PartController@store')->name('part.store');
 Route::get('/pergantian-part/{slug}', 'PartController@create')->name('part.create');
-Route::get('/edit-part/{id}', 'PartController@edit')->name('part.edit');
+Route::get('/edit/{slug}', 'PartController@edit')->name('part.edit');
+Route::get('/detail/{slug}', 'PartController@show')->name('part.show');
 Route::put('/update-part/{id}', 'PartController@update')->name('part.update');
 Route::delete('/delete-part/{id}', 'PartController@destroy')->name('part.destroy');
+
+
+Route::get('/spare-part', 'StoreReqController@viewPart');
+Route::get('/{slug}', 'StoreReqController@showPart')->name('guest-part.show');
+// request member
+Route::get('/approve/{id}', 'ReqMemberContrroller@approve')->name('approve');
+Route::get('/reject/{id}', 'ReqMemberContrroller@reject')->name('reject');
+Route::get('/detail-member/{id}', 'ReqMemberContrroller@detail')->name('detail.member');
+
+
+Route::get('/request-as-member', 'StoreReqController@create');
+Route::post('/request-member', 'StoreReqController@store');
+Route::get('/member-request', 'ReqMemberContrroller@index')->name('service.member_req');
 
 // Estimate Route
 Route::post('/add-estimate-part', 'PartController@storePart')->name('estimate.store');

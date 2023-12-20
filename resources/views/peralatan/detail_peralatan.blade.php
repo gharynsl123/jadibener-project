@@ -13,7 +13,7 @@
 </style>
 
 <div class="mb-4">
-<a href="{{ route('peralatan.index') }}" class="btn  btn-primary">Kembali</a>
+<a href="{{ route('instansi.group') }}" class="btn  btn-primary">Kembali</a>
 
 <a href="{{route('alat.cetak_pdf', $peralatan->slug)}}" target="_blank" class="btn my-2 btn-secondary">Cetak PDF</a>
 <a href="{{route('pengajuan.create', $peralatan->slug)}}" type="button" class="my-1 btn btn-success">Ajukan Survey / Perbaikan</a>

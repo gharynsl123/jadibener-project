@@ -16,6 +16,7 @@ class CreateMerekTable extends Migration
         Schema::create('merek', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nama_merek');
+            $table->enum('departement', ['Hospital Kitchen', 'CSSD']);
             $table->timestamps();
         });
     }
